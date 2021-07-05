@@ -1,11 +1,10 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.0;
 
-import "./BRC721.sol";
-
+import "./ERC721URIStorage.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/IERC721Enumerable.sol";
 
-abstract contract BRC721Enumerable is BRC721, IERC721Enumerable {
+abstract contract BRC721Enumerable is ERC721URIStorage, IERC721Enumerable {
     // Mapping from owner to list of owned token IDs
     mapping(address => mapping(uint256 => uint256)) private _ownedTokens;
 
