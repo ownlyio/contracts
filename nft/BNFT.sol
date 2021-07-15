@@ -43,12 +43,34 @@ contract BNFT is BRC721Enumerable, Pausable {
         require(!paused(), "BRC721Pausable: token transfer while paused");
     }
 
-    function createToken(string memory tokenURI) public returns (uint) {
+    function createToken(string memory tokenURI) public onlyAdmin returns (uint) {
         _tokenIds.increment();
         uint256 newItemId = _tokenIds.current();
 
-        _mintIfNotExist(newItemId);
-        _setTokenURI(newItemId, tokenURI);
+        _mint(msg.sender, newItemId);
+        _setTokenURI(newItemId, string(abi.encodePacked(tokenURI, uint2str(newItemId))));
         return newItemId;
+    }
+
+    function uint2str(uint _i) internal pure returns (string memory _uintAsString) {
+        if (_i == 0) {
+            return "0";
+        }
+        uint j = _i;
+        uint len;
+        while (j != 0) {
+            len++;
+            j /= 10;
+        }
+        bytes memory bstr = new bytes(len);
+        uint k = len;
+        while (_i != 0) {
+            k = k-1;
+            uint8 temp = (48 + uint8(_i - _i / 10 * 10));
+            bytes1 b1 = bytes1(temp);
+            bstr[k] = b1;
+            _i /= 10;
+        }
+        return string(bstr);
     }
 }
