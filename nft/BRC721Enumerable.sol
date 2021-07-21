@@ -2,7 +2,7 @@
 pragma solidity 0.8.0;
 
 import "./ERC721URIStorage.sol";
-import "@openzeppelin/contracts/token/ERC721/extensions/IERC721Enumerable.sol";
+import "./IERC721Enumerable.sol";
 
 abstract contract BRC721Enumerable is ERC721URIStorage, IERC721Enumerable {
     // Mapping from owner to list of owned token IDs

@@ -2,9 +2,9 @@
 pragma solidity 0.8.0;
 
 import "./BRC721Enumerable.sol";
-import "@openzeppelin/contracts/security/Pausable.sol";
-import "@openzeppelin/contracts/utils/Strings.sol";
-import "@openzeppelin/contracts/utils/Counters.sol";
+import "./Pausable.sol";
+import "./Strings.sol";
+import "./Counters.sol";
 
 contract BNFT is BRC721Enumerable, Pausable {
     using Strings for uint256;
