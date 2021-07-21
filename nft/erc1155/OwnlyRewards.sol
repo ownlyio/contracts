@@ -5,13 +5,13 @@ pragma solidity ^0.8.0;
 import "@openzeppelin/contracts/token/ERC1155/presets/ERC1155PresetMinterPauser.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract OwnlyNFT is ERC1155PresetMinterPauser, Ownable {
+contract OwnlyRewards is ERC1155PresetMinterPauser, Ownable {
     string private _name;
     string private _symbol;
 
-    constructor() ERC1155PresetMinterPauser("https://ownly.io/nft/sample/api/") {
-        _name = "OWNLY";
-        _symbol = "OWN";
+    constructor() ERC1155PresetMinterPauser("https://ownly.io/nft/rewards/api/") {
+        _name = "Ownly Rewards";
+        _symbol = "OWNLY";
     }
 
     function name() public view returns (string memory) {
