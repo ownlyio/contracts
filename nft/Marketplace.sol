@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.0;
+pragma solidity 0.8.2;
 
 import "@openzeppelin/contracts/security/Pausable.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
@@ -8,18 +8,20 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 
+import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
+import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
+
 abstract contract NftInterface {
     function getApproved(uint256 tokenId) public view virtual returns (
         address approved
     );
-
     function ownerOf(uint256 tokenId) public view virtual returns (
         address owner
     );
-    function approve(address to, uint256 tokenId) public virtual;
 }
 
-contract NFTMarket is ReentrancyGuard {
+contract Marketplace is ReentrancyGuard {
     using Counters for Counters.Counter;
     Counters.Counter private _itemIds;
     Counters.Counter private _itemsSold;
@@ -38,6 +40,7 @@ contract NFTMarket is ReentrancyGuard {
         address payable seller;
         address payable owner;
         uint256 price;
+        bool cancelled;
     }
 
     mapping(uint256 => MarketItem) private idToMarketItem;
@@ -47,8 +50,15 @@ contract NFTMarket is ReentrancyGuard {
         address indexed nftContract,
         uint256 indexed tokenId,
         address seller,
-        address owner,
         uint256 price
+    );
+
+    event MarketItemCancelled (
+        uint indexed itemId
+    );
+
+    event MarketItemSold (
+        uint indexed itemId
     );
 
     function getListingPrice() public view returns (uint256) {
@@ -85,7 +95,8 @@ contract NFTMarket is ReentrancyGuard {
             tokenId,
             payable(msg.sender),
             payable(address(0)),
-            price
+            price,
+            false
         );
 
         emit MarketItemCreated(
@@ -93,7 +104,6 @@ contract NFTMarket is ReentrancyGuard {
             nftContractAddress,
             tokenId,
             msg.sender,
-            address(0),
             price
         );
     }
@@ -109,7 +119,29 @@ contract NFTMarket is ReentrancyGuard {
         IERC721(idToMarketItem[itemId].nftContract).transferFrom(idToMarketItem[itemId].seller, msg.sender, tokenId);
         idToMarketItem[itemId].owner = payable(msg.sender);
         _itemsSold.increment();
-        payable(owner).transfer(listingPrice);
+
+        if(listingPrice > 0) {
+            payable(owner).transfer(listingPrice);
+        }
+
+        emit MarketItemSold(
+            itemId
+        );
+    }
+
+    function cancelMarketSale(
+        uint256 itemId
+    ) public {
+        NftInterface nftContract = NftInterface(idToMarketItem[itemId].nftContract);
+        address nftOwner = nftContract.ownerOf(idToMarketItem[itemId].tokenId);
+
+        require(nftOwner == msg.sender, "You are not the owner of this token.");
+
+        idToMarketItem[itemId].cancelled = false;
+
+        emit MarketItemCancelled(
+            itemId
+        );
     }
 
     function unsoldMarketItemExists(address nftContractAddress, uint256 tokenId) internal view returns (bool) {
@@ -133,8 +165,13 @@ contract NFTMarket is ReentrancyGuard {
 
         for (uint i = 0; i < itemCount; i++) {
             if (idToMarketItem[i + 1].nftContract == nftContractAddress && idToMarketItem[i + 1].tokenId == tokenId && idToMarketItem[i + 1].owner == address(0)) {
-                item = idToMarketItem[i + 1];
-                break;
+                NftInterface nftContract = NftInterface(idToMarketItem[i + 1].nftContract);
+                address nftOwner = nftContract.ownerOf(idToMarketItem[i + 1].tokenId);
+
+                if (idToMarketItem[i + 1].owner == address(0) && nftOwner == idToMarketItem[i + 1].seller) {
+                    item = idToMarketItem[i + 1];
+                    break;
+                }
             }
         }
 
@@ -148,7 +185,10 @@ contract NFTMarket is ReentrancyGuard {
 
         MarketItem[] memory items = new MarketItem[](unsoldItemCount);
         for (uint i = 0; i < itemCount; i++) {
-            if (idToMarketItem[i + 1].owner == address(0)) {
+            NftInterface nftContract = NftInterface(idToMarketItem[i + 1].nftContract);
+            address nftOwner = nftContract.ownerOf(idToMarketItem[i + 1].tokenId);
+
+            if (idToMarketItem[i + 1].owner == address(0) && nftOwner == idToMarketItem[i + 1].seller) {
                 uint currentId = idToMarketItem[i + 1].itemId;
                 MarketItem storage currentItem = idToMarketItem[currentId];
                 items[currentIndex] = currentItem;
