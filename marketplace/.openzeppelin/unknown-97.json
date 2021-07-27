@@ -20,6 +20,26 @@
       "address": "0xA4e7f330cB1103532A7836Ffe668422B1c956d83",
       "txHash": "0xc884beabbeb1aa651ab4424dd82fd19f0c3869f4c52fecff92732df6f35b2da2",
       "kind": "uups"
+    },
+    {
+      "address": "0xa3EaC04A75F9f20eDbD00cE55Cb49Ce5310e968e",
+      "txHash": "0xbe17cf7f0e7cae60c27afb6414217cb1c0f2a56a93d75e77025ee0b8ad36a912",
+      "kind": "uups"
+    },
+    {
+      "address": "0x84846826919D6C9379143f8d5Adb03e144508f45",
+      "txHash": "0xf309379be39ea8b09cd9405cd51b22818a420631fd8ab2db81c5d7254f657e10",
+      "kind": "uups"
+    },
+    {
+      "address": "0x62e960B9a47e4b127499479D205d3a6060E01D27",
+      "txHash": "0x92e96c2ffaa39419c9b50727e52ac79db77f1ba7ace99a1e3125a6c6830634a0",
+      "kind": "uups"
+    },
+    {
+      "address": "0xcE2609F273a4b232CaC4d796daDc33851D3736c4",
+      "txHash": "0x6770c8d20078297bea1feb0bfdae5e18e6b9b1ba8463ee80589cd4dcd79945c0",
+      "kind": "uups"
     }
   ],
   "impls": {
@@ -314,6 +334,167 @@
               },
               {
                 "label": "price",
+                "type": "t_uint256"
+              },
+              {
+                "label": "cancelled",
+                "type": "t_bool"
+              }
+            ]
+          },
+          "t_address": {
+            "label": "address"
+          },
+          "t_bool": {
+            "label": "bool"
+          },
+          "t_array(t_uint256)49_storage": {
+            "label": "uint256[49]"
+          },
+          "t_array(t_uint256)50_storage": {
+            "label": "uint256[50]"
+          }
+        }
+      }
+    },
+    "47a5fad0709fba4bf66e8f700a8739eb08b362d84899f59a5fdc7cff417db7b2": {
+      "address": "0xa1F48610D1A6Da23D7Df80bdDF17108aAb642382",
+      "txHash": "0x10b0c1068315d916bf7cbda74f80c2c6b6e121029653a2a53d2e0eb50dab4bf9",
+      "layout": {
+        "storage": [
+          {
+            "contract": "Initializable",
+            "label": "_initialized",
+            "type": "t_bool",
+            "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:21"
+          },
+          {
+            "contract": "Initializable",
+            "label": "_initializing",
+            "type": "t_bool",
+            "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:26"
+          },
+          {
+            "contract": "ContextUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)50_storage",
+            "src": "@openzeppelin\\contracts-upgradeable\\utils\\ContextUpgradeable.sol:30"
+          },
+          {
+            "contract": "OwnableUpgradeable",
+            "label": "_owner",
+            "type": "t_address",
+            "src": "@openzeppelin\\contracts-upgradeable\\access\\OwnableUpgradeable.sol:21"
+          },
+          {
+            "contract": "OwnableUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)49_storage",
+            "src": "@openzeppelin\\contracts-upgradeable\\access\\OwnableUpgradeable.sol:77"
+          },
+          {
+            "contract": "ERC1967UpgradeUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)50_storage",
+            "src": "@openzeppelin\\contracts-upgradeable\\proxy\\ERC1967\\ERC1967UpgradeUpgradeable.sol:233"
+          },
+          {
+            "contract": "UUPSUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)50_storage",
+            "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\UUPSUpgradeable.sol:64"
+          },
+          {
+            "contract": "ReentrancyGuardUpgradeable",
+            "label": "_status",
+            "type": "t_uint256",
+            "src": "@openzeppelin\\contracts-upgradeable\\security\\ReentrancyGuardUpgradeable.sol:37"
+          },
+          {
+            "contract": "ReentrancyGuardUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)49_storage",
+            "src": "@openzeppelin\\contracts-upgradeable\\security\\ReentrancyGuardUpgradeable.sol:67"
+          },
+          {
+            "contract": "Marketplace",
+            "label": "_itemIds",
+            "type": "t_struct(Counter)2157_storage",
+            "src": "contracts\\Marketplace.sol:26"
+          },
+          {
+            "contract": "Marketplace",
+            "label": "_itemsSold",
+            "type": "t_struct(Counter)2157_storage",
+            "src": "contracts\\Marketplace.sol:27"
+          },
+          {
+            "contract": "Marketplace",
+            "label": "marketplaceOwner",
+            "type": "t_address_payable",
+            "src": "contracts\\Marketplace.sol:29"
+          },
+          {
+            "contract": "Marketplace",
+            "label": "listingPrice",
+            "type": "t_uint256",
+            "src": "contracts\\Marketplace.sol:30"
+          },
+          {
+            "contract": "Marketplace",
+            "label": "idToMarketItem",
+            "type": "t_mapping(t_uint256,t_struct(MarketItem)2610_storage)",
+            "src": "contracts\\Marketplace.sol:43"
+          }
+        ],
+        "types": {
+          "t_struct(Counter)2157_storage": {
+            "label": "struct CountersUpgradeable.Counter",
+            "members": [
+              {
+                "label": "_value",
+                "type": "t_uint256"
+              }
+            ]
+          },
+          "t_uint256": {
+            "label": "uint256"
+          },
+          "t_address_payable": {
+            "label": "address payable"
+          },
+          "t_mapping(t_uint256,t_struct(MarketItem)2610_storage)": {
+            "label": "mapping(uint256 => struct Marketplace.MarketItem)"
+          },
+          "t_struct(MarketItem)2610_storage": {
+            "label": "struct Marketplace.MarketItem",
+            "members": [
+              {
+                "label": "itemId",
+                "type": "t_uint256"
+              },
+              {
+                "label": "nftContract",
+                "type": "t_address"
+              },
+              {
+                "label": "tokenId",
+                "type": "t_uint256"
+              },
+              {
+                "label": "seller",
+                "type": "t_address_payable"
+              },
+              {
+                "label": "owner",
+                "type": "t_address_payable"
+              },
+              {
+                "label": "price",
+                "type": "t_uint256"
+              },
+              {
+                "label": "listingPrice",
                 "type": "t_uint256"
               },
               {

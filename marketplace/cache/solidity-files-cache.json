@@ -2,8 +2,8 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "C:\\Codes\\contracts\\marketplace\\contracts\\Marketplace.sol": {
-      "lastModificationDate": 1627304112161,
-      "contentHash": "25c47cc1c54a5dca00d99bb0c31eca90",
+      "lastModificationDate": 1627407282724,
+      "contentHash": "82845977c2609b952c69fdf03cf4bca9",
       "sourceName": "contracts/Marketplace.sol",
       "solcConfig": {
         "version": "0.8.2",
@@ -42,7 +42,6 @@
       ],
       "artifacts": [
         "Marketplace",
-        "MarketplaceV2",
         "NftInterface"
       ]
     },

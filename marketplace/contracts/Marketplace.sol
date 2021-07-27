@@ -36,6 +36,7 @@ contract Marketplace is Initializable, OwnableUpgradeable, UUPSUpgradeable, Reen
         address payable seller;
         address payable owner;
         uint256 price;
+        uint256 listingPrice;
         bool cancelled;
     }
 
@@ -46,7 +47,8 @@ contract Marketplace is Initializable, OwnableUpgradeable, UUPSUpgradeable, Reen
         address indexed nftContract,
         uint256 indexed tokenId,
         address seller,
-        uint256 price
+        uint256 price,
+        uint256 listingPrice
     );
 
     event MarketItemCancelled (
@@ -66,16 +68,16 @@ contract Marketplace is Initializable, OwnableUpgradeable, UUPSUpgradeable, Reen
     }
 
     function _authorizeUpgrade(address newImplementation)
-    internal
-    onlyOwner
-    override
+        internal
+        onlyOwner
+        override
     {}
 
     function getListingPrice() public view virtual returns (uint256) {
         return listingPrice;
     }
 
-    function setListingPrice(uint256 _listingPrice) public virtual {
+    function setListingPrice(uint256 _listingPrice) public onlyOwner virtual {
         listingPrice = _listingPrice;
     }
 
@@ -90,8 +92,10 @@ contract Marketplace is Initializable, OwnableUpgradeable, UUPSUpgradeable, Reen
     ) public virtual payable nonReentrant {
         NftInterface nftContract = NftInterface(nftContractAddress);
         address nftOwner = nftContract.ownerOf(tokenId);
+        address nftApproved = nftContract.getApproved(tokenId);
 
         require(nftOwner == msg.sender, "You must be the owner of the token");
+        require(nftApproved == address(this), "You must give permission for this marketplace to access your token");
         require(price > 0, "Price must be at least 1 wei");
         require(msg.value == listingPrice, "Value must be equal to listing price");
         require(unsoldMarketItemExists(nftContractAddress, tokenId) == false, "Market item already exists");
@@ -99,13 +103,14 @@ contract Marketplace is Initializable, OwnableUpgradeable, UUPSUpgradeable, Reen
         _itemIds.increment();
         uint256 itemId = _itemIds.current();
 
-        idToMarketItem[itemId] =  MarketItem(
+        idToMarketItem[itemId] = MarketItem(
             itemId,
             nftContractAddress,
             tokenId,
             payable(msg.sender),
             payable(address(0)),
             price,
+            listingPrice,
             false
         );
 
@@ -114,7 +119,8 @@ contract Marketplace is Initializable, OwnableUpgradeable, UUPSUpgradeable, Reen
             nftContractAddress,
             tokenId,
             msg.sender,
-            price
+            price,
+            listingPrice
         );
     }
 
@@ -130,8 +136,8 @@ contract Marketplace is Initializable, OwnableUpgradeable, UUPSUpgradeable, Reen
         idToMarketItem[itemId].owner = payable(msg.sender);
         _itemsSold.increment();
 
-        if(listingPrice > 0) {
-            payable(marketplaceOwner).transfer(listingPrice);
+        if(idToMarketItem[itemId].listingPrice > 0) {
+            payable(marketplaceOwner).transfer(idToMarketItem[itemId].listingPrice);
         }
 
         emit MarketItemSold(
@@ -139,15 +145,23 @@ contract Marketplace is Initializable, OwnableUpgradeable, UUPSUpgradeable, Reen
         );
     }
 
-    function cancelMarketSale(
+    function cancelMarketItem(
         uint256 itemId
-    ) public virtual {
+    ) public virtual nonReentrant {
+        require(idToMarketItem[itemId].cancelled == false, "Market item is already cancelled");
+
         NftInterface nftContract = NftInterface(idToMarketItem[itemId].nftContract);
         address nftOwner = nftContract.ownerOf(idToMarketItem[itemId].tokenId);
+        address nftApproved = nftContract.getApproved(idToMarketItem[itemId].tokenId);
 
-        require(nftOwner == msg.sender, "You are not the owner of this token.");
+        require(nftOwner == idToMarketItem[itemId].seller && nftOwner == msg.sender, "You must be the owner of the token");
+        require(nftApproved == address(this), "You must give permission for this marketplace to access your token");
 
-        idToMarketItem[itemId].cancelled = false;
+        idToMarketItem[itemId].cancelled = true;
+
+        if(idToMarketItem[itemId].listingPrice > 0) {
+            payable(msg.sender).transfer(idToMarketItem[itemId].listingPrice);
+        }
 
         emit MarketItemCancelled(
             itemId
@@ -177,8 +191,9 @@ contract Marketplace is Initializable, OwnableUpgradeable, UUPSUpgradeable, Reen
             if (idToMarketItem[i + 1].nftContract == nftContractAddress && idToMarketItem[i + 1].tokenId == tokenId && idToMarketItem[i + 1].owner == address(0)) {
                 NftInterface nftContract = NftInterface(idToMarketItem[i + 1].nftContract);
                 address nftOwner = nftContract.ownerOf(idToMarketItem[i + 1].tokenId);
+                address nftApproved = nftContract.getApproved(idToMarketItem[i + 1].tokenId);
 
-                if (idToMarketItem[i + 1].owner == address(0) && nftOwner == idToMarketItem[i + 1].seller) {
+                if (idToMarketItem[i + 1].owner == address(0) && nftOwner == idToMarketItem[i + 1].seller && nftApproved == address(this)) {
                     item = idToMarketItem[i + 1];
                     break;
                 }
@@ -197,8 +212,9 @@ contract Marketplace is Initializable, OwnableUpgradeable, UUPSUpgradeable, Reen
         for (uint i = 0; i < itemCount; i++) {
             NftInterface nftContract = NftInterface(idToMarketItem[i + 1].nftContract);
             address nftOwner = nftContract.ownerOf(idToMarketItem[i + 1].tokenId);
+            address nftApproved = nftContract.getApproved(idToMarketItem[i + 1].tokenId);
 
-            if (idToMarketItem[i + 1].owner == address(0) && nftOwner == idToMarketItem[i + 1].seller) {
+            if (idToMarketItem[i + 1].owner == address(0) && nftOwner == idToMarketItem[i + 1].seller && nftApproved == address(this)) {
                 uint currentId = idToMarketItem[i + 1].itemId;
                 MarketItem storage currentItem = idToMarketItem[currentId];
                 items[currentIndex] = currentItem;
@@ -234,12 +250,6 @@ contract Marketplace is Initializable, OwnableUpgradeable, UUPSUpgradeable, Reen
     }
 
     function version() pure public virtual returns (string memory) {
-        return "v1!";
-    }
-}
-
-contract MarketplaceV2 is Marketplace {
-    function version() pure public override returns (string memory) {
-        return "v2!";
+        return "v1";
     }
 }

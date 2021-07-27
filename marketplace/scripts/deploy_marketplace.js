@@ -13,8 +13,19 @@ async function main () {
     const marketplace = await upgrades.deployProxy(Marketplace, { kind: 'uups' });
     await marketplace.deployed();
 
-    console.log('Marketplace deployed to:', marketplace.address);
-    console.log('Version: ', marketplace.version());
+    const implHex = await ethers.provider.getStorageAt(
+        marketplace.address,
+        "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc"
+    );
+    const implAddress = ethers.utils.hexStripZeros(implHex);
+    console.log('Implementation Address: ', implAddress);
+
+    await hre.run("verify:verify", {
+        address: implAddress
+    });
+
+    console.log('Marketplace deployed to: ', marketplace.address);
+    console.log('Version: ', await marketplace.version());
 }
 
 main()
