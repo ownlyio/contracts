@@ -6,11 +6,9 @@ async function main () {
     console.log("Deploying contracts with the account:", deployer.address);
     console.log("Account balance:", (await deployer.getBalance()).toString());
 
-    const MarketplaceV2 = await ethers.getContractFactory('MarketplaceV2');
     console.log('Upgrading to MarketplaceV2...');
-
-    const marketplace = await upgrades.upgradeProxy('0x7bc06c482DEAd17c0e297aFbC32f6e63d3846650', MarketplaceV2);
-    console.log('Upgraded to MarketplaceV2');
+    const MarketplaceV2 = await ethers.getContractFactory('MarketplaceV2');
+    const marketplace = await upgrades.upgradeProxy('0x47F4f62317A14656371f3Cc8327E668A1216fd4F', MarketplaceV2);
 
     const implHex = await ethers.provider.getStorageAt(
         marketplace.address,

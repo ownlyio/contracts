@@ -63,15 +63,11 @@ contract Marketplace is Initializable, OwnableUpgradeable, UUPSUpgradeable, Reen
         __Ownable_init();
         __UUPSUpgradeable_init();
 
-        marketplaceOwner = payable(msg.sender);
+        marketplaceOwner = payable(0x672b733C5350034Ccbd265AA7636C3eBDDA2223B);
         listingPrice = 0;
     }
 
-    function _authorizeUpgrade(address newImplementation)
-        internal
-        onlyOwner
-        override
-    {}
+    function _authorizeUpgrade(address newImplementation) internal onlyOwner override {}
 
     function getListingPrice() public view virtual returns (uint256) {
         return listingPrice;
@@ -85,11 +81,7 @@ contract Marketplace is Initializable, OwnableUpgradeable, UUPSUpgradeable, Reen
         return idToMarketItem[marketItemId];
     }
 
-    function createMarketItem(
-        address nftContractAddress,
-        uint256 tokenId,
-        uint256 price
-    ) public virtual payable nonReentrant {
+    function createMarketItem(address nftContractAddress, uint256 tokenId, uint256 price) public virtual payable nonReentrant {
         NftInterface nftContract = NftInterface(nftContractAddress);
         address nftOwner = nftContract.ownerOf(tokenId);
         address nftApproved = nftContract.getApproved(tokenId);
@@ -98,7 +90,9 @@ contract Marketplace is Initializable, OwnableUpgradeable, UUPSUpgradeable, Reen
         require(nftApproved == address(this), "You must give permission for this marketplace to access your token");
         require(price > 0, "Price must be at least 1 wei");
         require(msg.value == listingPrice, "Value must be equal to listing price");
-        require(unsoldMarketItemExists(nftContractAddress, tokenId) == false, "Market item already exists");
+
+        MarketItem memory marketItem = fetchMarketItem(nftContractAddress, tokenId);
+        require(marketItem.itemId == 0, "Market item already exists");
 
         _itemIds.increment();
         uint256 itemId = _itemIds.current();
@@ -124,9 +118,7 @@ contract Marketplace is Initializable, OwnableUpgradeable, UUPSUpgradeable, Reen
         );
     }
 
-    function createMarketSale(
-        uint256 itemId
-    ) public virtual payable nonReentrant {
+    function createMarketSale(uint256 itemId) public virtual payable nonReentrant {
         uint price = idToMarketItem[itemId].price;
         uint tokenId = idToMarketItem[itemId].tokenId;
         require(msg.value == price, "Please submit the asking price in order to complete the purchase");
@@ -145,9 +137,7 @@ contract Marketplace is Initializable, OwnableUpgradeable, UUPSUpgradeable, Reen
         );
     }
 
-    function cancelMarketItem(
-        uint256 itemId
-    ) public virtual nonReentrant {
+    function cancelMarketItem(uint256 itemId) public virtual nonReentrant {
         require(idToMarketItem[itemId].cancelled == false, "Market item is already cancelled");
 
         NftInterface nftContract = NftInterface(idToMarketItem[itemId].nftContract);
@@ -188,12 +178,12 @@ contract Marketplace is Initializable, OwnableUpgradeable, UUPSUpgradeable, Reen
         MarketItem memory item;
 
         for (uint i = 0; i < itemCount; i++) {
-            if (idToMarketItem[i + 1].nftContract == nftContractAddress && idToMarketItem[i + 1].tokenId == tokenId && idToMarketItem[i + 1].owner == address(0)) {
+            if (idToMarketItem[i + 1].nftContract == nftContractAddress && idToMarketItem[i + 1].tokenId == tokenId && idToMarketItem[i + 1].owner == address(0) && idToMarketItem[i + 1].cancelled == false) {
                 NftInterface nftContract = NftInterface(idToMarketItem[i + 1].nftContract);
                 address nftOwner = nftContract.ownerOf(idToMarketItem[i + 1].tokenId);
                 address nftApproved = nftContract.getApproved(idToMarketItem[i + 1].tokenId);
 
-                if (idToMarketItem[i + 1].owner == address(0) && nftOwner == idToMarketItem[i + 1].seller && nftApproved == address(this)) {
+                if (nftOwner == idToMarketItem[i + 1].seller && nftApproved == address(this)) {
                     item = idToMarketItem[i + 1];
                     break;
                 }

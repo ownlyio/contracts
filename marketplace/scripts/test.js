@@ -1,16 +1,14 @@
 const { ethers, upgrades } = require('hardhat');
 
 async function main () {
-    const Marketplace = await ethers.getContractFactory("MarketplaceV3");
+    const Marketplace = await ethers.getContractFactory("MarketplaceV2");
     const marketplace = await Marketplace.attach(
-        "0x7bc06c482DEAd17c0e297aFbC32f6e63d3846650"
+        "0xcE2609F273a4b232CaC4d796daDc33851D3736c4"
     );
 
-    await marketplace.setSample(8);
-    console.log(parseInt(await marketplace.getSample()));
-
-    await marketplace.setTest(3);
-    console.log(parseInt(await marketplace.getTest()));
+    await marketplace.createMarketItem("0xB9f74a918d3bF21be452444e65039e6365DF9B98", 1, 10000000000000000, {
+        value: ethers.utils.parseEther("0")
+    });
 }
 
 main()
