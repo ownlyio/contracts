@@ -13,7 +13,8 @@ async function main () {
     const bnft = await BNFT.deploy();
 
     await hre.run("verify:verify", {
-        address: bnft.address
+        address: bnft.address,
+        contract: "contracts/bep721/BNFT.sol:BNFT"
     });
 }
 

@@ -2,3 +2,5 @@
 /marketplace/hardhat.config.js
 /bnft/node_modules/
 /bnft/hardhat.config.js
+/marketplacev1/node_modules
+/marketplacev1/hardhat.config.js
