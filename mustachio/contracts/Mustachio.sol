@@ -12,15 +12,22 @@ contract Mustachio is ERC721, ERC721URIStorage, ReentrancyGuard, Ownable {
     Counters.Counter private tokenIds;
     
     uint mintPrice = 0.01 ether;
+    string baseUri = "ownly.io/nft/mustachio/api/";
+    // address payable admin = payable(0x672b733C5350034Ccbd265AA7636C3eBDDA2223B);
+    address payable admin = payable(0x88A14AF453b14070B9B943eea32bf3F534dFa01a);
     
     constructor() ERC721("Mustachio", "MUSTACHIO") {}
-    
-    function _baseURI() internal pure override returns (string memory) {
-        return "ownly.io/nft/mustachio/api/";
-    }
-    
+
     function _burn(uint256 tokenId) internal override(ERC721, ERC721URIStorage) {
         super._burn(tokenId);
+    }
+
+    function _baseURI() internal view override returns (string memory) {
+        return baseUri;
+    }
+
+    function setBaseUri(string memory _baseUri) public onlyOwner {
+        baseUri = _baseUri;
     }
     
     function tokenURI(uint256 tokenId) public view override(ERC721, ERC721URIStorage) returns (string memory) {
@@ -39,6 +46,9 @@ contract Mustachio is ERC721, ERC721URIStorage, ReentrancyGuard, Ownable {
         require(msg.value == mintPrice, "Please submit the asking price in order to complete the purchase");
         tokenIds.increment();
         uint tokenId = tokenIds.current();
+
+        admin.transfer(msg.value);
+
         _mint(msg.sender, tokenId);
     }
 }

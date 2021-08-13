@@ -20,12 +20,13 @@ async function main () {
     const implAddress = ethers.utils.hexStripZeros(implHex);
     console.log('Implementation Address: ', implAddress);
 
-    await hre.run("verify:verify", {
-        address: implAddress
-    });
-
     console.log('Marketplace deployed to: ', marketplace.address);
     console.log('Version: ', await marketplace.version());
+
+    await hre.run("verify:verify", {
+        address: implAddress,
+        contract: "contracts/Marketplace.sol:Marketplace",
+    });
 }
 
 main()
