@@ -21,12 +21,12 @@ contract Mustachio is ERC721, ERC721URIStorage, ReentrancyGuard, Ownable {
     function _burn(uint256 tokenId) internal override(ERC721, ERC721URIStorage) {
         super._burn(tokenId);
     }
-    
+
     function _baseURI() internal view override returns (string memory) {
         return baseUri;
     }
 
-    function setBaseUri(string memory _baseUri) internal onlyOwner {
+    function setBaseUri(string memory _baseUri) public onlyOwner {
         baseUri = _baseUri;
     }
     
