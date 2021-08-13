@@ -38,7 +38,7 @@ contract Mustachio is ERC721, ERC721URIStorage, ReentrancyGuard, Ownable {
         return mintPrice;
     }
     
-    function setMintPrice(uint _mintPrice) public {
+    function setMintPrice(uint _mintPrice) public onlyOwner {
         mintPrice = _mintPrice;
     }
     
