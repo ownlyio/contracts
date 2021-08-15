@@ -7,25 +7,26 @@ import "@openzeppelin/contracts-upgradeable/utils/StringsUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/CountersUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/token/ERC721/ERC721Upgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/token/ERC20/IERC20Upgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/token/ERC721/IERC721Upgradeable.sol";
 
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 
-abstract contract NftInterface {
-    function getApproved(uint256 tokenId) public view virtual returns (
-        address approved
-    );
-    function ownerOf(uint256 tokenId) public view virtual returns (
-        address owner
-    );
-}
+//abstract contract NftInterface {
+//    function getApproved(uint256 tokenId) public view virtual returns (
+//        address approved
+//    );
+//    function ownerOf(uint256 tokenId) public view virtual returns (
+//        address owner
+//    );
+//}
 
-abstract contract OwnlyInterface {
-    function approve(address spender, uint256 amount) public virtual returns (bool);
-    function allowance(address owner, address spender) public view virtual returns (uint256);
-}
+//abstract contract OwnlyInterface {
+//    function approve(address spender, uint256 amount) public virtual returns (bool);
+//    function allowance(address owner, address spender) public view virtual returns (uint256);
+//}
 
 contract Marketplace is Initializable, OwnableUpgradeable, UUPSUpgradeable, ReentrancyGuardUpgradeable {
     using CountersUpgradeable for CountersUpgradeable.Counter;
@@ -90,7 +91,7 @@ contract Marketplace is Initializable, OwnableUpgradeable, UUPSUpgradeable, Reen
     }
 
     function createMarketItem(address nftContractAddress, uint256 tokenId, uint256 price, string memory currency) public virtual payable nonReentrant {
-        NftInterface nftContract = NftInterface(nftContractAddress);
+        IERC721Upgradeable nftContract = IERC721Upgradeable(nftContractAddress);
         address nftOwner = nftContract.ownerOf(tokenId);
         address nftApproved = nftContract.getApproved(tokenId);
 
@@ -138,14 +139,16 @@ contract Marketplace is Initializable, OwnableUpgradeable, UUPSUpgradeable, Reen
             idToMarketItem[itemId].seller.transfer(msg.value);
         }
 
-//        if(compareStrings(idToMarketItem[itemId].currency, "OWN")) {
-//            OwnlyInterface ownlyContract = OwnlyInterface(0xC3Df366fAf79c6Caff3C70948363f00b9Ac55FEE);
-//            uint ownlyAllowance = ownlyContract.allowance(msg.sender, address(this));
-//
-//            require(idToMarketItem[itemId].price == ownlyAllowance, "Please submit the asking price in order to complete the purchase");
-//
-//            IERC20Upgradeable(0xC3Df366fAf79c6Caff3C70948363f00b9Ac55FEE).transferFrom(msg.sender, idToMarketItem[itemId].seller, idToMarketItem[itemId].price);
-//        }
+        if(compareStrings(idToMarketItem[itemId].currency, "OWN")) {
+            address ownContractAddress = 0xC3Df366fAf79c6Caff3C70948363f00b9Ac55FEE;
+
+            IERC20Upgradeable ownContract = IERC20Upgradeable(ownContractAddress);
+            uint ownAllowance = ownContract.allowance(msg.sender, address(this));
+
+            require(idToMarketItem[itemId].price == ownAllowance, "Please submit the asking price in order to complete the purchase");
+
+            IERC20Upgradeable(ownContractAddress).transferFrom(msg.sender, idToMarketItem[itemId].seller, idToMarketItem[itemId].price);
+        }
 
         IERC721Upgradeable(idToMarketItem[itemId].nftContract).transferFrom(idToMarketItem[itemId].seller, msg.sender, tokenId);
         idToMarketItem[itemId].owner = payable(msg.sender);
@@ -165,7 +168,7 @@ contract Marketplace is Initializable, OwnableUpgradeable, UUPSUpgradeable, Reen
     function cancelMarketItem(uint256 itemId) public virtual nonReentrant {
         require(idToMarketItem[itemId].cancelled == false, "Market item is already cancelled");
 
-        NftInterface nftContract = NftInterface(idToMarketItem[itemId].nftContract);
+        IERC721Upgradeable nftContract = IERC721Upgradeable(idToMarketItem[itemId].nftContract);
         address nftOwner = nftContract.ownerOf(idToMarketItem[itemId].tokenId);
         address nftApproved = nftContract.getApproved(idToMarketItem[itemId].tokenId);
 
@@ -204,7 +207,7 @@ contract Marketplace is Initializable, OwnableUpgradeable, UUPSUpgradeable, Reen
 
         for (uint i = 0; i < itemCount; i++) {
             if (idToMarketItem[i + 1].nftContract == nftContractAddress && idToMarketItem[i + 1].tokenId == tokenId && idToMarketItem[i + 1].owner == address(0) && idToMarketItem[i + 1].cancelled == false) {
-                NftInterface nftContract = NftInterface(idToMarketItem[i + 1].nftContract);
+                IERC721Upgradeable nftContract = IERC721Upgradeable(idToMarketItem[i + 1].nftContract);
                 address nftOwner = nftContract.ownerOf(idToMarketItem[i + 1].tokenId);
                 address nftApproved = nftContract.getApproved(idToMarketItem[i + 1].tokenId);
 
@@ -225,7 +228,7 @@ contract Marketplace is Initializable, OwnableUpgradeable, UUPSUpgradeable, Reen
 
         MarketItem[] memory items = new MarketItem[](unsoldItemCount);
         for (uint i = 0; i < itemCount; i++) {
-            NftInterface nftContract = NftInterface(idToMarketItem[i + 1].nftContract);
+            IERC721Upgradeable nftContract = IERC721Upgradeable(idToMarketItem[i + 1].nftContract);
             address nftOwner = nftContract.ownerOf(idToMarketItem[i + 1].tokenId);
             address nftApproved = nftContract.getApproved(idToMarketItem[i + 1].tokenId);
 
