@@ -7,3 +7,4 @@
 /mustachio/node_modules/
 /mustachio/hardhat.config.js
 /mustachio/artifacts
+/mustachio/cache
