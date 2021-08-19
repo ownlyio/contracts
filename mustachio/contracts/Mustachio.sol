@@ -11,7 +11,7 @@ contract Mustachio is ERC721, ERC721URIStorage, ReentrancyGuard, Ownable {
     using Counters for Counters.Counter;
     Counters.Counter private tokenIds;
     
-    uint mintPrice = 0.01 ether;
+    uint mintPrice = 0.3 ether;
     string baseUri = "ownly.io/nft/mustachio/api/";
     // address payable admin = payable(0x672b733C5350034Ccbd265AA7636C3eBDDA2223B);
     address payable admin = payable(0x88A14AF453b14070B9B943eea32bf3F534dFa01a);
