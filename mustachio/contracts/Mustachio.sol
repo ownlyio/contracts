@@ -13,11 +13,21 @@ contract Mustachio is ERC721Enumerable, ReentrancyGuard, Ownable {
     
 //    uint mintPrice = 0.3 ether;
     uint mintPrice = 0.01 ether;
+    string public PROVENANCE_HASH = "";
     string baseUri = "https://ownly.tk/api/mustachio/";
     // address payable admin = payable(0x672b733C5350034Ccbd265AA7636C3eBDDA2223B);
     address payable admin = payable(0x768532c218f4f4e6E4960ceeA7F5a7A947a1dd61);
-    
-    constructor() ERC721("Mustachio", "MUSTACHIO") {}
+    bool public saleIsActive = false;
+
+    constructor() ERC721("Mustachio", "MUSTACHIO") {
+        // Set some Mustachios aside
+        for (uint i = 0; i < 5; i++) {
+            tokenIds.increment();
+            uint tokenId = tokenIds.current();
+
+            _mint(admin, tokenId);
+        }
+    }
 
     function _baseURI() internal view override returns (string memory) {
         return baseUri;
@@ -26,7 +36,15 @@ contract Mustachio is ERC721Enumerable, ReentrancyGuard, Ownable {
     function setBaseUri(string memory _baseUri) public onlyOwner {
         baseUri = _baseUri;
     }
-    
+
+    function setProvenanceHash(string memory _provenanceHash) external onlyOwner {
+        PROVENANCE_HASH = _provenanceHash;
+    }
+
+    function flipSaleState() public onlyOwner {
+        saleIsActive = !saleIsActive;
+    }
+
     function getMintPrice() public view returns (uint) {
         return mintPrice;
     }
@@ -40,6 +58,7 @@ contract Mustachio is ERC721Enumerable, ReentrancyGuard, Ownable {
     }
 
     function mintMustachio() public virtual payable nonReentrant {
+        require(saleIsActive, "Sale must be active to mint your Mustachio.");
         require(msg.value == mintPrice, "Please submit the asking price in order to complete the purchase.");
         tokenIds.increment();
         uint tokenId = tokenIds.current();

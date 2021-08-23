@@ -6,6 +6,7 @@ async function main() {
   const MustachioContract = await hre.ethers.getContractFactory("Mustachio");
   const mustachio = await MustachioContract.deploy();
   console.log("Mustachio Contract deployed to:", mustachio.address);
+  console.log("Total Supply:", await mustachio.totalSupply());
 
   // console.log(await mustachio.functions);
   //
