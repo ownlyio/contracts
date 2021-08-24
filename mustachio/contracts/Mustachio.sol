@@ -11,16 +11,16 @@ contract Mustachio is ERC721Enumerable, ReentrancyGuard, Ownable {
     using Counters for Counters.Counter;
     Counters.Counter private tokenIds;
     
-//    uint mintPrice = 0.3 ether;
-    uint mintPrice = 0.01 ether;
+    uint mintPrice = 0.3 ether;
+    uint public max_mustachios = 999;
     string public PROVENANCE_HASH = "";
     string baseUri = "https://ownly.tk/api/mustachio/";
-    // address payable admin = payable(0x672b733C5350034Ccbd265AA7636C3eBDDA2223B);
-    address payable admin = payable(0x768532c218f4f4e6E4960ceeA7F5a7A947a1dd61);
+    address payable admin = payable(0x672b733C5350034Ccbd265AA7636C3eBDDA2223B);
     bool public saleIsActive = false;
 
-    constructor() ERC721("Mustachio", "MUSTACHIO") {
-        // Set some Mustachios aside
+    constructor() ERC721("Mustachio", "MUSTACHIO") {}
+
+    function reserveMustachios() public onlyOwner {
         for (uint i = 0; i < 5; i++) {
             tokenIds.increment();
             uint tokenId = tokenIds.current();
@@ -59,6 +59,7 @@ contract Mustachio is ERC721Enumerable, ReentrancyGuard, Ownable {
 
     function mintMustachio() public virtual payable nonReentrant {
         require(saleIsActive, "Sale must be active to mint your Mustachio.");
+        require(tokenIds.current() + 1 <= max_mustachios, "Purchase would exceed max supply of Mustachios.");
         require(msg.value == mintPrice, "Please submit the asking price in order to complete the purchase.");
         tokenIds.increment();
         uint tokenId = tokenIds.current();
