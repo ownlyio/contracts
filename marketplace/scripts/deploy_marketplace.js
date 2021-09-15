@@ -23,10 +23,10 @@ async function main () {
     console.log('Marketplace deployed to: ', marketplace.address);
     console.log('Version: ', await marketplace.version());
 
-    await hre.run("verify:verify", {
-        address: implAddress,
-        contract: "contracts/Marketplace.sol:Marketplace",
-    });
+    // await hre.run("verify:verify", {
+    //     address: implAddress,
+    //     contract: "contracts/Marketplace.sol:Marketplace",
+    // });
 }
 
 main()

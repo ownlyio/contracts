@@ -8,3 +8,7 @@
 /mustachio/hardhat.config.js
 /mustachio/artifacts
 /mustachio/cache
+/rewards/node_modules/
+/rewards/hardhat.config.js
+/rewards/artifacts
+/rewards/cache
