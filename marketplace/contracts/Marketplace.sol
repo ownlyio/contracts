@@ -23,8 +23,11 @@ abstract contract NftInterface {
 }
 
 abstract contract OwnlyInterface {
-    function approve(address spender, uint256 amount) public virtual returns (bool);
     function allowance(address owner, address spender) public view virtual returns (uint256);
+}
+
+abstract contract SparkSwapRouterInterface {
+    function getAmountsIn(uint amountOut, address[] memory path) public view virtual override returns (uint[] memory);
 }
 
 contract Marketplace is Initializable, OwnableUpgradeable, UUPSUpgradeable, ReentrancyGuardUpgradeable {
@@ -33,6 +36,8 @@ contract Marketplace is Initializable, OwnableUpgradeable, UUPSUpgradeable, Reen
     CountersUpgradeable.Counter _itemsSold;
 
     address payable marketplaceOwner;
+    address OWNLY_ADDRESS = 0xC3Df366fAf79c6Caff3C70948363f00b9Ac55FEE;
+    address SPARKSWAP_ADDRESS = 0xeB98E6e5D34c94F56708133579abB8a6A2aC2F26;
     uint256 listingPrice;
 
     struct MarketItem {
@@ -129,23 +134,35 @@ contract Marketplace is Initializable, OwnableUpgradeable, UUPSUpgradeable, Reen
         );
     }
 
-    function createMarketSale(uint256 itemId) public virtual payable nonReentrant returns (uint) {
+    function createMarketSale(uint256 itemId, string currency) public virtual payable nonReentrant returns (uint) {
         uint price = idToMarketItem[itemId].price;
         uint tokenId = idToMarketItem[itemId].tokenId;
 
-        if(compareStrings(idToMarketItem[itemId].currency, "BNB")) {
+        if(compareStrings(currency, "BNB") && compareStrings(idToMarketItem[itemId].currency, "BNB")) {
             require(msg.value == price, "Please submit the asking price in order to complete the purchase");
             idToMarketItem[itemId].seller.transfer(msg.value);
         }
 
-//        if(compareStrings(idToMarketItem[itemId].currency, "OWN")) {
-//            OwnlyInterface ownlyContract = OwnlyInterface(0xC3Df366fAf79c6Caff3C70948363f00b9Ac55FEE);
-//            uint ownlyAllowance = ownlyContract.allowance(msg.sender, address(this));
-//
-//            require(idToMarketItem[itemId].price == ownlyAllowance, "Please submit the asking price in order to complete the purchase");
-//
-//            IERC20Upgradeable(0xC3Df366fAf79c6Caff3C70948363f00b9Ac55FEE).transferFrom(msg.sender, idToMarketItem[itemId].seller, idToMarketItem[itemId].price);
-//        }
+        if(compareStrings(currency, "OWN") && compareStrings(idToMarketItem[itemId].currency, "OWN")) {
+            OwnlyInterface ownlyContract = OwnlyInterface(OWNLY_ADDRESS);
+            uint ownlyAllowance = ownlyContract.allowance(msg.sender, address(this));
+
+            require(idToMarketItem[itemId].price == ownlyAllowance, "Please submit the asking price in order to complete the purchase");
+
+            IERC20Upgradeable(OWNLY_ADDRESS).transferFrom(msg.sender, idToMarketItem[itemId].seller, idToMarketItem[itemId].price);
+        }
+
+        if(compareStrings(currency, "OWN") && compareStrings(idToMarketItem[itemId].currency, "BNB")) {
+            SparkSwapRouterInterface sparkSwapRouterContract = SparkSwapRouterInterface(SPARKSWAP_ADDRESS);
+            sparkSwapRouterContract.getAmountsIn(idToMarketItem[itemId].price);
+
+            OwnlyInterface ownlyContract = OwnlyInterface(OWNLY_ADDRESS);
+            uint ownlyAllowance = ownlyContract.allowance(msg.sender, address(this));
+
+            require(idToMarketItem[itemId].price >= ownlyAllowance, "Please submit the asking price in order to complete the purchase");
+
+            IERC20Upgradeable(OWNLY_ADDRESS).transferFrom(msg.sender, idToMarketItem[itemId].seller, idToMarketItem[itemId].price);
+        }
 
         IERC721Upgradeable(idToMarketItem[itemId].nftContract).transferFrom(idToMarketItem[itemId].seller, msg.sender, tokenId);
         idToMarketItem[itemId].owner = payable(msg.sender);
