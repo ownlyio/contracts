@@ -23,6 +23,12 @@ async function main () {
     console.log('Marketplace deployed to: ', marketplace.address);
     console.log('Version: ', await marketplace.version());
 
+    // console.log(await marketplace.addNftFirstOwner("0xB9f74a918d3bF21be452444e65039e6365DF9B98", "0x768532c218f4f4e6E4960ceeA7F5a7A947a1dd61"));
+    // console.log(await marketplace.getNftFirstOwner("0xB9f74a918d3bF21be452444e65039e6365DF9B98"));
+    //
+    // await marketplace.setListingPrice(100000000000000);
+    // console.log(await marketplace.getListingPrice());
+
     // await hre.run("verify:verify", {
     //     address: implAddress,
     //     contract: "contracts/Marketplace.sol:Marketplace",

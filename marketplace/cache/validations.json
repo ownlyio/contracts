@@ -683,11 +683,11 @@
         }
       },
       "Marketplace": {
-        "src": "contracts\\Marketplace.sol:30",
+        "src": "contracts\\Marketplace.sol:34",
         "version": {
-          "withMetadata": "1753c223a6815ec6e21fd1791d96ef4c7683edf1b5c3c0e513359e46084d59cf",
-          "withoutMetadata": "206ee6f97a327f08b1e3feade0c71a1f5b80b8a080995d5227ac0de7f04eb266",
-          "linkedWithoutMetadata": "206ee6f97a327f08b1e3feade0c71a1f5b80b8a080995d5227ac0de7f04eb266"
+          "withMetadata": "fa62325fff49f4080426155c19c8c64c74687193e1b0483f3af20a1b32692e84",
+          "withoutMetadata": "9a18fe46a157217425bf824c7d3ca03ca06e6f0b6369a9556437efc798a96e58",
+          "linkedWithoutMetadata": "9a18fe46a157217425bf824c7d3ca03ca06e6f0b6369a9556437efc798a96e58"
         },
         "inherit": [
           "ReentrancyGuardUpgradeable",
@@ -702,11 +702,13 @@
         ],
         "methods": [
           "initialize()",
+          "addNftFirstOwner(address,address)",
+          "getNftFirstOwner(address)",
           "getListingPrice()",
           "setListingPrice(uint256)",
           "getMarketItem(uint256)",
           "createMarketItem(address,uint256,uint256,string)",
-          "createMarketSale(uint256)",
+          "createMarketSale(uint256,string)",
           "cancelMarketItem(uint256)",
           "fetchMarketItem(address,uint256)",
           "fetchMarketItems()",
@@ -722,31 +724,37 @@
               "contract": "Marketplace",
               "label": "_itemIds",
               "type": "t_struct(Counter)2833_storage",
-              "src": "contracts\\Marketplace.sol:32"
+              "src": "contracts\\Marketplace.sol:36"
             },
             {
               "contract": "Marketplace",
               "label": "_itemsSold",
               "type": "t_struct(Counter)2833_storage",
-              "src": "contracts\\Marketplace.sol:33"
+              "src": "contracts\\Marketplace.sol:37"
             },
             {
               "contract": "Marketplace",
               "label": "marketplaceOwner",
               "type": "t_address_payable",
-              "src": "contracts\\Marketplace.sol:35"
+              "src": "contracts\\Marketplace.sol:39"
             },
             {
               "contract": "Marketplace",
               "label": "listingPrice",
               "type": "t_uint256",
-              "src": "contracts\\Marketplace.sol:36"
+              "src": "contracts\\Marketplace.sol:40"
+            },
+            {
+              "contract": "Marketplace",
+              "label": "nftFirstOwner",
+              "type": "t_mapping(t_address,t_address)",
+              "src": "contracts\\Marketplace.sol:54"
             },
             {
               "contract": "Marketplace",
               "label": "idToMarketItem",
-              "type": "t_mapping(t_uint256,t_struct(MarketItem)3308_storage)",
-              "src": "contracts\\Marketplace.sol:50"
+              "type": "t_mapping(t_uint256,t_struct(MarketItem)3320_storage)",
+              "src": "contracts\\Marketplace.sol:55"
             }
           ],
           "types": {
@@ -765,10 +773,16 @@
             "t_address_payable": {
               "label": "address payable"
             },
-            "t_mapping(t_uint256,t_struct(MarketItem)3308_storage)": {
+            "t_mapping(t_address,t_address)": {
+              "label": "mapping(address => address)"
+            },
+            "t_address": {
+              "label": "address"
+            },
+            "t_mapping(t_uint256,t_struct(MarketItem)3320_storage)": {
               "label": "mapping(uint256 => struct Marketplace.MarketItem)"
             },
-            "t_struct(MarketItem)3308_storage": {
+            "t_struct(MarketItem)3320_storage": {
               "label": "struct Marketplace.MarketItem",
               "members": [
                 {
@@ -809,9 +823,6 @@
                 }
               ]
             },
-            "t_address": {
-              "label": "address"
-            },
             "t_string_storage": {
               "label": "string"
             },
@@ -828,6 +839,7 @@
         "libraries": [],
         "methods": [
           "getApproved(uint256)",
+          "isApprovedForAll(address,address)",
           "ownerOf(uint256)"
         ],
         "linkReferences": [],
@@ -839,12 +851,26 @@
         }
       },
       "OwnlyInterface": {
-        "src": "contracts\\Marketplace.sol:25",
+        "src": "contracts\\Marketplace.sol:26",
         "inherit": [],
         "libraries": [],
         "methods": [
-          "approve(address,uint256)",
           "allowance(address,address)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1"
+        }
+      },
+      "SparkSwapRouterInterface": {
+        "src": "contracts\\Marketplace.sol:30",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "getAmountsIn(uint256,address[])"
         ],
         "linkReferences": [],
         "errors": [],
@@ -1537,11 +1563,11 @@
         }
       },
       "Marketplace": {
-        "src": "contracts\\Marketplace.sol:30",
+        "src": "contracts\\Marketplace.sol:34",
         "version": {
-          "withMetadata": "1753c223a6815ec6e21fd1791d96ef4c7683edf1b5c3c0e513359e46084d59cf",
-          "withoutMetadata": "206ee6f97a327f08b1e3feade0c71a1f5b80b8a080995d5227ac0de7f04eb266",
-          "linkedWithoutMetadata": "206ee6f97a327f08b1e3feade0c71a1f5b80b8a080995d5227ac0de7f04eb266"
+          "withMetadata": "fa62325fff49f4080426155c19c8c64c74687193e1b0483f3af20a1b32692e84",
+          "withoutMetadata": "9a18fe46a157217425bf824c7d3ca03ca06e6f0b6369a9556437efc798a96e58",
+          "linkedWithoutMetadata": "9a18fe46a157217425bf824c7d3ca03ca06e6f0b6369a9556437efc798a96e58"
         },
         "inherit": [
           "ReentrancyGuardUpgradeable",
@@ -1556,11 +1582,13 @@
         ],
         "methods": [
           "initialize()",
+          "addNftFirstOwner(address,address)",
+          "getNftFirstOwner(address)",
           "getListingPrice()",
           "setListingPrice(uint256)",
           "getMarketItem(uint256)",
           "createMarketItem(address,uint256,uint256,string)",
-          "createMarketSale(uint256)",
+          "createMarketSale(uint256,string)",
           "cancelMarketItem(uint256)",
           "fetchMarketItem(address,uint256)",
           "fetchMarketItems()",
@@ -1576,31 +1604,37 @@
               "contract": "Marketplace",
               "label": "_itemIds",
               "type": "t_struct(Counter)2833_storage",
-              "src": "contracts\\Marketplace.sol:32"
+              "src": "contracts\\Marketplace.sol:36"
             },
             {
               "contract": "Marketplace",
               "label": "_itemsSold",
               "type": "t_struct(Counter)2833_storage",
-              "src": "contracts\\Marketplace.sol:33"
+              "src": "contracts\\Marketplace.sol:37"
             },
             {
               "contract": "Marketplace",
               "label": "marketplaceOwner",
               "type": "t_address_payable",
-              "src": "contracts\\Marketplace.sol:35"
+              "src": "contracts\\Marketplace.sol:39"
             },
             {
               "contract": "Marketplace",
               "label": "listingPrice",
               "type": "t_uint256",
-              "src": "contracts\\Marketplace.sol:36"
+              "src": "contracts\\Marketplace.sol:40"
+            },
+            {
+              "contract": "Marketplace",
+              "label": "nftFirstOwner",
+              "type": "t_mapping(t_address,t_address)",
+              "src": "contracts\\Marketplace.sol:54"
             },
             {
               "contract": "Marketplace",
               "label": "idToMarketItem",
-              "type": "t_mapping(t_uint256,t_struct(MarketItem)3308_storage)",
-              "src": "contracts\\Marketplace.sol:50"
+              "type": "t_mapping(t_uint256,t_struct(MarketItem)3320_storage)",
+              "src": "contracts\\Marketplace.sol:55"
             }
           ],
           "types": {
@@ -1619,10 +1653,16 @@
             "t_address_payable": {
               "label": "address payable"
             },
-            "t_mapping(t_uint256,t_struct(MarketItem)3308_storage)": {
+            "t_mapping(t_address,t_address)": {
+              "label": "mapping(address => address)"
+            },
+            "t_address": {
+              "label": "address"
+            },
+            "t_mapping(t_uint256,t_struct(MarketItem)3320_storage)": {
               "label": "mapping(uint256 => struct Marketplace.MarketItem)"
             },
-            "t_struct(MarketItem)3308_storage": {
+            "t_struct(MarketItem)3320_storage": {
               "label": "struct Marketplace.MarketItem",
               "members": [
                 {
@@ -1663,9 +1703,6 @@
                 }
               ]
             },
-            "t_address": {
-              "label": "address"
-            },
             "t_string_storage": {
               "label": "string"
             },
@@ -1682,6 +1719,7 @@
         "libraries": [],
         "methods": [
           "getApproved(uint256)",
+          "isApprovedForAll(address,address)",
           "ownerOf(uint256)"
         ],
         "linkReferences": [],
@@ -1693,12 +1731,26 @@
         }
       },
       "OwnlyInterface": {
-        "src": "contracts\\Marketplace.sol:25",
+        "src": "contracts\\Marketplace.sol:26",
         "inherit": [],
         "libraries": [],
         "methods": [
-          "approve(address,uint256)",
           "allowance(address,address)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1"
+        }
+      },
+      "SparkSwapRouterInterface": {
+        "src": "contracts\\Marketplace.sol:30",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "getAmountsIn(uint256,address[])"
         ],
         "linkReferences": [],
         "errors": [],
@@ -1711,9 +1763,9 @@
       "MarketplaceV2": {
         "src": "contracts\\MarketplaceV2.sol:6",
         "version": {
-          "withMetadata": "56d98c0c0a041169b80fcaa3d0f55138c4c4bb0b53d6c9ca9f8627e78f7b0926",
-          "withoutMetadata": "74778866b5956296ca6449e41b196f66a9108a29fd2f259a2c36fa52fa52f276",
-          "linkedWithoutMetadata": "74778866b5956296ca6449e41b196f66a9108a29fd2f259a2c36fa52fa52f276"
+          "withMetadata": "3671579063b6ce3975ef63557dd90b3706fd732ec071a349ce643f3bc5072611",
+          "withoutMetadata": "c4106db47d6d5760fefbc20562ebb7e3a2ffc800e693491068a98a2227fdda50",
+          "linkedWithoutMetadata": "c4106db47d6d5760fefbc20562ebb7e3a2ffc800e693491068a98a2227fdda50"
         },
         "inherit": [
           "Marketplace",
@@ -1726,7 +1778,34 @@
         ],
         "libraries": [],
         "methods": [
-          "initializev2()",
+          "version()"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1"
+        }
+      },
+      "MarketplaceV3": {
+        "src": "contracts\\MarketplaceV3.sol:6",
+        "version": {
+          "withMetadata": "de764b57abd21dd35f6ad4e3f2a7f914153a93e54ee6e4c5bc0f9acb366f4146",
+          "withoutMetadata": "35663b40d13af3150add948805f5b489ae3140078c31d2b2a22ae5e89b46d497",
+          "linkedWithoutMetadata": "35663b40d13af3150add948805f5b489ae3140078c31d2b2a22ae5e89b46d497"
+        },
+        "inherit": [
+          "Marketplace",
+          "ReentrancyGuardUpgradeable",
+          "UUPSUpgradeable",
+          "ERC1967UpgradeUpgradeable",
+          "OwnableUpgradeable",
+          "ContextUpgradeable",
+          "Initializable"
+        ],
+        "libraries": [],
+        "methods": [
           "version()"
         ],
         "linkReferences": [],

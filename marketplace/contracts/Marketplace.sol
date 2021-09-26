@@ -17,6 +17,7 @@ abstract contract NftInterface {
     function getApproved(uint256 tokenId) public view virtual returns (
         address approved
     );
+    function isApprovedForAll(address owner, address operator) public view virtual returns (bool);
     function ownerOf(uint256 tokenId) public view virtual returns (
         address owner
     );
@@ -27,7 +28,7 @@ abstract contract OwnlyInterface {
 }
 
 abstract contract SparkSwapRouterInterface {
-    function getAmountsIn(uint amountOut, address[] memory path) public view virtual override returns (uint[] memory);
+    function getAmountsIn(uint amountOut, address[] memory path) public view virtual returns (uint[] memory);
 }
 
 contract Marketplace is Initializable, OwnableUpgradeable, UUPSUpgradeable, ReentrancyGuardUpgradeable {
@@ -36,8 +37,6 @@ contract Marketplace is Initializable, OwnableUpgradeable, UUPSUpgradeable, Reen
     CountersUpgradeable.Counter _itemsSold;
 
     address payable marketplaceOwner;
-    address OWNLY_ADDRESS = 0xC3Df366fAf79c6Caff3C70948363f00b9Ac55FEE;
-    address SPARKSWAP_ADDRESS = 0xeB98E6e5D34c94F56708133579abB8a6A2aC2F26;
     uint256 listingPrice;
 
     struct MarketItem {
@@ -52,6 +51,7 @@ contract Marketplace is Initializable, OwnableUpgradeable, UUPSUpgradeable, Reen
         bool cancelled;
     }
 
+    mapping(address => address) nftFirstOwner;
     mapping(uint256 => MarketItem) idToMarketItem;
 
     event MarketItemCreated (
@@ -76,11 +76,20 @@ contract Marketplace is Initializable, OwnableUpgradeable, UUPSUpgradeable, Reen
         __Ownable_init();
         __UUPSUpgradeable_init();
 
-        marketplaceOwner = payable(0x768532c218f4f4e6E4960ceeA7F5a7A947a1dd61);
+//        marketplaceOwner = payable(0x768532c218f4f4e6E4960ceeA7F5a7A947a1dd61);
+        marketplaceOwner = payable(0x672b733C5350034Ccbd265AA7636C3eBDDA2223B);
         listingPrice = 0;
     }
 
     function _authorizeUpgrade(address newImplementation) internal onlyOwner override {}
+
+    function addNftFirstOwner(address _contractAddress, address _owner) public onlyOwner virtual {
+        nftFirstOwner[_contractAddress] = _owner;
+    }
+
+    function getNftFirstOwner(address _contractAddress) public view virtual returns (address) {
+        return nftFirstOwner[_contractAddress];
+    }
 
     function getListingPrice() public view virtual returns (uint256) {
         return listingPrice;
@@ -97,11 +106,11 @@ contract Marketplace is Initializable, OwnableUpgradeable, UUPSUpgradeable, Reen
     function createMarketItem(address nftContractAddress, uint256 tokenId, uint256 price, string memory currency) public virtual payable nonReentrant {
         NftInterface nftContract = NftInterface(nftContractAddress);
         address nftOwner = nftContract.ownerOf(tokenId);
-        address nftApproved = nftContract.getApproved(tokenId);
+        bool isApprovedForAll = nftContract.isApprovedForAll(nftOwner, address(this));
 
         require(compareStrings(currency, "BNB") || compareStrings(currency, "OWN"), "Invalid price currency");
         require(nftOwner == msg.sender, "You must be the owner of the token");
-        require(nftApproved == address(this), "You must give permission for this marketplace to access your token");
+        require(isApprovedForAll, "You must give permission for this marketplace to access your token");
         require(price > 0, "Price must be at least 1 wei");
         require(msg.value == listingPrice, "Value must be equal to listing price");
 
@@ -134,37 +143,49 @@ contract Marketplace is Initializable, OwnableUpgradeable, UUPSUpgradeable, Reen
         );
     }
 
-    function createMarketSale(uint256 itemId, string currency) public virtual payable nonReentrant returns (uint) {
+    function createMarketSale(uint256 itemId, string memory currency) public virtual payable nonReentrant returns (uint) {
+        address payable seller = idToMarketItem[itemId].seller;
         uint price = idToMarketItem[itemId].price;
         uint tokenId = idToMarketItem[itemId].tokenId;
+//        address ownly_address = 0xC3Df366fAf79c6Caff3C70948363f00b9Ac55FEE;
+        address ownly_address = 0x7665CB7b0d01Df1c9f9B9cC66019F00aBD6959bA;
 
         if(compareStrings(currency, "BNB") && compareStrings(idToMarketItem[itemId].currency, "BNB")) {
             require(msg.value == price, "Please submit the asking price in order to complete the purchase");
-            idToMarketItem[itemId].seller.transfer(msg.value);
+            seller.transfer(msg.value);
         }
 
         if(compareStrings(currency, "OWN") && compareStrings(idToMarketItem[itemId].currency, "OWN")) {
-            OwnlyInterface ownlyContract = OwnlyInterface(OWNLY_ADDRESS);
+            OwnlyInterface ownlyContract = OwnlyInterface(ownly_address);
             uint ownlyAllowance = ownlyContract.allowance(msg.sender, address(this));
 
             require(idToMarketItem[itemId].price == ownlyAllowance, "Please submit the asking price in order to complete the purchase");
 
-            IERC20Upgradeable(OWNLY_ADDRESS).transferFrom(msg.sender, idToMarketItem[itemId].seller, idToMarketItem[itemId].price);
+            IERC20Upgradeable(ownly_address).transferFrom(msg.sender, seller, idToMarketItem[itemId].price);
         }
 
         if(compareStrings(currency, "OWN") && compareStrings(idToMarketItem[itemId].currency, "BNB")) {
-            SparkSwapRouterInterface sparkSwapRouterContract = SparkSwapRouterInterface(SPARKSWAP_ADDRESS);
-            sparkSwapRouterContract.getAmountsIn(idToMarketItem[itemId].price);
+            SparkSwapRouterInterface sparkSwapRouterContract = SparkSwapRouterInterface(0xeB98E6e5D34c94F56708133579abB8a6A2aC2F26);
 
-            OwnlyInterface ownlyContract = OwnlyInterface(OWNLY_ADDRESS);
+            address[] memory path = new address[](2);
+            path[0] = ownly_address;
+            path[1] = 0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c;
+
+            uint[] memory ownPrice = sparkSwapRouterContract.getAmountsIn(price, path);
+
+            OwnlyInterface ownlyContract = OwnlyInterface(ownly_address);
             uint ownlyAllowance = ownlyContract.allowance(msg.sender, address(this));
 
-            require(idToMarketItem[itemId].price >= ownlyAllowance, "Please submit the asking price in order to complete the purchase");
+            uint finalPrice = ownPrice[0];
+//            uint finalPrice = 1000000000000000000000;
+            finalPrice = (finalPrice * 8) / 10;
 
-            IERC20Upgradeable(OWNLY_ADDRESS).transferFrom(msg.sender, idToMarketItem[itemId].seller, idToMarketItem[itemId].price);
+            require(ownlyAllowance >= finalPrice, "Please submit the asking price in order to complete the purchase");
+
+            IERC20Upgradeable(ownly_address).transferFrom(msg.sender, seller, finalPrice);
         }
 
-        IERC721Upgradeable(idToMarketItem[itemId].nftContract).transferFrom(idToMarketItem[itemId].seller, msg.sender, tokenId);
+        IERC721Upgradeable(idToMarketItem[itemId].nftContract).transferFrom(seller, msg.sender, tokenId);
         idToMarketItem[itemId].owner = payable(msg.sender);
         _itemsSold.increment();
 
@@ -184,10 +205,10 @@ contract Marketplace is Initializable, OwnableUpgradeable, UUPSUpgradeable, Reen
 
         NftInterface nftContract = NftInterface(idToMarketItem[itemId].nftContract);
         address nftOwner = nftContract.ownerOf(idToMarketItem[itemId].tokenId);
-        address nftApproved = nftContract.getApproved(idToMarketItem[itemId].tokenId);
+        bool isApprovedForAll = nftContract.isApprovedForAll(nftOwner, address(this));
 
         require(nftOwner == idToMarketItem[itemId].seller && nftOwner == msg.sender, "You must be the owner of the token");
-        require(nftApproved == address(this), "You must give permission for this marketplace to access your token");
+        require(isApprovedForAll, "You must give permission for this marketplace to access your token");
 
         idToMarketItem[itemId].cancelled = true;
 
@@ -223,9 +244,9 @@ contract Marketplace is Initializable, OwnableUpgradeable, UUPSUpgradeable, Reen
             if (idToMarketItem[i + 1].nftContract == nftContractAddress && idToMarketItem[i + 1].tokenId == tokenId && idToMarketItem[i + 1].owner == address(0) && idToMarketItem[i + 1].cancelled == false) {
                 NftInterface nftContract = NftInterface(idToMarketItem[i + 1].nftContract);
                 address nftOwner = nftContract.ownerOf(idToMarketItem[i + 1].tokenId);
-                address nftApproved = nftContract.getApproved(idToMarketItem[i + 1].tokenId);
+                bool isApprovedForAll = nftContract.isApprovedForAll(nftOwner, address(this));
 
-                if (nftOwner == idToMarketItem[i + 1].seller && nftApproved == address(this)) {
+                if (nftOwner == idToMarketItem[i + 1].seller && isApprovedForAll) {
                     item = idToMarketItem[i + 1];
                     break;
                 }
@@ -244,9 +265,9 @@ contract Marketplace is Initializable, OwnableUpgradeable, UUPSUpgradeable, Reen
         for (uint i = 0; i < itemCount; i++) {
             NftInterface nftContract = NftInterface(idToMarketItem[i + 1].nftContract);
             address nftOwner = nftContract.ownerOf(idToMarketItem[i + 1].tokenId);
-            address nftApproved = nftContract.getApproved(idToMarketItem[i + 1].tokenId);
+            bool isApprovedForAll = nftContract.isApprovedForAll(nftOwner, address(this));
 
-            if (idToMarketItem[i + 1].owner == address(0) && nftOwner == idToMarketItem[i + 1].seller && nftApproved == address(this)) {
+            if (idToMarketItem[i + 1].owner == address(0) && nftOwner == idToMarketItem[i + 1].seller && isApprovedForAll) {
                 uint currentId = idToMarketItem[i + 1].itemId;
                 MarketItem storage currentItem = idToMarketItem[currentId];
                 items[currentIndex] = currentItem;
