@@ -62,6 +62,15 @@ contract MustachioBackgrounds is ERC1155, ReentrancyGuard, Ownable {
         mintPrice = _mintPrice;
     }
     
+    function mintBackgroundRewards(address _address, uint _tokenId, uint _quantity) public virtual onlyOwner {
+        require(_quantity > 0, "Please submit an amount greater than 0");
+        require(_quantity + mintedPerToken[_tokenId] <= edition, "Amount exceeded the total edition per token.");
+        
+        // admin.transfer(msg.value);
+        _mint(_address, _tokenId, _quantity, "0x0");
+        mintedPerToken[_tokenId] = mintedPerToken[_tokenId] + _quantity;
+    }
+    
     function mintBackground(uint _tokenId) public virtual payable nonReentrant {
         require(msg.value == mintPrice, "Please submit the asking price in order to complete the purchase.");
         require(mintedPerToken[_tokenId] < edition, "Maximum mint per token reached.");
@@ -69,6 +78,5 @@ contract MustachioBackgrounds is ERC1155, ReentrancyGuard, Ownable {
         // admin.transfer(msg.value);
         _mint(msg.sender, _tokenId, 1, "0x0");
         mintedPerToken[_tokenId]++;
-        
     }
 }
