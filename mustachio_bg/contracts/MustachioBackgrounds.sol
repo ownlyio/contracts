@@ -4,13 +4,9 @@ pragma solidity ^0.8.2;
 import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
-import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 
 contract MustachioBackgrounds is ERC1155, ReentrancyGuard, Ownable {
-    using Counters for Counters.Counter;
-    Counters.Counter tokenIds;
-    
     uint mintPrice = 0.01 ether;
     uint edition = 3;
 
@@ -21,12 +17,7 @@ contract MustachioBackgrounds is ERC1155, ReentrancyGuard, Ownable {
     string private _name;
     string private _symbol;
     
-    struct MintDetails {
-        uint minted;
-        bool isMinted;
-    }
-    
-    mapping(uint => MintDetails) private mintedPerToken;
+    mapping(uint => uint) private mintedPerToken;
     
     constructor() ERC1155(baseUri) {
         _name = "Mustachio Backgrounds";
@@ -50,22 +41,14 @@ contract MustachioBackgrounds is ERC1155, ReentrancyGuard, Ownable {
         return mintPrice;
     }
     
-    function getLastMintedTokenId() public view returns (uint) {
-        return tokenIds.current();
-    }
-    
     function getEdition() public view returns (uint) {
         return edition;
     }
     
     function getMintedTokenCount(uint _tokenId) public view returns (uint) {
-        return mintedPerToken[_tokenId].minted;
+        return mintedPerToken[_tokenId];
     }
     
-    function checkTokenIfMinted(uint _tokenId) public view returns (bool) {
-        return mintedPerToken[_tokenId].isMinted;
-    }
-
     // Write Contract
     function setURI(string memory _newUri) public onlyOwner {
         _setURI(_newUri);
@@ -79,25 +62,21 @@ contract MustachioBackgrounds is ERC1155, ReentrancyGuard, Ownable {
         mintPrice = _mintPrice;
     }
     
+    function mintBackgroundRewards(address _address, uint _tokenId, uint _quantity) public virtual onlyOwner {
+        require(_quantity > 0, "Please submit an amount greater than 0");
+        require(_quantity + mintedPerToken[_tokenId] <= edition, "Amount exceeded the total edition per token.");
+        
+        // admin.transfer(msg.value);
+        _mint(_address, _tokenId, _quantity, "0x0");
+        mintedPerToken[_tokenId] = mintedPerToken[_tokenId] + _quantity;
+    }
+    
     function mintBackground(uint _tokenId) public virtual payable nonReentrant {
         require(msg.value == mintPrice, "Please submit the asking price in order to complete the purchase.");
-        
-        if (mintedPerToken[_tokenId].isMinted) {
-            require(mintedPerToken[_tokenId].minted < edition, "Maximum mint per token reached.");
-            
-            tokenIds.increment();
-            // uint id = tokenIds.current();
-            // admin.transfer(msg.value);
-            // _mint(msg.sender, id, 1, "0x0");
-            mintedPerToken[_tokenId].minted++;
-        } else {
-            tokenIds.increment();
-            // uint id = tokenIds.current();
-            // admin.transfer(msg.value);
-            // _mint(msg.sender, id, 1, "0x0");
-            
-            mintedPerToken[_tokenId].minted++;
-            mintedPerToken[_tokenId].isMinted = true;
-        }
+        require(mintedPerToken[_tokenId] < edition, "Maximum mint per token reached.");
+
+        // admin.transfer(msg.value);
+        _mint(msg.sender, _tokenId, 1, "0x0");
+        mintedPerToken[_tokenId]++;
     }
 }
