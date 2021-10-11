@@ -16,3 +16,7 @@
 /rewards/hardhat.config.js
 /rewards/artifacts
 /rewards/cache
+/genesis_block/node_modules/
+/genesis_block/hardhat.config.js
+/genesis_block/artifacts
+/genesis_block/cache
