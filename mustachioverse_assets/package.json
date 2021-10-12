@@ -1,7 +1,7 @@
 {
-  "name": "Mustachio Backgrounds",
+  "name": "MustachioVerse_Assets",
   "version": "1.0.0",
-  "description": "Mustachio Backgrounds ERC-1155 Contract",
+  "description": "MustachioVerse Assets ERC-1155 Contract",
   "main": "index.js",
   "devDependencies": {
     "@nomiclabs/buidler": "^1.4.8",
