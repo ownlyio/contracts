@@ -20,3 +20,7 @@
 /genesis_block/hardhat.config.js
 /genesis_block/artifacts
 /genesis_block/cache
+/the_sages_rant_collectibles/node_modules/
+/the_sages_rant_collectibles/hardhat.config.js
+/the_sages_rant_collectibles/artifacts
+/the_sages_rant_collectibles/cache
