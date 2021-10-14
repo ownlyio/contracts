@@ -6,10 +6,10 @@ async function main() {
 
     const TheSagesRantCollectibles = await hre.ethers.getContractFactory("TheSagesRantCollectibles");
     const theSagesRantCollectibles = await TheSagesRantCollectibles.deploy();
-    console.log("Mustachio Addons deployed to:", theSagesRantCollectibles.address);
+    console.log("The Sages Rant Collectibles deployed to:", theSagesRantCollectibles.address);
 
-    await theSagesRantCollectibles.mintMultiple("0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266", 100);
-    console.log(await theSagesRantCollectibles.tokenURI(4));
+    // await theSagesRantCollectibles.mintMultiple("0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266", 9);
+    // console.log(await theSagesRantCollectibles.tokenURI(4));
 }
 
 main()
