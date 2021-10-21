@@ -24,3 +24,7 @@
 /the_sages_rant_collectibles/hardhat.config.js
 /the_sages_rant_collectibles/artifacts
 /the_sages_rant_collectibles/cache
+/bridge/node_modules/
+/bridge/hardhat.config.js
+/bridge/artifacts
+/bridge/cache
