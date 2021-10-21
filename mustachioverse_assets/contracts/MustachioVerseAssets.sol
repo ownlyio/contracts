@@ -43,20 +43,40 @@ contract MustachioVerseAssets is ERC1155, ReentrancyGuard, Ownable {
             string(abi.encodePacked(uri(_tokenId), Strings.toString(_tokenId)));
     }
 
-    function getMintPrice() public view returns (uint256) {
-        return mintPrice;
-    }
-
-    function getEdition() public view returns (uint256) {
-        return edition;
-    }
-
-    function getMintedTokenCount(uint256 _tokenId)
+    function getGroupEdition(uint256 _groupId, uint256 _tokenId)
         public
         view
         returns (uint256)
     {
-        return mintedPerToken[_tokenId];
+        require(
+            mintTokenDetails[_groupId].from >= _tokenId &&
+                mintTokenDetails[_groupId].to <= _tokenId,
+            "Token ID does not belong to the group"
+        );
+
+        return mintTokenDetails[_groupId].edition;
+    }
+
+    function getGroupPrice(uint256 _groupId, uint256 _tokenId)
+        public
+        view
+        returns (uint256)
+    {
+        require(
+            mintTokenDetails[_groupId].from >= _tokenId &&
+                mintTokenDetails[_groupId].to <= _tokenId,
+            "Token ID does not belong to the group"
+        );
+
+        return mintTokenDetails[_groupId].price;
+    }
+
+    function getCurrentTokenEdition(uint256 _groupId, uint256 _tokenId)
+        public
+        view
+        returns (uint256)
+    {
+        return mintedPerToken[_groupId][_tokenId];
     }
 
     // Write Contract
