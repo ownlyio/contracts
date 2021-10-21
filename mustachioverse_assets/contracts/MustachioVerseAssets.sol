@@ -106,9 +106,11 @@ contract MustachioVerseAssets is ERC1155, ReentrancyGuard, Ownable {
         uint256 _edition
     ) public onlyOwner {
         require(!mintTokenDetails[_group_id].price, "Duplicate group id");
-        mintTokenDetails[_group_id] = {
-            
-        }
+        require(_from < _to, "From must be less than to");
+        mintTokenDetails[_group_id].from = _from;
+        mintTokenDetails[_group_id].to = _to;
+        mintTokenDetails[_group_id].price = _price;
+        mintTokenDetails[_group_id].edition = _edition;
     }
 
     function mintBackgroundRewards(
