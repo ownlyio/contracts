@@ -22,7 +22,7 @@ contract MustachioVerseAssets is ERC1155, ReentrancyGuard, Ownable {
     }
 
     mapping(uint256 => mapping(uint256 => uint256)) private mintedPerToken;
-    mapping(uint256 => MintGroupDetails) private pricePerToken;
+    mapping(uint256 => MintGroupDetails) private mintTokenDetails;
 
     constructor() ERC1155(baseUri) {
         _name = "MustachioVerse Assets";
@@ -84,13 +84,27 @@ contract MustachioVerseAssets is ERC1155, ReentrancyGuard, Ownable {
         _setURI(_newUri);
     }
 
-    function setEdition(uint256 _edition) public onlyOwner {
-        edition = _edition;
+    function setGroupEdition(uint256 _group_id, uint256 _edition)
+        public
+        onlyOwner
+    {
+        return mintTokenDetails[_groupId].edition = _edition;
     }
 
-    function setMintPrice(uint256 _mintPrice) public onlyOwner {
-        mintPrice = _mintPrice;
+    function setGroupMintPrice(uint256 _group_id, uint256 _edition)
+        public
+        onlyOwner
+    {
+        return mintTokenDetails[_groupId].price = _price;
     }
+
+    function createNewGroup(
+        uint256 _group_id,
+        uint256 _from,
+        uint256 _to,
+        uint256 _price,
+        uint256 _edition
+    ) public onlyOwner {}
 
     function mintBackgroundRewards(
         address _address,
