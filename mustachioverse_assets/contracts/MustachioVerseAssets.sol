@@ -10,7 +10,7 @@ contract MustachioVerseAssets is ERC1155, ReentrancyGuard, Ownable {
     address payable admin = payable(0x88A14AF453b14070B9B943eea32bf3F534dFa01a);
     // address payable admin = payable(0x672b733C5350034Ccbd265AA7636C3eBDDA2223B);
 
-    string private baseUri = "https://ownly.tk/api/mustachioverse_assets/";
+    string private baseUri = "https://ownly.tk/api/mustachioverse_asset/";
     string private _name;
     string private _symbol;
 
