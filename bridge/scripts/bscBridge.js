@@ -8,11 +8,21 @@ async function main() {
     const foreignAMB = await ForeignAMB.deploy();
     console.log("Foreign AMB Contract deployed to:", foreignAMB.address);
 
-    const EternalStorageProxy = await hre.ethers.getContractFactory("EternalStorageProxy");
-    const eternalStorageProxy = await EternalStorageProxy.deploy();
+    let EternalStorageProxy = await hre.ethers.getContractFactory("EternalStorageProxy");
+    let eternalStorageProxy = await EternalStorageProxy.deploy();
     console.log("Eternal Storage Proxy Contract deployed to:", eternalStorageProxy.address);
 
     await eternalStorageProxy.upgradeTo(1, foreignAMB.address);
+
+    const HomeAMB = await hre.ethers.getContractFactory("ForeignAMB");
+    const homeAMB = await HomeAMB.deploy();
+    console.log("Home AMB Contract deployed to:", homeAMB.address);
+
+    EternalStorageProxy = await hre.ethers.getContractFactory("EternalStorageProxy");
+    eternalStorageProxy = await EternalStorageProxy.deploy();
+    console.log("Eternal Storage Proxy Contract deployed to:", eternalStorageProxy.address);
+
+    await eternalStorageProxy.upgradeTo(1, homeAMB.address);
 }
 
 main()
