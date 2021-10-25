@@ -43,6 +43,9 @@ contract MustachioVerseAssets is ERC1155, ReentrancyGuard, Ownable {
             string(abi.encodePacked(uri(_tokenId), Strings.toString(_tokenId)));
     }
 
+    // ------------------------------------------------------------------------
+    // Get the group's assigned edition
+    // ------------------------------------------------------------------------
     function getGroupEdition(uint256 _groupId, uint256 _tokenId)
         public
         view
@@ -56,6 +59,9 @@ contract MustachioVerseAssets is ERC1155, ReentrancyGuard, Ownable {
         return mintTokenDetails[_groupId].edition;
     }
 
+    // ------------------------------------------------------------------------
+    // Get the group's assigned price
+    // ------------------------------------------------------------------------
     function getGroupPrice(uint256 _groupId, uint256 _tokenId)
         public
         view
@@ -69,6 +75,9 @@ contract MustachioVerseAssets is ERC1155, ReentrancyGuard, Ownable {
         return mintTokenDetails[_groupId].price;
     }
 
+    // ------------------------------------------------------------------------
+    // Get the token's current edition count on a specific group
+    // ------------------------------------------------------------------------
     function getCurrentTokenEdition(uint256 _groupId, uint256 _tokenId)
         public
         view
@@ -78,6 +87,15 @@ contract MustachioVerseAssets is ERC1155, ReentrancyGuard, Ownable {
     }
 
     // Write Contract
+
+    // ------------------------------------------------------------------------
+    // Create a new group in the contract
+    // @param _groupId The ID of the group
+    // @param _fromId The Token ID number wherein the group will start
+    // @param _to The Token ID number wherein the group will end
+    // @param _price The price of each token in the group
+    // @param _price The edition of each token in the group
+    // ------------------------------------------------------------------------
     function createNewGroup(
         uint256 _groupId,
         uint256 _fromId,
@@ -99,6 +117,9 @@ contract MustachioVerseAssets is ERC1155, ReentrancyGuard, Ownable {
         _setURI(_newUri);
     }
 
+    // ------------------------------------------------------------------------
+    // Set or replace the current edition of a specific group
+    // ------------------------------------------------------------------------
     function setGroupTokenEdition(uint256 _groupId, uint256 _edition)
         public
         onlyOwner
@@ -106,6 +127,9 @@ contract MustachioVerseAssets is ERC1155, ReentrancyGuard, Ownable {
         mintTokenDetails[_groupId].edition = _edition;
     }
 
+    // ------------------------------------------------------------------------
+    // Set or replace the current price of a specific group
+    // ------------------------------------------------------------------------
     function setGroupMintPrice(uint256 _groupId, uint256 _price)
         public
         onlyOwner
@@ -115,6 +139,9 @@ contract MustachioVerseAssets is ERC1155, ReentrancyGuard, Ownable {
         mintTokenDetails[_groupId].price = _price;
     }
 
+    // ------------------------------------------------------------------------
+    // Set or replace the current range of Token IDs of a specific group
+    // ------------------------------------------------------------------------
     function setGroupTokenRange(
         uint256 _groupId,
         uint256 _fromId,
@@ -169,7 +196,11 @@ contract MustachioVerseAssets is ERC1155, ReentrancyGuard, Ownable {
         mintedPerToken[_groupId][_tokenId]++;
     }
 
-    // util
+    // Utilities
+
+    // ------------------------------------------------------------------------
+    // Get the current range of a specific group
+    // ------------------------------------------------------------------------
     function getGroupRange(uint256 _groupId)
         public
         view
@@ -183,6 +214,10 @@ contract MustachioVerseAssets is ERC1155, ReentrancyGuard, Ownable {
         return string(abi.encodePacked(fromStrId, " ", toStrId));
     }
 
+    // ------------------------------------------------------------------------
+    // Checks if the Token ID specified is within the
+    // range of the specified group
+    // ------------------------------------------------------------------------
     function checkTokenIdIfInRange(uint256 _groupId, uint256 _tokenId)
         public
         view
