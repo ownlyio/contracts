@@ -1,16 +1,17 @@
 const hre = require("hardhat");
 
 async function main() {
-  const [deployer] = await ethers.getSigners();
+    const [deployer] = await ethers.getSigners();
+    console.log("Deployer:", deployer.address);
 
-  const MustachioBGContract = await hre.ethers.getContractFactory("MustachioBackgrounds");
-  const mustachioBG = await MustachioBGContract.deploy();
-  console.log("Mustachio BG Contract deployed to:", mustachioBG.address);
+    const MustachioVerseAssets = await hre.ethers.getContractFactory("MustachioVerseAssets");
+    const assets = await MustachioVerseAssets.deploy();
+    console.log("Mustachioverse Assets Contract deployed to:", assets.address);
 }
 
 main()
-  .then(() => process.exit(0))
-  .catch((error) => {
-    console.error(error);
-    process.exit(1);
-  });
+    .then(() => process.exit(0))
+    .catch((error) => {
+        console.error(error);
+        process.exit(1);
+    });
