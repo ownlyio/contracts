@@ -3,9 +3,9 @@ const hre = require("hardhat");
 async function main() {
   const [deployer] = await ethers.getSigners();
 
-  const MustachioBGContract = await hre.ethers.getContractFactory("MustachioBackgrounds");
-  const mustachioBG = await MustachioBGContract.deploy();
-  console.log("Mustachio BG Contract deployed to:", mustachioBG.address);
+  const MustachioAseetsContract = await hre.ethers.getContractFactory("MustachioVerseAssets");
+  const mustachioAsset = await MustachioAseetsContract.deploy();
+  console.log("Mustachioverse Aseets Contract deployed to:", mustachioAsset.address);
 }
 
 main()
