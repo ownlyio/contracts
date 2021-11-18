@@ -7,6 +7,7 @@ async function main() {
     const MustachioVerseAssets = await hre.ethers.getContractFactory("MustachioVerseAssets");
     const assets = await MustachioVerseAssets.deploy();
     console.log("Mustachioverse Assets Contract deployed to:", assets.address);
+    console.log("Name:", await assets.name());
 }
 
 main()
