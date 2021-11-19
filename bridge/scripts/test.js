@@ -1,6 +1,7 @@
 const hre = require("hardhat");
 
 async function main() {
+    // Mint Wrapped Own
     const PermittableToken = await ethers.getContractFactory("PermittableToken");
     const permittableToken = await PermittableToken.attach(
         "0x479AF9081EA6144E97204Bad5CCC418F6D9D70a0"
