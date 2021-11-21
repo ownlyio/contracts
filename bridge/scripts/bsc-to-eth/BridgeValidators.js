@@ -20,7 +20,7 @@ async function main() {
         eternalStorageProxy.address
     );
 
-    await eternalStorageProxy.initialize("0x1", ["0xe5B4f53Eb4c651377e0f98AF67fF506a1c5fC1C9"], deployer.address);
+    await eternalStorageProxy.initialize(1, ["0xe5B4f53Eb4c651377e0f98AF67fF506a1c5fC1C9"], deployer.address);
     console.log("Initialized");
 }
 
