@@ -12,9 +12,9 @@ contract OwnlyHouseOfArt is ERC721Enumerable, ReentrancyGuard, Ownable {
     Counters.Counter private tokenIds;
 
     string public PROVENANCE_HASH = "";
-    string baseUri = "https://ownly.io/nft/ownly-house-of-art/api/";
+    string baseUri = "https://ownly.io/nft/oha/api/";
 
-    constructor() ERC721("OwnlyHouseOfArt", "OWNLYHOUSEOFART") {}
+    constructor() ERC721("OwnlyHouseOfArt", "OHA") {}
 
     function mintMultiple(address _address, uint _quantity) public onlyOwner {
         for(uint i = 0; i < _quantity; i++) {
