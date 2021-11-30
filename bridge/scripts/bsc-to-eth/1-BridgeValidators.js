@@ -15,6 +15,7 @@ async function main() {
     await eternalStorageProxy.upgradeTo(1, bridgeValidators.address);
     console.log("BridgeValidators Implementation added to Proxy");
 
+    // Initialize
     let BridgeValidatorsProxy = await BridgeValidators.attach(eternalStorageProxy.address);
     await BridgeValidatorsProxy.initialize(1, ["0xe5B4f53Eb4c651377e0f98AF67fF506a1c5fC1C9"], deployer.address);
     console.log("BridgeValidators Contract Initialized\n");
