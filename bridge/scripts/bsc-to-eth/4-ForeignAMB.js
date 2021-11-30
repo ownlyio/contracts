@@ -20,8 +20,11 @@ async function main() {
     await eternalStorageProxy.upgradeTo(1, foreignAMB.address);
     console.log("ForeignAMB Implementation added to Proxy");
 
+    // Initialize
+    let _validatorContract = ""; // 3.	BridgeValidators
+
     let ForeignAMBProxy = await ForeignAMB.attach(eternalStorageProxy.address);
-    await ForeignAMBProxy.initialize(_sourceChainId, _destinationChainId, deployer.address);
+    await ForeignAMBProxy.initialize(56, 1, _validatorContract, 2000000, 100000000000, 1, deployer.address);
     console.log("ForeignAMB Contract Initialized\n");
 }
 
