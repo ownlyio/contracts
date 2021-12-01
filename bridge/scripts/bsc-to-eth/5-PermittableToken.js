@@ -11,6 +11,14 @@ async function main() {
     let TokenProxy = await hre.ethers.getContractFactory("contracts\\TokenProxy.sol:TokenProxy");
     let tokenProxy = await TokenProxy.deploy(permittableToken.address, "Ownly", "wOWN", 18, 4);
     console.log("TokenProxy Contract deployed to:", tokenProxy.address);
+
+    // Set Bridge Contract
+    let _bridgeContract = ""; // 6. HOMEMULTIAMBERC20TOERC677
+
+    let PermittableTokenProxy = await PermittableToken.attach(tokenProxy.address);
+    await PermittableTokenProxy.setBridgeContract(_bridgeContract);
+    console.log("PermittableToken Contract Set Bridge Contract\n");
+
 }
 
 main()
