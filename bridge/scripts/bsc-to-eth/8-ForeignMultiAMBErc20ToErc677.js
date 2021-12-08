@@ -11,7 +11,7 @@ async function main() {
     let EternalStorageProxy = await hre.ethers.getContractFactory("EternalStorageProxy");
     let eternalStorageProxy = await EternalStorageProxy.deploy();
     console.log("Eternal Storage Proxy Contract deployed to:", eternalStorageProxy.address);
-
+    
     await eternalStorageProxy.upgradeTo(1, foreignMultiAMBErc20ToErc677.address);
 }
 
