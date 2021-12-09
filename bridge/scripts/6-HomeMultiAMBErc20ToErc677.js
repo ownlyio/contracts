@@ -9,7 +9,7 @@ async function main() {
     const [deployer] = await ethers.getSigners();
     console.log("Deployer:", deployer.address);
 
-    let HomeMultiAMBErc20ToErc677 = await hre.ethers.getContractFactory("HomeMultiAMBErc20ToErc677");
+    let HomeMultiAMBErc20ToErc677 = await hre.ethers.getContractFactory("contracts\\HomeMultiAMBErc20ToErc677.sol:HomeMultiAMBErc20ToErc677");
     let homeMultiAMBErc20ToErc677 = await HomeMultiAMBErc20ToErc677.deploy();
     console.log("HomeMultiAMBErc20ToErc677 Implementation deployed to:", homeMultiAMBErc20ToErc677.address);
 
