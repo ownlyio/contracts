@@ -10,20 +10,20 @@ async function main() {
     console.log("Deployer:", deployer.address);
 
     let HomeMultiAMBErc20ToErc677 = await hre.ethers.getContractFactory("contracts\\HomeMultiAMBErc20ToErc677.sol:HomeMultiAMBErc20ToErc677");
-    // let homeMultiAMBErc20ToErc677 = await HomeMultiAMBErc20ToErc677.deploy();
-    // console.log("HomeMultiAMBErc20ToErc677 Implementation deployed to:", homeMultiAMBErc20ToErc677.address);
-    //
-    // let EternalStorageProxy = await hre.ethers.getContractFactory("EternalStorageProxy");
-    // let eternalStorageProxy = await EternalStorageProxy.deploy();
-    // console.log("HomeMultiAMBErc20ToErc677 Proxy deployed to:", eternalStorageProxy.address);
-    //
-    // await eternalStorageProxy.upgradeTo(1, homeMultiAMBErc20ToErc677.address);
-    // console.log("HomeMultiAMBErc20ToErc677 Implementation added to Proxy");
+    let homeMultiAMBErc20ToErc677 = await HomeMultiAMBErc20ToErc677.deploy();
+    console.log("HomeMultiAMBErc20ToErc677 Implementation deployed to:", homeMultiAMBErc20ToErc677.address);
+
+    let EternalStorageProxy = await hre.ethers.getContractFactory("EternalStorageProxy");
+    let eternalStorageProxy = await EternalStorageProxy.deploy();
+    console.log("HomeMultiAMBErc20ToErc677 Proxy deployed to:", eternalStorageProxy.address);
+
+    await eternalStorageProxy.upgradeTo(1, homeMultiAMBErc20ToErc677.address);
+    console.log("HomeMultiAMBErc20ToErc677 Implementation added to Proxy");
 
     // Initialize
     let this_address = ""; // (6. HOMEMULTIAMBERC20TOERC677)
     let _bridgeContract = ""; // (2. HomeAMB)
-    let _mediatorContract = ""; // (8. FOREIGNMULTIAMBERC20TOERC677)
+    let _mediatorContract = ""; // (7. FOREIGNMULTIAMBERC20TOERC677)
     let _tokenImage = ""; // (5. PermittableToken Implementation)
     let _token = ""; // (5. PermittableToken)
 
