@@ -1,0 +1,541 @@
+SparkPoint Contract Deployer:
+	https://etherscan.io/address/0x8759b55c95277F3A49F906A66fE4b3A4F26A37F2
+	https://etherscan.io/address/0xe027e43b4a01eaccf62738069bde26d8678d23ee		
+	
+Contract Interactor
+	https://bscscan.com/address/0x8023249447862432b8c5ac4778653c2c0b69d8ea
+	
+Reward Address
+	https://bscscan.com/address/0x7Aa6B35c73D0E1b603B315106AD5dDAF94F3801B
+	
+Spark Defi: Deployer
+	https://bscscan.com/address/0x59f0F7cAaaF4d08c3C1d919b6Ee0E8DE11D40f67
+	
+SRK Bridge - ETH to BSC Sample Transactions
+	https://etherscan.io/tx/0x19e95a83e66dce81d29e3a87f593cb55aa91f9850c35da52afb55068555825e1
+		From: 			https://etherscan.io/address/0xa0de41e9770e1dc934d38fde4e6148967c890ecc
+		Contract: 		https://etherscan.io/address/0x0488401c3f535193fa8df029d9ffe615a06e74e6
+		Contract Name:	SparkPoint
+
+		Function: approve(address spender, uint256 tokens)
+		MethodID: 0x095ea7b3
+		[0]:  0xF7D5060C181F9eD59F619b2c945a2f7C3Ee9cCe2
+		[1]:  3000000000000000000000000
+	
+	https://etherscan.io/tx/0xaadc67d0eeb9df090fa97138487c40bc9ee8ae631f5497cfb29a0020bd150f69
+		From: 			https://etherscan.io/address/0xa0de41e9770e1dc934d38fde4e6148967c890ecc
+		Contract:		https://etherscan.io/address/0xf7d5060c181f9ed59f619b2c945a2f7c3ee9cce2
+		Implemen:		https://etherscan.io/address/0x9ccc923fa4a71b4a4630db7edebd0372f0e62872
+		Contract Name:	ForeignMultiAMBErc20ToErc677
+		
+		Function: relayTokens(address _receiver, uint256 _amount) ***
+		MethodID: 0x01e4f53a
+		[0]:  0x0488401c3F535193Fa8Df029d9fFe615A06E74E6 (SparkPoint Token Contract)
+		[1]:  3000000000000000000000000 (Tokens to be bridged in wei)
+		
+		Contract Setup:
+			Upgrade To:					https://etherscan.io/tx/0x7eaced54825f8aa679787a6ebc3580f0593f29d0c4998065bbb25011c15faff5
+			Initialize: 				https://etherscan.io/tx/0x2b3f7cb34de56f0a4531f05fa741f61c29a45110ee6986f2fe937ac3e1c60665
+			Set Bridge Contract: 		https://etherscan.io/tx/0xa231d147fa86fe4518e4c20e73184ae99fecdd75d8d18fffc2409f8562a66dc6
+			Set Daily Limit				https://etherscan.io/tx/0x9ed61eda60c588c3780546677b11a1140000020f56b8697afdbe25ff7626fe9a
+			Set Execution Daily Limit: 	https://etherscan.io/tx/0x0aaa4928ec6261212cabaf2e17682979692c80b4cac0c75da6f97a02183b003a
+			Set Max Per Tx:				https://etherscan.io/tx/0x6b40f10b2d2db189af630fa74329d033c72107a5089e2a487bb6fdaf691ddb93
+			Set Execution Max Per Tx:	https://etherscan.io/tx/0xd8017755afbf8032197e0f2b9ad330f4bf35a6c50a4dd77d4c10b5332a8507fa
+			
+			Summary:
+				_bridgeContract								https://etherscan.io/address/0x49346e60E6Fc7D21d090dD0104863b5Fe69623ED
+					Initialize:
+						_sourceChainId			1
+						_destinationChainId		56
+						_validatorContract		https://etherscan.io/address/0x65475e604cF3016a738F8Aac71CEA18b0C2021b4		// BridgeValidators
+							Initialize:
+								_requiredSignatures		1
+								_initialValidators		https://etherscan.io/address/0x8023249447862432B8C5aC4778653c2c0B69D8EA
+								_owner					https://etherscan.io/address/0xE027E43b4A01Eaccf62738069BDe26D8678d23ee
+						_maxGasPerTx			2000000
+						_gasPrice				100000000000
+					setGasPrice
+						_gasPrice				30000000000
+				_mediatorContract							https://bscscan.com/address/0x1DE4e26EE72710e0b49106D003748c2CD54a25D7
+					Initialize:
+						_bridgeContract								https://bscscan.com/address/0xB066E69BD0AB1bBEf358A117C570D6D80C7DCfc7
+						_mediatorContract							https://bscscan.com/address/0xF7D5060C181F9eD59F619b2c945a2f7C3Ee9cCe2
+						_dailyLimitMaxPerTxMinPerTxArray			30000000000000000000000000
+																	1500000000000000000000000
+																	500000000000000000
+						_executionDailyLimitExecutionMaxPerTxArray	15000000000000000000000000
+																	750000000000000000000000
+						_requestGasLimit							2000000
+						_owner										https://bscscan.com/address/0x8759b55c95277F3A49F906A66fE4b3A4F26A37F2
+						_tokenImage									https://bscscan.com/address/0x7D701A49aF1dd0e9f2C9bCF4D6Fd5EBE8ebd141b
+						_rewardAddresses							https://bscscan.com/address/0x7Aa6B35c73D0E1b603B315106AD5dDAF94F3801B
+						_fees										1000000000000000
+					setFee:
+						_feeType									0x741ede137d0537e88e0ea0ff25b1f22d837903dbbee8980b4a06e8523247ee26
+							bytes32 public constant HOME_TO_FOREIGN_FEE = 0x741ede137d0537e88e0ea0ff25b1f22d837903dbbee8980b4a06e8523247ee26; // keccak256(abi.encodePacked("homeToForeignFee"))
+							bytes32 public constant FOREIGN_TO_HOME_FEE = 0x03be2b2875cb41e0e77355e802a16769bb8dfcf825061cde185c73bf94f12625; // keccak256(abi.encodePacked("foreignToHomeFee"))
+						_token										https://bscscan.com/address/0xC3440c10c4F36f354eB591B19FafB4906d449B75
+						_fee										400000000000000000
+					setFee:
+						_feeType									0x03be2b2875cb41e0e77355e802a16769bb8dfcf825061cde185c73bf94f12625
+						_token										https://bscscan.com/address/0xC3440c10c4F36f354eB591B19FafB4906d449B75
+						_fee										1000000000000000
+					setBridgeContract
+						_bridgeContract								https://bscscan.com/address/0xEffF4A27F5Dc3CAB589239234c4Cc8637bC92f41
+					setDailyLimit
+						_token										https://bscscan.com/address/0xC3440c10c4F36f354eB591B19FafB4906d449B75
+						_dailyLimit									75000000000000000000000000	
+					setExecutionDailyLimit
+						_token										https://bscscan.com/address/0xC3440c10c4F36f354eB591B19FafB4906d449B75
+						_dailyLimit									75000000000000000000000000
+					setMaxPerTx
+						_token										https://bscscan.com/address/0xC3440c10c4F36f354eB591B19FafB4906d449B75
+						_maxPerTx									7500000000000000000000000	
+					setExecutionMaxPerTx
+						_token										https://bscscan.com/address/0xC3440c10c4F36f354eB591B19FafB4906d449B75
+						_maxPerTx									7500000000000000000000000
+					setMinPerTx
+						_token										https://bscscan.com/address/0xC3440c10c4F36f354eB591B19FafB4906d449B75
+						_maxPerTx									50000000000000000000000
+				_dailyLimitMaxPerTxMinPerTxArray			15000000000000000000000000
+															750000000000000000000000
+															500000000000000000
+				_executionDailyLimitExecutionMaxPerTxArray	30000000000000000000000000
+															1500000000000000000000000
+				_requestGasLimit							2000000
+				_owner										https://etherscan.io/address/0x8759b55c95277F3A49F906A66fE4b3A4F26A37F2
+		
+		
+		
+	https://bscscan.com/tx/0x2ee6c27149e0c0fc86dddca9d3f3cf11802aeef4ed44a42c2308b12040e6c376
+		From: 			https://bscscan.com/address/0x8023249447862432b8c5ac4778653c2c0b69d8ea
+		Contract:		https://bscscan.com/address/0xefff4a27f5dc3cab589239234c4cc8637bc92f41
+		Contract Name:	HomeAMB
+		Implementation:	https://bscscan.com/address/0x89e0ae0d38fda9bd16faf6f514d3f8e356f4f3f4#code
+		
+		Function: executeAffirmation(bytes message) ***
+		MethodID: 0xe7a2c01f
+		[0]:  0000000000000000000000000000000000000000000000000000000000000020
+		[1]:  00000000000000000000000000000000000000000000000000000000000000b5
+		[2]:  0005000011752ef361c5ce9265129ad0dd546c25d40acc77000000000000063a
+		[3]:  f7d5060c181f9ed59f619b2c945a2f7c3ee9cce21de4e26ee72710e0b49106d0
+		[4]:  03748c2cd54a25d7001e84800101000138125e4cfb0000000000000000000000
+		[5]:  000488401c3f535193fa8df029d9ffe615a06e74e60000000000000000000000
+		[6]:  00a0de41e9770e1dc934d38fde4e6148967c890ecc0000000000000000000000
+		[7]:  00000000000000000000027b46536c66c8e30000000000000000000000000000
+	
+		
+SRK Bridge - BSC to ETH Sample Transactions
+	https://bscscan.com/tx/0xc78dfe0706f92c177ddb6d5d65070ba97e7d3785045f258b55a824c5fc6ca086
+	https://etherscan.io/tx/0xed49ff6d87e572213a31d16d2c6133daa5b82a98dd43746af1f4b0ec089bf77e
+	
+SRK
+	Ethereum Bridge
+		Proxy: https://etherscan.io/address/0x49346e60e6fc7d21d090dd0104863b5fe69623ed
+		Imple: https://etherscan.io/address/0x89e0ae0d38fda9bd16faf6f514d3f8e356f4f3f4
+		
+	Ethereum SRK Holder
+		Proxy: https://etherscan.io/address/0xf7d5060c181f9ed59f619b2c945a2f7c3ee9cce2
+		Imple: https://etherscan.io/address/0x9ccc923fa4a71b4a4630db7edebd0372f0e62872
+		
+	Binance Token
+		Proxy: https://bscscan.com/address/0xc3440c10c4f36f354eb591b19fafb4906d449b75
+		Imple: https://bscscan.com/address/0x7d701a49af1dd0e9f2c9bcf4d6fd5ebe8ebd141b
+
+	Binance Bridge
+		Proxy: https://bscscan.com/address/0xefff4a27f5dc3cab589239234c4cc8637bc92f41
+		Imple: https://bscscan.com/address/0x89e0ae0d38fda9bd16faf6f514d3f8e356f4f3f4
+	
+	
+	
+
+###########################################################################################################################
+###########################################################################################################################
+
+TESTNET	
+	
+Deployers
+	https://testnet.bscscan.com/address/0x768532c218f4f4e6E4960ceeA7F5a7A947a1dd61
+	https://testnet.bscscan.com/address/0xa92B1F29ce946035396b9a11705ec4EbAC514D29
+	
+Contract Interactor
+	https://testnet.bscscan.com/address/0xe5B4f53Eb4c651377e0f98AF67fF506a1c5fC1C9
+	
+Reward Address
+	https://testnet.bscscan.com/address/0x3Fd93C1a6BeAF035D3d0022f449A3669F00165FF
+
+OWN token
+	https://testnet.bscscan.com/address/0xC3Df366fAf79c6Caff3C70948363f00b9Ac55FEE
+	
+OWN Bridge - BSC to ETH
+	1. 	BridgeValidators
+			Contract:	https://testnet.bscscan.com/address/0x2F7D535a9d5C7fbd9bc6627312d61f68714A9265
+			Implemen:	https://testnet.bscscan.com/address/0xCf4f6a2bb864cc41176eD21Bea38bc24cB037A02
+			Network:	Binance
+			Deployer: 	https://testnet.bscscan.com/address/0xa92B1F29ce946035396b9a11705ec4EbAC514D29
+			Initialize:	
+				_requiredSignatures		1
+				_initialValidators		[https://testnet.bscscan.com/address/0xe5B4f53Eb4c651377e0f98AF67fF506a1c5fC1C9]
+				_owner					https://testnet.bscscan.com/address/0xa92B1F29ce946035396b9a11705ec4EbAC514D29
+			
+			
+	2. 	BridgeValidators
+			Contract:	
+			Implemen:	
+			Network:	Ethereum
+			Deployer: 	https://testnet.bscscan.com/address/0xa92B1F29ce946035396b9a11705ec4EbAC514D29
+			Initialize:	
+				_requiredSignatures		1
+				_initialValidators		[https://testnet.bscscan.com/address/0xe5B4f53Eb4c651377e0f98AF67fF506a1c5fC1C9]
+				_owner					https://testnet.bscscan.com/address/0xa92B1F29ce946035396b9a11705ec4EbAC514D29
+				
+				
+	3.	HomeAMB
+			Contract:	
+			Implemen:	
+			Network: 	Ethereum
+			Deployer: 	0xa92B1F29ce946035396b9a11705ec4EbAC514D29
+			initialize:	
+				_sourceChainId					1
+				_destinationChainId  			56
+				_validatorContract				0x65475e604cf3016a738f8aac71cea18b0c2021b4
+					Will use contract from 2. BridgeValidators
+				_maxGasPerTx					2000000
+				_gasPrice						20000000000
+				_requiredBlockConfirmations		1
+				_owner							0xa92B1F29ce946035396b9a11705ec4EbAC514D29
+		
+			
+	4.	HomeMultiAMBErc20ToErc677
+			Contract:	
+			Implemen:	
+			Network: 	Ethereum
+			Deployer: 	https://testnet.bscscan.com/address/0x768532c218f4f4e6E4960ceeA7F5a7A947a1dd61
+			Initialize:	
+				_bridgeContract								https://bscscan.com/address/0xB066E69BD0AB1bBEf358A117C570D6D80C7DCfc7
+					Will use contract from 3. HomeAMB
+				_mediatorContract							https://bscscan.com/address/0xF7D5060C181F9eD59F619b2c945a2f7C3Ee9cCe2
+				_dailyLimitMaxPerTxMinPerTxArray			30000000000000000000000000
+															1500000000000000000000000
+															500000000000000000
+				_executionDailyLimitExecutionMaxPerTxArray	15000000000000000000000000
+															750000000000000000000000
+				_requestGasLimit							2000000
+				_owner										https://bscscan.com/address/0x8759b55c95277F3A49F906A66fE4b3A4F26A37F2
+				_tokenImage									https://bscscan.com/address/0x7D701A49aF1dd0e9f2C9bCF4D6Fd5EBE8ebd141b
+				_rewardAddresses							https://bscscan.com/address/0x7Aa6B35c73D0E1b603B315106AD5dDAF94F3801B
+				_fees										1000000000000000
+			
+	Ownly
+		Contract:	https://testnet.bscscan.com/address/0xC3Df366fAf79c6Caff3C70948363f00b9Ac55FEE
+		Function: 	approve(address spender, uint256 tokens)
+		Approve: 	ForeignMultiAMBErc20ToErc677
+	
+	ForeignMultiAMBErc20ToErc677
+		Contract:	https://testnet.bscscan.com/address/0x75414fBC9cD841A60E8c3265aD1Eb9FCa53Bd46D
+		Implemen:	https://testnet.bscscan.com/address/0x988204355c6aBEb61BAF5f036aEEAFB14e8a367D
+		Function: 	relayTokens(address _receiver, uint256 _amount) ***
+		
+	https://bscscan.com/tx/0x2ee6c27149e0c0fc86dddca9d3f3cf11802aeef4ed44a42c2308b12040e6c376
+		From: 			https://bscscan.com/address/0x8023249447862432b8c5ac4778653c2c0b69d8ea
+		Contract:		https://bscscan.com/address/0xefff4a27f5dc3cab589239234c4cc8637bc92f41
+		Contract Name:	HomeAMB
+		
+		Function: executeAffirmation(bytes message) ***
+		MethodID: 0xe7a2c01f
+		[0]:  0000000000000000000000000000000000000000000000000000000000000020
+		[1]:  00000000000000000000000000000000000000000000000000000000000000b5
+		[2]:  0005000011752ef361c5ce9265129ad0dd546c25d40acc77000000000000063a
+		[3]:  f7d5060c181f9ed59f619b2c945a2f7c3ee9cce21de4e26ee72710e0b49106d0
+		[4]:  03748c2cd54a25d7001e84800101000138125e4cfb0000000000000000000000
+		[5]:  000488401c3f535193fa8df029d9ffe615a06e74e60000000000000000000000
+		[6]:  00a0de41e9770e1dc934d38fde4e6148967c890ecc0000000000000000000000
+		[7]:  00000000000000000000027b46536c66c8e30000000000000000000000000000	
+
+	Wrapped Ownly
+		Contract Proxy:	
+			TokenProxy
+			https://rinkeby.etherscan.io/address/0x479AF9081EA6144E97204Bad5CCC418F6D9D70a0
+		
+		Implementation:
+			PermittableToken
+			https://rinkeby.etherscan.io/address/0xFA8985401857a560B08b713348D496b0E5def033
+		
+		
+		
+		
+OWN Testnet
+	BSC to ETH
+		Binance Bridge
+			Proxy: https://testnet.bscscan.com/address/0xdb966b0a1c94b88eDe93e0d393375A2AC5e3Df0e
+			Imple: https://testnet.bscscan.com/address/0x862B97a43b7355AC0502de5e000907e18dB3BF8d
+		
+		Binance OWN Holder
+			Proxy: https://testnet.bscscan.com/address/0xb4A64164710B8f6A6C35BafFe8CCFddce3E92382
+			Imple: https://testnet.bscscan.com/address/0x9891264Aaa93AEB477749c5EdD6e52Bf9794e63B
+			
+		Ethereum Token
+			Proxy: https://rinkeby.etherscan.io/address/0xDf9FC983A48216b6C9dcb2e7DB8261955bb41228
+			Imple: https://rinkeby.etherscan.io/address/0x37F1D763FaEE9D6ee1E3E97F180A9108A62EB0bC
+		
+		
+		
+		
+		
+SRK Bridge - ETH to BSC Sample Transactions
+	https://etherscan.io/tx/0x19e95a83e66dce81d29e3a87f593cb55aa91f9850c35da52afb55068555825e1
+		From: 			https://etherscan.io/address/0xa0de41e9770e1dc934d38fde4e6148967c890ecc
+		Contract: 		https://etherscan.io/address/0x0488401c3f535193fa8df029d9ffe615a06e74e6
+		Contract Name:	SparkPoint
+
+		Function: approve(address spender, uint256 tokens)
+		MethodID: 0x095ea7b3
+		[0]:  0xF7D5060C181F9eD59F619b2c945a2f7C3Ee9cCe2
+		[1]:  3000000000000000000000000
+	
+	https://etherscan.io/tx/0xaadc67d0eeb9df090fa97138487c40bc9ee8ae631f5497cfb29a0020bd150f69
+		From: 			https://etherscan.io/address/0xa0de41e9770e1dc934d38fde4e6148967c890ecc
+		Contract:		https://etherscan.io/address/0xf7d5060c181f9ed59f619b2c945a2f7c3ee9cce2
+		Implemen:		https://etherscan.io/address/0x9ccc923fa4a71b4a4630db7edebd0372f0e62872
+		Contract Name:	ForeignMultiAMBErc20ToErc677
+		
+		Function: relayTokens(address _receiver, uint256 _amount) ***
+		MethodID: 0x01e4f53a
+		[0]:  0x0488401c3F535193Fa8Df029d9fFe615A06E74E6 (SparkPoint Token Contract)
+		[1]:  3000000000000000000000000 (Tokens to be bridged in wei)
+		
+		
+	https://bscscan.com/tx/0x2ee6c27149e0c0fc86dddca9d3f3cf11802aeef4ed44a42c2308b12040e6c376
+		From: 			https://bscscan.com/address/0x8023249447862432b8c5ac4778653c2c0b69d8ea
+		Contract:		https://bscscan.com/address/0xefff4a27f5dc3cab589239234c4cc8637bc92f41
+		Contract Name:	HomeAMB
+		Implementation:	https://bscscan.com/address/0x89e0ae0d38fda9bd16faf6f514d3f8e356f4f3f4#code
+		
+		Function: executeAffirmation(bytes message) ***
+		MethodID: 0xe7a2c01f
+		[0]:  0000000000000000000000000000000000000000000000000000000000000020
+		[1]:  00000000000000000000000000000000000000000000000000000000000000b5
+		[2]:  0005000011752ef361c5ce9265129ad0dd546c25d40acc77000000000000063a
+		[3]:  f7d5060c181f9ed59f619b2c945a2f7c3ee9cce21de4e26ee72710e0b49106d0
+		[4]:  03748c2cd54a25d7001e84800101000138125e4cfb0000000000000000000000
+		[5]:  000488401c3f535193fa8df029d9ffe615a06e74e60000000000000000000000
+		[6]:  00a0de41e9770e1dc934d38fde4e6148967c890ecc0000000000000000000000
+		[7]:  00000000000000000000027b46536c66c8e30000000000000000000000000000
+	
+		
+SRK Bridge - BSC to ETH Sample Transactions
+	https://bscscan.com/tx/0xc78dfe0706f92c177ddb6d5d65070ba97e7d3785045f258b55a824c5fc6ca086
+	https://etherscan.io/tx/0xed49ff6d87e572213a31d16d2c6133daa5b82a98dd43746af1f4b0ec089bf77e	
+		
+		
+		
+		
+SENT BY ALDRICK
+
+MainNet AMB:
+	BSC:
+		1. 	BridgeValidators: https://bscscan.com/address/0x0D9B7669f9b7B9cFf9D933C07785D40aEbf1c04c
+			Storage: https://bscscan.com/address/0x65475e604cF3016a738F8Aac71CEA18b0C2021b4
+		
+		2.	HomeAMB: https://bscscan.com/address/0x89e0Ae0d38FDA9BD16FAF6F514D3f8E356f4f3F4
+			Storage: https://bscscan.com/address/0xEffF4A27F5Dc3CAB589239234c4Cc8637bC92f41
+		
+	ETH:
+		3.	BridgeValidators: https://etherscan.io/address/0x0D9B7669f9b7B9cFf9D933C07785D40aEbf1c04c
+			Storage: https://etherscan.io/address/0x65475e604cF3016a738F8Aac71CEA18b0C2021b4
+		
+		4.	Foreign AMB: https://etherscan.io/address/0x89e0Ae0d38FDA9BD16FAF6F514D3f8E356f4f3F4
+			Storage: https://etherscan.io/address/0x49346e60E6Fc7D21d090dD0104863b5Fe69623ED
+
+MainNet Token Management:
+	BSC:
+		5.	PermittableToken: https://bscscan.com/address/0x7D701A49aF1dd0e9f2C9bCF4D6Fd5EBE8ebd141b
+			Token Proxy: https://bscscan.com/address/0xc3440c10c4f36f354eb591b19fafb4906d449b75
+		
+		6.	HOMEMULTIAMBERC20TOERC677: https://bscscan.com/address/0x71203cD50D782306a4c20F46c96b0C92237Bbd18
+			Storage: https://bscscan.com/address/0x1DE4e26EE72710e0b49106D003748c2CD54a25D7
+	
+	ETH:	
+		7.	FOREIGNMULTIAMBERC20TOERC677: https://etherscan.io/address/0x9cCC923fa4A71b4A4630DB7eDEbD0372f0e62872
+			Storage: https://etherscan.io/address/0xf7d5060c181f9ed59f619b2c945a2f7c3ee9cce2
+		
+		
+QUESTION TO ALDRICK
+	HomeAMBErc20ToNative: https://bscscan.com/address/0xF7D5060C181F9eD59F619b2c945a2f7C3Ee9cCe2
+		Para saan to, saan to ginamit?
+
+
+Testnet
+
+0. Main Token Contract						https://testnet.bscscan.com/address/0xC3Df366fAf79c6Caff3C70948363f00b9Ac55FEE
+
+MainNet AMB:
+	ETH:
+		1.	BridgeValidators: 				https://rinkeby.etherscan.io/address/0xCf4f6a2bb864cc41176eD21Bea38bc24cB037A02
+			Storage:						https://rinkeby.etherscan.io/address/0x2F7D535a9d5C7fbd9bc6627312d61f68714A9265
+			Deployer:						0xa92B1F29ce946035396b9a11705ec4EbAC514D29
+			
+		2.	HomeAMB: 						https://rinkeby.etherscan.io/address/0x20301663faFa8E2fcC1CbaEB1DE920c306fb4652			
+			Storage: 						https://rinkeby.etherscan.io/address/0x86888F48d65abFdF093A40148071E2925303e9e9
+			Deployer:						0xa92B1F29ce946035396b9a11705ec4EbAC514D29
+			
+	BSC:
+		3.	BridgeValidators: 				https://testnet.bscscan.com/address/0x20301663faFa8E2fcC1CbaEB1DE920c306fb4652
+			Storage: 						https://testnet.bscscan.com/address/0x86888F48d65abFdF093A40148071E2925303e9e9
+			Deployer: 						0xa92B1F29ce946035396b9a11705ec4EbAC514D29
+				
+		4.	Foreign AMB: 					https://testnet.bscscan.com/address/0xA5ACe1d1D5855803aB77Ce5C85695BBd4347E9ef
+			Storage: 						https://testnet.bscscan.com/address/0x8aA2014CcB4402Fbeb980cB27170C32c65AF8543		
+			Deployer: 						0xa92B1F29ce946035396b9a11705ec4EbAC514D29
+		
+MainNet Token Management:
+	ETH:
+		5.	PermittableToken: 				https://rinkeby.etherscan.io/address/0xa722fB1ac8499a0e3C221EdcDb4634e1152c047E
+			Storage: 						https://rinkeby.etherscan.io/address/0xBcd8e41942686433d6b7A5c9d65A072b7125e782
+			Deployer: 						0x768532c218f4f4e6E4960ceeA7F5a7A947a1dd61				
+			
+		6.	HOMEMULTIAMBERC20TOERC677: 		https://rinkeby.etherscan.io/address/0x3BCbc2AD7cCEDcBC1e73eaeB9C5248e03a1388ba
+			Storage: 						https://rinkeby.etherscan.io/address/0x20066214fAf84E99C9586602ae35FD43D2254183	
+			Deployer: 						0x768532c218f4f4e6E4960ceeA7F5a7A947a1dd61					
+		
+	BSC:
+		7.	FOREIGNMULTIAMBERC20TOERC677: 	https://testnet.bscscan.com/address/0x74b1Bc3b513AEB447B188F1B8a8b0D6C7f776b4B
+			Storage: 						https://testnet.bscscan.com/address/0x06F624C9d9448cECf80D0463B75678A49ff88a9a
+			Deployer:						0x768532c218f4f4e6E4960ceeA7F5a7A947a1dd61
+		
+		
+		
+		
+Contract Interactions
+	1.	BridgeValidators
+		Deployer:					0xa92B1F29ce946035396b9a11705ec4EbAC514D29
+		Initialize:
+			_requiredSignatures		1
+			_initialValidators		[0xe5B4f53Eb4c651377e0f98AF67fF506a1c5fC1C9]
+			_owner					0xa92B1F29ce946035396b9a11705ec4EbAC514D29
+		
+		
+	2.	HomeAMB
+		Deployer:					0xa92B1F29ce946035396b9a11705ec4EbAC514D29
+		initialize:	
+			_sourceChainId					1
+			_destinationChainId  			56
+			_validatorContract				(1. BridgeValidators)
+			_maxGasPerTx					2000000
+			_gasPrice						20000000000
+			_requiredBlockConfirmations		1
+			_owner							0xa92B1F29ce946035396b9a11705ec4EbAC514D29
+		
+		
+	3.	BridgeValidators
+		Deployer:					0xa92B1F29ce946035396b9a11705ec4EbAC514D29
+		initialize:
+			_requiredSignatures		1
+			_initialValidators		[0xe5B4f53Eb4c651377e0f98AF67fF506a1c5fC1C9]
+			_owner					0xa92B1F29ce946035396b9a11705ec4EbAC514D29
+			
+			
+	4.	Foreign AMB
+		Deployer:					0xa92B1F29ce946035396b9a11705ec4EbAC514D29
+		initialize:
+			_sourceChainId					56
+			_destinationChainId				1
+			_validatorContract				(3.	BridgeValidators)
+			_maxGasPerTx					2000000
+			_gasPrice						100000000000
+			_requiredBlockConfirmations		1
+			_owner							0xa92B1F29ce946035396b9a11705ec4EbAC514D29
+		
+		
+	5.	PermittableToken
+		Deployer:					0x768532c218f4f4e6E4960ceeA7F5a7A947a1dd61
+		setBridgeContract:
+			_bridgeContract			(6. HOMEMULTIAMBERC20TOERC677)
+		
+		
+	6.	HOMEMULTIAMBERC20TOERC677
+		Deployer:										0x768532c218f4f4e6E4960ceeA7F5a7A947a1dd61
+		Initialize
+			_bridgeContract								(2. HomeAMB)
+			_mediatorContract							(7.	FOREIGNMULTIAMBERC20TOERC677)
+			_dailyLimitMaxPerTxMinPerTxArray			["30000000000000000000000000", "1500000000000000000000000", "500000000000000000"]
+			_executionDailyLimitExecutionMaxPerTxArray	["15000000000000000000000000", "750000000000000000000000"]
+			_requestGasLimit							2000000
+			_owner										0x768532c218f4f4e6E4960ceeA7F5a7A947a1dd61
+			_tokenImage									(5. PermittableToken Implementation)
+			_rewardAddresses							[0x3Fd93C1a6BeAF035D3d0022f449A3669F00165FF]	
+			_fees										["1000000000000000", "1000000000000000"]	
+		setFee:
+			_feeType									0x741ede137d0537e88e0ea0ff25b1f22d837903dbbee8980b4a06e8523247ee26
+			_token										(5. PermittableToken)
+			_fee										400000000000000000
+		setFee:
+			_feeType									0x03be2b2875cb41e0e77355e802a16769bb8dfcf825061cde185c73bf94f12625
+			_token										(5. PermittableToken)
+			_fee										1000000000000000
+		setDailyLimit
+			_token										(5. PermittableToken)
+			_dailyLimit									75000000000000000000000000	
+		setExecutionDailyLimit
+			_token										(5. PermittableToken)
+			_dailyLimit									75000000000000000000000000
+		setMaxPerTx
+			_token										(5. PermittableToken)
+			_maxPerTx									7500000000000000000000000	
+		setExecutionMaxPerTx
+			_token										(5. PermittableToken)
+			_maxPerTx									7500000000000000000000000
+		setMinPerTx
+			_token										(5. PermittableToken)
+			_maxPerTx									50000000000000000000000
+
+
+	7.	FOREIGNMULTIAMBERC20TOERC677
+		Deployer:										0x768532c218f4f4e6E4960ceeA7F5a7A947a1dd61
+		initialize:
+			_bridgeContract								(4. Foreign AMB)
+			_mediatorContract							(6. HOMEMULTIAMBERC20TOERC677)
+			_dailyLimitMaxPerTxMinPerTxArray			15000000000000000000000000
+														750000000000000000000000
+														500000000000000000
+			_executionDailyLimitExecutionMaxPerTxArray	30000000000000000000000000
+														1500000000000000000000000
+			_requestGasLimit							2000000
+			_owner										0x768532c218f4f4e6E4960ceeA7F5a7A947a1dd61
+		setBridgeContract:
+			_bridgeContract								(4. Foreign AMB)
+		setDailyLimit									
+			_token										(0. Main Token Contract)
+			_dailyLimit									75000000000000000000000000
+		setExecutionDailyLimit
+			_token										(0. Main Token Contract)
+			_dailyLimit									75000000000000000000000000
+		setMaxPerTx
+			_token										(0. Main Token Contract)
+			_maxPerTx									7500000000000000000000000
+		setExecutionMaxPerTx
+			_token										(0. Main Token Contract)
+			_maxPerTx									7500000000000000000000000
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
