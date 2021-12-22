@@ -288,10 +288,9 @@ SRK Bridge - ETH to BSC Sample Transactions
 		Contract: 		https://etherscan.io/address/0x0488401c3f535193fa8df029d9ffe615a06e74e6
 		Contract Name:	SparkPoint
 
-		Function: approve(address spender, uint256 tokens)
-		MethodID: 0x095ea7b3
-		[0]:  0xF7D5060C181F9eD59F619b2c945a2f7C3Ee9cCe2
-		[1]:  3000000000000000000000000
+		approve
+			spender  	0xF7D5060C181F9eD59F619b2c945a2f7C3Ee9cCe2 (ForeignMultiAMBErc20ToErc677)
+			tokens  	3000000000000000000000000
 	
 	https://etherscan.io/tx/0xaadc67d0eeb9df090fa97138487c40bc9ee8ae631f5497cfb29a0020bd150f69
 		From: 			https://etherscan.io/address/0xa0de41e9770e1dc934d38fde4e6148967c890ecc
@@ -299,10 +298,9 @@ SRK Bridge - ETH to BSC Sample Transactions
 		Implemen:		https://etherscan.io/address/0x9ccc923fa4a71b4a4630db7edebd0372f0e62872
 		Contract Name:	ForeignMultiAMBErc20ToErc677
 		
-		Function: relayTokens(address _receiver, uint256 _amount) ***
-		MethodID: 0x01e4f53a
-		[0]:  0x0488401c3F535193Fa8Df029d9fFe615A06E74E6 (SparkPoint Token Contract)
-		[1]:  3000000000000000000000000 (Tokens to be bridged in wei)
+		relayTokens
+			_receiver  	0x0488401c3F535193Fa8Df029d9fFe615A06E74E6 (SparkPoint Token Contract)
+			_amount  	3000000000000000000000000 (Tokens to be bridged in wei)
 		
 		
 	https://bscscan.com/tx/0x2ee6c27149e0c0fc86dddca9d3f3cf11802aeef4ed44a42c2308b12040e6c376
@@ -325,9 +323,19 @@ SRK Bridge - ETH to BSC Sample Transactions
 		
 SRK Bridge - BSC to ETH Sample Transactions
 	https://bscscan.com/tx/0xc78dfe0706f92c177ddb6d5d65070ba97e7d3785045f258b55a824c5fc6ca086
+		From: 			https://bscscan.com/address/0xb132f2c06a4079d546d4914a61e5c1be65787fd6
+		Contract:		https://bscscan.com/address/0xc3440c10c4f36f354eb591b19fafb4906d449b75
+		Contract Name:	SparkPoint Token
+		
+		transferAndCall
+			to:  		0x1de4e26ee72710e0b49106d003748c2cd54a25d7 (HOMEMULTIAMBERC20TOERC677)
+			value  		10000000000000000000000
+			data		{"type": "Buffer", "data": []}
+		
 	https://etherscan.io/tx/0xed49ff6d87e572213a31d16d2c6133daa5b82a98dd43746af1f4b0ec089bf77e	
-		
-		
+		executeSignatures
+			_data			0x00050000bdfcd5c57c44aa1d8ac300d52196aaff3d38c1de00000000000002351de4e26ee72710e0b49106d003748c2cd54a25d7f7d5060c181f9ed59f619b2c945a2f7c3ee9cce2001e84800101003801125e4cfb0000000000000000000000000488401c3f535193fa8df029d9ffe615a06e74e6000000000000000000000000b132f2c06a4079d546d4914a61e5c1be65787fd60000000000000000000000000000000000000000000001e7e41aa97378668000
+			_signatures		0x011c7218e32d88774bf6fa688ecd5206f078e243f8492c0fe117d4cd48fecca439da580fbbed2e59e8cd8153dd42e556f4b425fea6f4f9a902b42ef3be2fcc72fc50
 		
 		
 SENT BY ALDRICK
@@ -519,8 +527,24 @@ Contract Interactions
 				
 				
 				
-				
-				
+Sample Transactions			
+	BSC to ETH Sample Transactions
+		1.	From: 		0x7ef49272bb9EDBF9350B2D884C4Ac0aF34D9826F (Personal Account)
+			Contract: 	https://testnet.bscscan.com/address/0xC3Df366fAf79c6Caff3C70948363f00b9Ac55FEE (Ownly)
+			Method:		approve
+							spender  	0x06F624C9d9448cECf80D0463B75678A49ff88a9a (ForeignMultiAMBErc20ToErc677)
+							tokens  	3000000000000000000000000
+		
+		2.	From: 			0x7ef49272bb9EDBF9350B2D884C4Ac0aF34D9826F (Personal Account)
+			Contract:		https://testnet.bscscan.com/address/0x06F624C9d9448cECf80D0463B75678A49ff88a9a (ForeignMultiAMBErc20ToErc677)
+			Method:			relayTokens
+								_receiver  	0xC3Df366fAf79c6Caff3C70948363f00b9Ac55FEE (Ownly)
+								_amount  	3000000000000000000000000		
+			
+		3. 	From:			0xe5B4f53Eb4c651377e0f98AF67fF506a1c5fC1C9 (Node Validator)
+			Contract:		https://rinkeby.etherscan.io/address/0x20301663faFa8E2fcC1CbaEB1DE920c306fb4652 (HomeAMB)
+			Method:			executeAffirmation(bytes message)	
+			
 				
 				
 				
