@@ -4,12 +4,9 @@ async function main() {
     const [deployer] = await ethers.getSigners();
     console.log("Deployer:", deployer.address);
 
-    const TheSagesRantCollectibles = await hre.ethers.getContractFactory("TheSagesRantCollectibles");
-    const theSagesRantCollectibles = await TheSagesRantCollectibles.deploy();
-    console.log("The Sages Rant Collectibles deployed to:", theSagesRantCollectibles.address);
-
-    // await theSagesRantCollectibles.mintMultiple("0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266", 9);
-    // console.log(await theSagesRantCollectibles.tokenURI(4));
+    const StakingRewardsFactory = await hre.ethers.getContractFactory("StakingRewardsFactory");
+    const stakingRewardsFactory = await StakingRewardsFactory.deploy();
+    console.log("StakingRewardsFactory deployed to:", stakingRewardsFactory.address);
 }
 
 main()
