@@ -36,5 +36,9 @@
 /alphagirlclub/hardhat.config.js
 /alphagirlclub/artifacts
 /alphagirlclub/cache
+/liquidity_staking/node_modules/
+/liquidity_staking/hardhat.config.js
+/liquidity_staking/artifacts
+/liquidity_staking/cache
 .DS_Store
 .idea
