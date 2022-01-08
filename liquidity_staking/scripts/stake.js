@@ -6,7 +6,7 @@ async function main() {
 
     let stakingRewardsAddress = "0xf8DDba8fd0fa088Dd8cA61a96458f22AB1857d8d";
     let stakingTokenAddress = "0xC3Df366fAf79c6Caff3C70948363f00b9Ac55FEE";
-    let amount = "50000000000000000000000";
+    let amount = "25000000000000000000000";
 
     let StakingRewards = await hre.ethers.getContractFactory("StakingRewards");
     let stakingRewards = await StakingRewards.attach(stakingRewardsAddress);
