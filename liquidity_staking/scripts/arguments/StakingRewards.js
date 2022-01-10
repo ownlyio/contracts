@@ -1,5 +1,5 @@
 module.exports = [
-    "0xd568A23e111732aF8c04C6a7F02FF05e2FB94485", // StakingRewardsFactory Address
-    "0xC3Df366fAf79c6Caff3C70948363f00b9Ac55FEE", // Rewards Token
-    "0xC3Df366fAf79c6Caff3C70948363f00b9Ac55FEE"  // Staking Token
+    "0x4A74fbe21Fd5edD67d14716fEa3a7fbFD7C1e8EF", // StakingRewardsFactory Address
+    "0x7665CB7b0d01Df1c9f9B9cC66019F00aBD6959bA", // Rewards Token
+    "0x5b14378D1Bab6bF323Ebd6cFd4A26Ec2c49598Da"  // Staking Token
 ];

@@ -5,8 +5,12 @@ async function main() {
     console.log("Deployer:", deployer.address);
 
     let StakingRewardsFactoryAddress = "0xd568A23e111732aF8c04C6a7F02FF05e2FB94485";
-    let stakingToken = "0xC3Df366fAf79c6Caff3C70948363f00b9Ac55FEE"; // LP token
-    let rewardAmount = "100000000000000000000000"; // Amount in wei (Send to StakingRewardsFactoryAddress before running)
+
+    let stakingToken = "0x5b14378D1Bab6bF323Ebd6cFd4A26Ec2c49598Da"; // LP token
+    let rewardAmount = "120000000000000000000000000"; // Amount in wei (Send to StakingRewardsFactoryAddress before running)
+
+    // let stakingToken = "0xC3Df366fAf79c6Caff3C70948363f00b9Ac55FEE"; // LP token
+    // let rewardAmount = "120000000000000000000000000"; // Amount in wei (Send to StakingRewardsFactoryAddress before running)
 
     let StakingRewardsFactory = await hre.ethers.getContractFactory("StakingRewardsFactory");
     let stakingRewardsFactory = await StakingRewardsFactory.attach(StakingRewardsFactoryAddress);
