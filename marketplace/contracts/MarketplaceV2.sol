@@ -8,6 +8,8 @@ abstract contract PancakeSwapRouterInterface {
 }
 
 contract MarketplaceV2 is Marketplace {
+    using CountersUpgradeable for CountersUpgradeable.Counter;
+
     event MarketItemPaid (
         uint indexed itemId,
         address indexed nftContract,
@@ -72,10 +74,8 @@ contract MarketplaceV2 is Marketplace {
                 itemId
             );
         } else if(nftChainID == 1) {
-            IERC20Upgradeable(ownly_address).transferFrom(msg.sender, seller, finalPrice);
+//            IERC20Upgradeable(ownly_address).transferFrom(msg.sender, seller, finalPrice);
             payable(marketplaceOwner).transfer(idToMarketItem[itemId].listingPrice);
-
-
         }
 
         return 0;
@@ -84,16 +84,12 @@ contract MarketplaceV2 is Marketplace {
     function ethToOWNConversion(uint256 amount) public view virtual returns (uint256) {
         PancakeSwapRouterInterface pancakeSwapRouterContract = PancakeSwapRouterInterface(0x10ED43C718714eb63d5aA57B78B54704E256024E);
 
-        address[] memory path = new address[](2);
-        path[0] = 0x2170ed0880ac9a755fd29b2688956bd959f933f8; // BUSD
-        path[1] = 0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c; // ETH
+        address memory own_address = 0x7665CB7b0d01Df1c9f9B9cC66019F00aBD6959bA;
+        address memory busd_address = 0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56;
+        address memory eth_address = 0x2170Ed0880ac9A755fd29B2688956BD959F933F8;
 
-        uint[] memory busdPrice = pancakeSwapRouterContract.getAmountsIn(price, path);
-
-        path[0] = 0x7665CB7b0d01Df1c9f9B9cC66019F00aBD6959bA; // OWN
-        path[1] = 0xe9e7cea3dedca5984780bafc599bd69add087d56; // BUSD
-
-        uint[] memory ownPrice = pancakeSwapRouterContract.getAmountsIn(busdPrice[0], path);
+        uint[] memory busdPrice = pancakeSwapRouterContract.getAmountsIn(amount, [busd_address, eth_address]);
+        uint[] memory ownPrice = pancakeSwapRouterContract.getAmountsIn(busdPrice[0], [own_address, busd_address]);
 
         return ownPrice[0];
     }
