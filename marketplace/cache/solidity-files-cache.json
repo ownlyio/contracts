@@ -1629,8 +1629,8 @@
       ]
     },
     "D:\\Codes\\contracts\\marketplace\\contracts\\MarketplaceV2.sol": {
-      "lastModificationDate": 1643128596100,
-      "contentHash": "ddd31b3e15a58ec0e04b8eba54b3b2dc",
+      "lastModificationDate": 1643391271430,
+      "contentHash": "e599c89925d36de413de5ead4c9dd7b4",
       "sourceName": "contracts/MarketplaceV2.sol",
       "solcConfig": {
         "version": "0.8.2",
@@ -1663,6 +1663,51 @@
       "artifacts": [
         "MarketplaceV2",
         "PancakeSwapRouterInterface"
+      ]
+    },
+    "D:\\Codes\\contracts\\marketplace\\contracts\\MarketplaceEth.sol": {
+      "lastModificationDate": 1643389477685,
+      "contentHash": "479175ade0f4242cfa46aa9dc67f65f9",
+      "sourceName": "contracts/MarketplaceEth.sol",
+      "solcConfig": {
+        "version": "0.8.2",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol",
+        "@openzeppelin/contracts-upgradeable/utils/StringsUpgradeable.sol",
+        "@openzeppelin/contracts-upgradeable/utils/CountersUpgradeable.sol",
+        "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol",
+        "@openzeppelin/contracts-upgradeable/token/ERC721/ERC721Upgradeable.sol",
+        "@openzeppelin/contracts-upgradeable/token/ERC721/IERC721Upgradeable.sol",
+        "@openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable.sol",
+        "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol",
+        "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol",
+        "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol"
+      ],
+      "versionPragmas": [
+        "0.8.2"
+      ],
+      "artifacts": [
+        "MarketplaceEth"
       ]
     }
   }
