@@ -91,7 +91,7 @@ contract MarketplaceEth is Initializable, OwnableUpgradeable, UUPSUpgradeable, R
         address nftOwner = nftContract.ownerOf(tokenId);
         bool isApprovedForAll = nftContract.isApprovedForAll(nftOwner, address(this));
 
-        require(compareStrings(currency, "BNB") || compareStrings(currency, "OWN"), "Invalid price currency");
+        require(compareStrings(currency, "ETH"), "Invalid price currency");
         require(nftOwner == msg.sender, "You must be the owner of the token");
         require(isApprovedForAll, "You must give permission for this marketplace to access your token");
         require(price > 0, "Price must be at least 1 wei");

@@ -21,7 +21,7 @@ contract MarketplaceV2 is Marketplace {
         uint256 listingPrice
     );
 
-    function createMarketSale(uint256 itemId, string memory currency, uint256 nftChainID, address nftContract, uint256 tokenId, address seller, uint256 price, uint256 listingPrice) public virtual payable nonReentrant {
+    function createMarketSale(uint256 itemId, string memory currency, string[] memory message, string memory signature) public virtual override payable nonReentrant {
         address ownly_address = 0xC3Df366fAf79c6Caff3C70948363f00b9Ac55FEE;
         //        address ownly_address = 0x7665CB7b0d01Df1c9f9B9cC66019F00aBD6959bA;
 
@@ -74,10 +74,10 @@ contract MarketplaceV2 is Marketplace {
                 itemId
             );
         } else if(nftChainID == 1) {
-            uint ownPrice = ethToOWNConversion(price);
+            uint ownPrice = ethToOWNConversion(stringToUint(message[4]));
             ownPrice = (ownPrice * 8) / 10; // 20% discount
 
-            IERC20Upgradeable(ownly_address).transferFrom(msg.sender, seller, ownPrice);
+            IERC20Upgradeable(ownly_address).transferFrom(msg.sender, message[3], ownPrice);
             payable(marketplaceOwner).transfer(idToMarketItem[itemId].listingPrice);
 
             emit MarketItemPaidForOtherChain(
@@ -85,8 +85,8 @@ contract MarketplaceV2 is Marketplace {
                 itemId,
                 nftContract,
                 tokenId,
-                seller,
-                price,
+                message[3],
+                ownPrice,
                 currency,
                 listingPrice
             );
@@ -112,6 +112,58 @@ contract MarketplaceV2 is Marketplace {
         uint[] memory ownPrice = pancakeSwapRouterContract.getAmountsIn(busdPrice[0], own_busd_path);
 
         return ownPrice[0];
+    }
+
+    function getMessageHash(uint itemId, address nftContract, uint256 tokenId, address seller, uint256 price, string currency, uint256 listingPrice) public pure returns (bytes32) {
+        return keccak256(abi.encodePacked(itemId, nftContract, tokenId, seller, price, currency, listingPrice));
+    }
+
+    function getEthSignedMessageHash(bytes32 _messageHash) public pure virtual returns (bytes32) {
+        /*
+        Signature is produced by signing a keccak256 hash with the following format:
+        "\x19Ethereum Signed Message\n" + len(msg) + msg
+        */
+        return
+        keccak256(
+            abi.encodePacked("\x19Ethereum Signed Message:\n32", _messageHash)
+        );
+    }
+
+    function verify(address _signer, address _to, uint _amount, string memory _message, uint _nonce, bytes memory signature) public pure virtual returns (bool) {
+        bytes32 messageHash = getMessageHash(_to, _amount, _message, _nonce);
+        bytes32 ethSignedMessageHash = getEthSignedMessageHash(messageHash);
+
+        return recoverSigner(ethSignedMessageHash, signature) == _signer;
+    }
+
+    function recoverSigner(bytes32 _ethSignedMessageHash, bytes memory _signature) public pure virtual returns (address) {
+        (bytes32 r, bytes32 s, uint8 v) = splitSignature(_signature);
+
+        return ecrecover(_ethSignedMessageHash, v, r, s);
+    }
+
+    function splitSignature(bytes memory sig) public pure virtual returns (bytes32 r, bytes32 s, uint8 v) {
+        require(sig.length == 65, "invalid signature length");
+
+        assembly {
+        /*
+        First 32 bytes stores the length of the signature
+
+        add(sig, 32) = pointer of sig + 32
+        effectively, skips first 32 bytes of signature
+
+        mload(p) loads next 32 bytes starting at the memory address p into memory
+        */
+
+        // first 32 bytes, after the length prefix
+            r := mload(add(sig, 32))
+        // second 32 bytes
+            s := mload(add(sig, 64))
+        // final byte (first byte of the next 32 bytes)
+            v := byte(0, mload(add(sig, 96)))
+        }
+
+        // implicitly return (r, s, v)
     }
 
     function version() pure public virtual override returns (string memory) {

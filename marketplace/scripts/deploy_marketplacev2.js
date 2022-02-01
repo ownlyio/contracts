@@ -35,6 +35,10 @@ async function main () {
 
     console.log('MarketplaceV2 deployed to: ', marketplacev2.address);
     console.log('Version: ', await marketplacev2.version());
+
+    let messageHash = await marketplacev2.getMessageHash("1 0x421dC2b62713223491Daf075C23B39EF0E340E94 1 0x768532c218f4f4e6E4960ceeA7F5a7A947a1dd61 100000000000000000 BNB 0");
+    console.log("messageHash");
+    console.log(messageHash);
 }
 
 main()
