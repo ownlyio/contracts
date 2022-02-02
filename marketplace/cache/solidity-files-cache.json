@@ -1629,8 +1629,8 @@
       ]
     },
     "D:\\Codes\\contracts\\marketplace\\contracts\\MarketplaceV2.sol": {
-      "lastModificationDate": 1643391271430,
-      "contentHash": "e599c89925d36de413de5ead4c9dd7b4",
+      "lastModificationDate": 1643825285039,
+      "contentHash": "58f6f07d552de294ccbbd2be502f77db",
       "sourceName": "contracts/MarketplaceV2.sol",
       "solcConfig": {
         "version": "0.8.2",
@@ -1666,7 +1666,7 @@
       ]
     },
     "D:\\Codes\\contracts\\marketplace\\contracts\\MarketplaceEth.sol": {
-      "lastModificationDate": 1643596221328,
+      "lastModificationDate": 1643597319977,
       "contentHash": "8dbffc77e3b035ecd689f4bc46ef8b2c",
       "sourceName": "contracts/MarketplaceEth.sol",
       "solcConfig": {

@@ -10,6 +10,8 @@ abstract contract PancakeSwapRouterInterface {
 contract MarketplaceV2 is Marketplace {
     using CountersUpgradeable for CountersUpgradeable.Counter;
 
+    address marketplaceValidator;
+
     event MarketItemPaidForOtherChain (
         uint nftChainID,
         uint indexed itemId,
@@ -21,11 +23,20 @@ contract MarketplaceV2 is Marketplace {
         uint256 listingPrice
     );
 
-    function createMarketSale(uint256 itemId, string memory currency, string[] memory message, string memory signature) public virtual override payable nonReentrant {
+    function setMarketplaceValidator(address _marketplaceValidator) public onlyOwner virtual {
+        marketplaceValidator = _marketplaceValidator;
+    }
+
+    function getMarketplaceValidator() public view virtual returns (address) {
+        return marketplaceValidator;
+    }
+
+    function createMarketSale(uint256 itemId, string memory currency, uint256 nftChainId, address nftContract, uint256 tokenId, address seller, uint256 price, uint256 listingPrice, bytes memory signature) public virtual payable nonReentrant {
         address ownly_address = 0xC3Df366fAf79c6Caff3C70948363f00b9Ac55FEE;
         //        address ownly_address = 0x7665CB7b0d01Df1c9f9B9cC66019F00aBD6959bA;
+        string memory _currency = currency;
 
-        if(nftChainID == 56) {
+        if(nftChainId == 56) {
             MarketItem memory marketItem = idToMarketItem[itemId];
 
             if(compareStrings(currency, "BNB") && compareStrings(marketItem.currency, "BNB")) {
@@ -73,21 +84,23 @@ contract MarketplaceV2 is Marketplace {
             emit MarketItemSold(
                 itemId
             );
-        } else if(nftChainID == 1) {
-            uint ownPrice = ethToOWNConversion(stringToUint(message[4]));
+        } else if(nftChainId == 1) {
+            require(verify(itemId, nftContract, tokenId, seller, price, _currency, listingPrice, signature), "Invalid Market Item");
+
+            uint ownPrice = ethToOWNConversion(price);
             ownPrice = (ownPrice * 8) / 10; // 20% discount
 
-            IERC20Upgradeable(ownly_address).transferFrom(msg.sender, message[3], ownPrice);
+            IERC20Upgradeable(ownly_address).transferFrom(msg.sender, seller, ownPrice);
             payable(marketplaceOwner).transfer(idToMarketItem[itemId].listingPrice);
 
             emit MarketItemPaidForOtherChain(
-                nftChainID,
+                nftChainId,
                 itemId,
                 nftContract,
                 tokenId,
-                message[3],
+                seller,
                 ownPrice,
-                currency,
+                _currency,
                 listingPrice
             );
         }
@@ -114,7 +127,7 @@ contract MarketplaceV2 is Marketplace {
         return ownPrice[0];
     }
 
-    function getMessageHash(uint itemId, address nftContract, uint256 tokenId, address seller, uint256 price, string currency, uint256 listingPrice) public pure returns (bytes32) {
+    function getMessageHash(uint itemId, address nftContract, uint256 tokenId, address seller, uint256 price, string memory currency, uint256 listingPrice) public pure returns (bytes32) {
         return keccak256(abi.encodePacked(itemId, nftContract, tokenId, seller, price, currency, listingPrice));
     }
 
@@ -129,11 +142,11 @@ contract MarketplaceV2 is Marketplace {
         );
     }
 
-    function verify(address _signer, address _to, uint _amount, string memory _message, uint _nonce, bytes memory signature) public pure virtual returns (bool) {
-        bytes32 messageHash = getMessageHash(_to, _amount, _message, _nonce);
+    function verify(uint itemId, address nftContract, uint256 tokenId, address seller, uint256 price, string memory currency, uint256 listingPrice, bytes memory signature) public view virtual returns (bool) {
+        bytes32 messageHash = getMessageHash(itemId, nftContract, tokenId, seller, price, currency, listingPrice);
         bytes32 ethSignedMessageHash = getEthSignedMessageHash(messageHash);
 
-        return recoverSigner(ethSignedMessageHash, signature) == _signer;
+        return recoverSigner(ethSignedMessageHash, signature) == marketplaceValidator;
     }
 
     function recoverSigner(bytes32 _ethSignedMessageHash, bytes memory _signature) public pure virtual returns (address) {

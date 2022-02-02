@@ -3,32 +3,13 @@ const { ethers, upgrades } = require('hardhat');
 async function main () {
     const [deployer] = await ethers.getSigners();
 
-    console.log("Account:", deployer.address);
+    console.log("\nTesting contracts with the account:", deployer.address);
 
-    const Marketplace = await ethers.getContractFactory('Marketplace');
-    const marketplace = await upgrades.deployProxy(Marketplace, { kind: 'uups' });
-    await marketplace.deployed();
+    let MarketplaceV2 = await hre.ethers.getContractFactory("MarketplaceV2");
+    let marketplaceV2 = await MarketplaceV2.attach("0x457f1e0d886DEA5B8b45F19371E0753562638d4c");
 
-    console.log('Marketplace deployed to:', marketplace.address);
-
-    const BNFT = await ethers.getContractFactory('BNFT');
-    let bnft = await BNFT.deploy();
-
-    console.log('BNFT deployed to:', bnft.address);
-
-    // const Ownly = await ethers.getContractFactory('Ownly');
-    // let ownly = await Ownly.deploy();
-
-    // console.log('Ownly deployed to:', ownly.address);
-
-    await bnft.createToken("https://ownly.io/nft/titans-of-industry/api/");
-    console.log("Token URI 1:", await bnft.tokenURI(1));
-
-    // await bnft.approve(marketplace.address, 1);
-    // await marketplace.createMarketItem(bnft.address, 1, "10000000000000000", "OWN");
-    // await marketplace.createMarketSale(1, { value: "0" });
-    //
-    // console.log(parseInt(transaction.value));
+    console.log("\ninitializeV2:");
+    await marketplaceV2.setMarketplaceValidator("0xAa313c46175BbD4ED6cf91c710a6f48E4738a9F1");
 }
 
 main()
