@@ -10,11 +10,7 @@ async function main () {
     const marketplace = await upgrades.deployProxy(Marketplace, { kind: 'uups' });
     await marketplace.deployed();
 
-    let implHex = await ethers.provider.getStorageAt(
-        marketplace.address,
-        "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc"
-    );
-    let implAddress = ethers.utils.hexStripZeros(implHex);
+    let implAddress = await upgrades.erc1967.getImplementationAddress(marketplace.address);
     console.log('Marketplace Implementation Address: ', implAddress);
 
     console.log('Marketplace deployed to: ', marketplace.address);
@@ -26,11 +22,7 @@ async function main () {
     const MarketplaceV2 = await ethers.getContractFactory('MarketplaceV2');
     const marketplacev2 = await upgrades.upgradeProxy(marketplace.address, MarketplaceV2);
 
-    implHex = await ethers.provider.getStorageAt(
-        marketplacev2.address,
-        "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc"
-    );
-    implAddress = ethers.utils.hexStripZeros(implHex);
+    implAddress = await upgrades.erc1967.getImplementationAddress(marketplacev2.address);
     console.log('MarketplaceV2 Implementation Address: ', implAddress);
 
     console.log('MarketplaceV2 deployed to: ', marketplacev2.address);

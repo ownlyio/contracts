@@ -11,6 +11,7 @@ contract MarketplaceV2 is Marketplace {
     using CountersUpgradeable for CountersUpgradeable.Counter;
 
     address marketplaceValidator;
+    uint256 ownDiscountAmount;
 
     event MarketItemPaidForOtherChain (
         uint nftChainID,
@@ -31,6 +32,14 @@ contract MarketplaceV2 is Marketplace {
         return marketplaceValidator;
     }
 
+    function setOwnDiscountAmount(uint256 _ownDiscountAmount) public onlyOwner virtual {
+        ownDiscountAmount = _ownDiscountAmount;
+    }
+
+    function getOwnDiscountAmount() public view virtual returns (uint256) {
+        return ownDiscountAmount;
+    }
+
     function createMarketSale(uint256 itemId, string memory currency, uint256 nftChainId, address nftContract, uint256 tokenId, address seller, uint256 price, uint256 listingPrice, bytes memory signature) public virtual payable nonReentrant {
         address ownly_address = 0xC3Df366fAf79c6Caff3C70948363f00b9Ac55FEE;
         //        address ownly_address = 0x7665CB7b0d01Df1c9f9B9cC66019F00aBD6959bA;
@@ -45,7 +54,7 @@ contract MarketplaceV2 is Marketplace {
             }
 
             if(compareStrings(currency, "OWN") && compareStrings(marketItem.currency, "OWN")) {
-                OwnlyInterface ownlyContract = OwnlyInterface(ownly_address);
+                IERC20Upgradeable ownlyContract = IERC20Upgradeable(ownly_address);
                 uint ownlyAllowance = ownlyContract.allowance(msg.sender, address(this));
 
                 require(marketItem.price == ownlyAllowance, "Please submit the asking price in order to complete the purchase");
@@ -62,11 +71,10 @@ contract MarketplaceV2 is Marketplace {
 
                 uint[] memory ownPrice = sparkSwapRouterContract.getAmountsIn(marketItem.price, path);
 
-                OwnlyInterface ownlyContract = OwnlyInterface(ownly_address);
+                IERC20Upgradeable ownlyContract = IERC20Upgradeable(ownly_address);
                 uint ownlyAllowance = ownlyContract.allowance(msg.sender, address(this));
 
-                uint finalPrice = ownPrice[0];
-                finalPrice = (finalPrice * 8) / 10; // 20% discount
+                uint finalPrice = getOwnDiscountedAmount(ownPrice[0]);
 
                 require(ownlyAllowance >= finalPrice, "Please submit the asking price in order to complete the purchase");
 
@@ -85,9 +93,13 @@ contract MarketplaceV2 is Marketplace {
                 itemId
             );
         } else if(nftChainId == 1) {
-            require(verify(itemId, nftContract, tokenId, seller, price, _currency, listingPrice, signature), "Invalid Market Item");
+            require(verify(nftChainId, itemId, nftContract, tokenId, seller, price, _currency, listingPrice, signature), "Invalid Market Item");
 
-            uint ownPrice = ethToOWNConversion(price);
+            // mainnet
+//            uint ownPrice = getOwnDiscountedAmount(ethToOWNConversion(price));
+
+            // testnet
+            uint ownPrice = getOwnDiscountedAmount(1000000000000000000000);
             ownPrice = (ownPrice * 8) / 10; // 20% discount
 
             IERC20Upgradeable(ownly_address).transferFrom(msg.sender, seller, ownPrice);
@@ -104,6 +116,10 @@ contract MarketplaceV2 is Marketplace {
                 listingPrice
             );
         }
+    }
+
+    function getOwnDiscountedAmount(uint256 amount) public view virtual returns (uint256) {
+        return (amount * (100 - ownDiscountAmount)) / 100; // 20% discount
     }
 
     function ethToOWNConversion(uint256 amount) public view virtual returns (uint256) {
@@ -127,8 +143,8 @@ contract MarketplaceV2 is Marketplace {
         return ownPrice[0];
     }
 
-    function getMessageHash(uint itemId, address nftContract, uint256 tokenId, address seller, uint256 price, string memory currency, uint256 listingPrice) public pure returns (bytes32) {
-        return keccak256(abi.encodePacked(itemId, nftContract, tokenId, seller, price, currency, listingPrice));
+    function getMessageHash(uint chain_id, uint itemId, address nftContract, uint256 tokenId, address seller, uint256 price, string memory currency, uint256 listingPrice) public pure returns (bytes32) {
+        return keccak256(abi.encodePacked(chain_id, itemId, nftContract, tokenId, seller, price, currency, listingPrice));
     }
 
     function getEthSignedMessageHash(bytes32 _messageHash) public pure virtual returns (bytes32) {
@@ -142,8 +158,8 @@ contract MarketplaceV2 is Marketplace {
         );
     }
 
-    function verify(uint itemId, address nftContract, uint256 tokenId, address seller, uint256 price, string memory currency, uint256 listingPrice, bytes memory signature) public view virtual returns (bool) {
-        bytes32 messageHash = getMessageHash(itemId, nftContract, tokenId, seller, price, currency, listingPrice);
+    function verify(uint chain_id, uint itemId, address nftContract, uint256 tokenId, address seller, uint256 price, string memory currency, uint256 listingPrice, bytes memory signature) public view virtual returns (bool) {
+        bytes32 messageHash = getMessageHash(chain_id, itemId, nftContract, tokenId, seller, price, currency, listingPrice);
         bytes32 ethSignedMessageHash = getEthSignedMessageHash(messageHash);
 
         return recoverSigner(ethSignedMessageHash, signature) == marketplaceValidator;
