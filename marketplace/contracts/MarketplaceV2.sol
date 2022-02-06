@@ -45,7 +45,9 @@ contract MarketplaceV2 is Marketplace {
         //        address ownly_address = 0x7665CB7b0d01Df1c9f9B9cC66019F00aBD6959bA;
         string memory _currency = currency;
 
-        if(nftChainId == 56) {
+
+//        if(nftChainId == 56) {  // mainnet
+        if(nftChainId == 97) {  // testnet
             MarketItem memory marketItem = idToMarketItem[itemId];
 
             if(compareStrings(currency, "BNB") && compareStrings(marketItem.currency, "BNB")) {
@@ -92,7 +94,8 @@ contract MarketplaceV2 is Marketplace {
             emit MarketItemSold(
                 itemId
             );
-        } else if(nftChainId == 1) {
+//        } else if(nftChainId == 1) { // mainnet
+        } else if(nftChainId == 4) { // testnet
             require(verify(nftChainId, itemId, nftContract, tokenId, seller, price, _currency, listingPrice, signature), "Invalid Market Item");
 
             // mainnet
