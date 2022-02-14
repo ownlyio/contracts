@@ -13,8 +13,12 @@ contract Mustacheers is ERC721Enumerable, Ownable {
 
     string public PROVENANCE_HASH = "";
     string baseUri = "https://ownly.io/nft/mustacheers/api/";
+
     uint mintPrice;
+    uint public MAX_MUSTACHEERS = 10000;
+
     mapping(address => uint) whitelistedAddresses;
+
     address payable ownlyWallet;
 
     constructor() ERC721("Mustacheers", "MUSTACHEERS") {}
@@ -37,9 +41,7 @@ contract Mustacheers is ERC721Enumerable, Ownable {
 
     function mintMultiple(address[] memory _addresses) public onlyOwner {
         for(uint i = 0; i < _addresses.length; i++) {
-            tokenIds.increment();
-            uint tokenId = tokenIds.current();
-            _mint(_addresses[i], tokenId);
+            mintMustacheers(_addresses[i]);
         }
     }
 
@@ -68,10 +70,7 @@ contract Mustacheers is ERC721Enumerable, Ownable {
     function whitelistMint() public {
         require(whitelistedAddresses[msg.sender] == 1, "You are not included in the whitelist.");
 
-        tokenIds.increment();
-        uint tokenId = tokenIds.current();
-        _mint(msg.sender, tokenId);
-
+        mintMustacheers(msg.sender);
         whitelistedAddresses[msg.sender] = 2;
     }
 
@@ -86,8 +85,14 @@ contract Mustacheers is ERC721Enumerable, Ownable {
 
         ownlyContract.transferFrom(msg.sender, ownlyWallet, mintPrice);
 
+        mintMustacheers(msg.sender);
+    }
+
+    function mintMustacheers(address _address) internal {
+        require(MAX_MUSTACHEERS <= 10000, "Maximum number of Mustacheers is already minted.");
+
         tokenIds.increment();
         uint tokenId = tokenIds.current();
-        _mint(msg.sender, tokenId);
+        _mint(_address, tokenId);
     }
 }
