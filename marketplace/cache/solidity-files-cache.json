@@ -1676,8 +1676,8 @@
       ]
     },
     "D:\\Codes\\contracts\\marketplace\\contracts\\MarketplaceV2.sol": {
-      "lastModificationDate": 1643882532684,
-      "contentHash": "0f5218e511412b8dd72dd557a18782ef",
+      "lastModificationDate": 1644151836315,
+      "contentHash": "8f2b98e35deebeb581fc8a867caf2186",
       "sourceName": "contracts/MarketplaceV2.sol",
       "solcConfig": {
         "version": "0.8.2",
