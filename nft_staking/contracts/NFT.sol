@@ -92,12 +92,12 @@ contract NFT is ERC721Enumerable, Ownable, ReentrancyGuard {
         address ownly_address = 0xC3Df366fAf79c6Caff3C70948363f00b9Ac55FEE;
         //        address ownly_address = 0x7665CB7b0d01Df1c9f9B9cC66019F00aBD6959bA;
 
-        IERC20 stakingTokenContract = IERC20(ownly_address);
-        uint allowance = stakingTokenContract.allowance(msg.sender, address(this));
+        IERC20 purchasingTokenContract = IERC20(ownly_address);
+        uint allowance = purchasingTokenContract.allowance(msg.sender, address(this));
 
         require(mintPrice >= allowance, "Please submit the asking price in order to complete the purchase");
 
-        stakingTokenContract.transferFrom(msg.sender, admin, mintPrice);
+        purchasingTokenContract.transferFrom(msg.sender, admin, mintPrice);
 
         mintNFT(msg.sender);
     }
@@ -110,7 +110,7 @@ contract NFT is ERC721Enumerable, Ownable, ReentrancyGuard {
         uint stakingItemDeadline = nftStaking.getStakingItemDeadline(stakingItemId);
         bool stakingItemIsClaimed = nftStaking.getStakingItemIsClaimed(stakingItemId);
 
-        require(stakingItemAccount == msg.sender, "Current account is not valid for this staking item.");
+        require(stakingItemAccount == msg.sender, "Your account is not valid for this staking item.");
         require(stakingItemAmount >= stakeRequired, "Staking amount is invalid.");
         require(block.timestamp >= stakingItemDeadline, "Staking duration is not finish yet.");
         require(!stakingItemIsClaimed, "Staking item is already claimed.");

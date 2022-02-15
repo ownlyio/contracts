@@ -10,6 +10,8 @@ contract NFTStaking is Ownable, ReentrancyGuard {
     using Counters for Counters.Counter;
     Counters.Counter stakingItemIds;
 
+    address stakingTokenAddress;
+
     struct StakingItem {
         address account;
         uint amount;
@@ -22,16 +24,21 @@ contract NFTStaking is Ownable, ReentrancyGuard {
 
     constructor() {}
 
+    function setStakingTokenAddress(address payable _stakingTokenAddress) public onlyOwner virtual {
+        stakingTokenAddress = _stakingTokenAddress;
+    }
+
+    function getStakingTokenAddress() public view virtual returns (address) {
+        return stakingTokenAddress;
+    }
+    
     function stake(uint amount, uint _days) public nonReentrant {
-        address ownly_address = 0xC3Df366fAf79c6Caff3C70948363f00b9Ac55FEE;
-//        address ownly_address = 0x7665CB7b0d01Df1c9f9B9cC66019F00aBD6959bA;
+        IERC20 stakingTokenContract = IERC20(stakingTokenAddress);
+        uint allowance = stakingTokenContract.allowance(msg.sender, address(this));
 
-        IERC20 ownlyContract = IERC20(ownly_address);
-        uint ownlyAllowance = ownlyContract.allowance(msg.sender, address(this));
+        require(amount >= allowance, "Please approve the staking contract with the right staking amount.");
 
-        require(amount >= ownlyAllowance, "Please approve the staking contract with the right staking amount.");
-
-        ownlyContract.transferFrom(msg.sender, address(this), amount);
+        stakingTokenContract.transferFrom(msg.sender, address(this), amount);
 
         uint stakingItemId = stakingItemIds.current();
         stakingItemIds.increment();
