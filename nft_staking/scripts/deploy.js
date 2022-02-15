@@ -4,17 +4,28 @@ async function main() {
     const [deployer] = await ethers.getSigners();
     console.log("Deployer:", deployer.address);
 
-    const Mustacheers = await hre.ethers.getContractFactory("Mustacheers");
-    const mustacheers = await Mustacheers.deploy();
-    console.log("\nMustacheers deployed to:", mustacheers.address);
+    const NFTStaking = await hre.ethers.getContractFactory("NFTStaking");
+    const nftStaking = await NFTStaking.deploy();
+    console.log("\nNFTStaking deployed to:", nftStaking.address);
 
-    await mustacheers.addWhitelist(['0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266']);
-    console.log("\naddWhitelist:");
+    const NFT = await hre.ethers.getContractFactory("NFT");
+    const nft = await NFT.deploy();
+    console.log("\nNFT deployed to:", nft.address);
 
-    await mustacheers.whitelistMint();
-    console.log("\nwhitelistMint:");
+    await nftStaking.setCollection(nft.address, true);
+    console.log("\nnftStaking.setCollection: " + nft.address + ", true");
 
-    let totalSupply = await mustacheers.totalSupply();
+    await nftStaking.stake("1000000", "0");
+    console.log("\nstake: 1000000, 0");
+
+    await nft.stakeMint(nftStaking.address, 1);
+    console.log("\nstakeMint: 1000000, 0");
+
+    let stakingItems = await nftStaking.getStakingItems(deployer.address);
+    console.log("\ngetStakingItems:");
+    console.log(stakingItems);
+
+    let totalSupply = await nft.totalSupply();
     console.log("\ntotalSupply: " + totalSupply);
 }
 
