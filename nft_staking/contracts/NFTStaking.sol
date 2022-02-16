@@ -31,7 +31,7 @@ contract NFTStaking is Ownable, ReentrancyGuard {
     function getStakingTokenAddress() public view virtual returns (address) {
         return stakingTokenAddress;
     }
-    
+
     function stake(uint amount, uint _days) public nonReentrant {
         IERC20 stakingTokenContract = IERC20(stakingTokenAddress);
         uint allowance = stakingTokenContract.allowance(msg.sender, address(this));
@@ -59,6 +59,10 @@ contract NFTStaking is Ownable, ReentrancyGuard {
         require(collections[msg.sender], "Collection is not in the whitelist.");
 
         idToStakingItem[_idToStakingItem].isClaimed = true;
+
+        IERC20 stakingTokenContract = IERC20(stakingTokenAddress);
+
+        stakingTokenContract.transfer(idToStakingItem[_idToStakingItem].account, idToStakingItem[_idToStakingItem].amount);
     }
 
     function getStakingItemAccount(uint stakingItemId) public view returns (address) {

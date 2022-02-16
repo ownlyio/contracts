@@ -29,13 +29,6 @@ contract NFT is ERC721Enumerable, Ownable, ReentrancyGuard {
 
     address payable admin;
 
-    struct StakingItem {
-        address account;
-        uint amount;
-        uint deadline;
-        bool isClaimed;
-    }
-
     constructor() ERC721("NFT", "NFT") {}
 
     function setMintPrice(uint _mintPrice) public onlyOwner virtual {

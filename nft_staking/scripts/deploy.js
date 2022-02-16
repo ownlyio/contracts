@@ -34,10 +34,13 @@ async function main() {
     console.log("\nnftStaking.stake: " + stakedAmount + ", 0");
 
     balance = await erc20.balanceOf(nftStaking.address);
-    console.log("\nerc20.balanceOf: " + balance);
+    console.log("\nNFT staking erc20.balanceOf: " + balance);
+
+    balance = await erc20.balanceOf(deployer.address);
+    console.log("\nDeployer erc20.balanceOf: " + balance);
 
     await nft.stakeMint(nftStaking.address, 0);
-    console.log("\nnft.stakeMint: 1000000, 0");
+    console.log("\nnft.stakeMint:");
 
     let stakingItems = await nftStaking.getStakingItems(deployer.address);
     console.log("\nnftStaking.getStakingItems:");
@@ -45,6 +48,12 @@ async function main() {
 
     let totalSupply = await nft.totalSupply();
     console.log("\nnft.totalSupply: " + totalSupply);
+
+    balance = await erc20.balanceOf(deployer.address);
+    console.log("\nDeployer erc20.balanceOf: " + balance);
+
+    let address = await nft.ownerOf(1);
+    console.log("\nnft.ownerOf: " + address);
 }
 
 main()
