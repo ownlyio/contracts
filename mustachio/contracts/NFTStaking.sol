@@ -17,7 +17,7 @@ contract NFTStaking is Ownable, ReentrancyGuard {
         address account;
         uint amount;
         uint startTime;
-        bool withdrawnWithoutClaiming;
+        bool isWithdrawnWithoutMinting;
         bool isClaimed;
     }
 
@@ -55,6 +55,14 @@ contract NFTStaking is Ownable, ReentrancyGuard {
         );
     }
 
+    function unstake(uint _idToStakingItem) public {
+        require(msg.sender == idToStakingItem[_idToStakingItem].account, "Staking item doesn't belong to this account.");
+        idToStakingItem[_idToStakingItem].isWithdrawnWithoutMinting = true;
+
+        IERC20 stakingTokenContract = IERC20(stakingTokenAddress);
+        stakingTokenContract.transfer(idToStakingItem[_idToStakingItem].account, idToStakingItem[_idToStakingItem].amount);
+    }
+
     function setCollection(address collection, bool status) public onlyOwner {
         collections[collection] = status;
     }
@@ -65,7 +73,6 @@ contract NFTStaking is Ownable, ReentrancyGuard {
         idToStakingItem[_idToStakingItem].isClaimed = true;
 
         IERC20 stakingTokenContract = IERC20(stakingTokenAddress);
-
         stakingTokenContract.transfer(idToStakingItem[_idToStakingItem].account, idToStakingItem[_idToStakingItem].amount);
     }
 
@@ -83,6 +90,10 @@ contract NFTStaking is Ownable, ReentrancyGuard {
 
     function getStakingItemStartTime(uint stakingItemId) public view returns (uint) {
         return idToStakingItem[stakingItemId].startTime;
+    }
+
+    function getStakingItemIsWithdrawnWithoutMinting(uint stakingItemId) public view returns (bool) {
+        return idToStakingItem[stakingItemId].isWithdrawnWithoutMinting;
     }
 
     function getStakingItemIsClaimed(uint stakingItemId) public view returns (bool) {
