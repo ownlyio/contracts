@@ -22,7 +22,7 @@ contract NFTStaking is Ownable, ReentrancyGuard {
     }
 
     mapping(uint => StakingItem) idToStakingItem;
-    mapping(address => bool) collections;
+    mapping(address => uint) collectionMaxStaking;
 
     constructor() {}
 
@@ -63,12 +63,12 @@ contract NFTStaking is Ownable, ReentrancyGuard {
         stakingTokenContract.transfer(idToStakingItem[_idToStakingItem].account, idToStakingItem[_idToStakingItem].amount);
     }
 
-    function setCollection(address collection, bool status) public onlyOwner {
-        collections[collection] = status;
+    function setCollectionMaxStaking(address nftContractAddress, uint quantity) public onlyOwner {
+        collectionMaxStaking[nftContractAddress] = quantity;
     }
 
     function setStakingItemAsClaimed(uint _idToStakingItem) public {
-        require(collections[msg.sender], "Collection is not in the whitelist.");
+        require(collectionMaxStaking[msg.sender] > 0, "Collection is not in the whitelist.");
 
         idToStakingItem[_idToStakingItem].isClaimed = true;
 
@@ -117,5 +117,33 @@ contract NFTStaking is Ownable, ReentrancyGuard {
         }
 
         return stakingItems;
+    }
+
+    function totalDeposits(address nftContractAddress) public view returns (uint) {
+        uint _totalDeposits = 0;
+
+        for(uint i = 0; i < stakingItemIds.current(); i++) {
+            if(idToStakingItem[i].nftContractAddress == nftContractAddress && !idToStakingItem[i].isWithdrawnWithoutMinting && !idToStakingItem[i].isClaimed) {
+                _totalDeposits = idToStakingItem[i].amount;
+            }
+        }
+
+        return _totalDeposits;
+    }
+
+    function totalStakes(address nftContractAddress) public view returns (uint) {
+        uint _totalStakes = 0;
+
+        for(uint i = 0; i < stakingItemIds.current(); i++) {
+            if(idToStakingItem[i].nftContractAddress == nftContractAddress && !idToStakingItem[i].isWithdrawnWithoutMinting) {
+                _totalStakes++;
+            }
+        }
+
+        return _totalStakes;
+    }
+
+    function remainingRewards(address nftContractAddress) public view returns (uint) {
+        return collectionMaxStaking[nftContractAddress] - totalStakes(nftContractAddress);
     }
 }

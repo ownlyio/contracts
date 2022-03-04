@@ -2,8 +2,6 @@
 pragma solidity ^0.8.2;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
-import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
@@ -17,7 +15,7 @@ abstract contract INFTStaking {
     function getStakingItemIsClaimed(uint stakingItemId) public view virtual returns (bool);
 }
 
-contract Mustachio is ERC721Enumerable, ReentrancyGuard, Ownable {
+contract Mustachio is ERC721, Ownable {
     using Counters for Counters.Counter;
     Counters.Counter tokenIds;
     
@@ -33,6 +31,10 @@ contract Mustachio is ERC721Enumerable, ReentrancyGuard, Ownable {
     bool public saleIsActive = false;
 
     constructor() ERC721("Mustachio", "MUSTACHIO") {}
+
+    function totalSupply() public view returns (uint256) {
+        return tokenIds.current();
+    }
 
     function setLastMintedTokenId(uint _value) public onlyOwner {
         tokenIds._value = _value;
@@ -91,7 +93,7 @@ contract Mustachio is ERC721Enumerable, ReentrancyGuard, Ownable {
         mintPrice = _mintPrice;
     }
 
-    function stakeMint(address nftStakingAddress, uint stakingItemId) public nonReentrant {
+    function stakeMint(address nftStakingAddress, uint stakingItemId) public {
         INFTStaking nftStaking = INFTStaking(nftStakingAddress);
 
         address stakingItemNftContractAddress = nftStaking.getStakingItemNftContractAddress(stakingItemId);
@@ -113,7 +115,7 @@ contract Mustachio is ERC721Enumerable, ReentrancyGuard, Ownable {
         mintNFT(msg.sender);
     }
 
-    function mintMustachio() public virtual payable nonReentrant {
+    function purchaseMint() public virtual payable {
         require(saleIsActive, "Sale must be active to mint your Mustachio.");
         require(tokenIds.current() + 1 <= max_mustachios, "Purchase would exceed max supply of Mustachios.");
         require(msg.value == mintPrice, "Please submit the asking price in order to complete the purchase.");
