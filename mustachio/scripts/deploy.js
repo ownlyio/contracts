@@ -12,8 +12,16 @@ async function main() {
     console.log("\nMustachio deployed to:", mustachio.address);
 
     const NFTStaking = await hre.ethers.getContractFactory("NFTStaking");
-    const nftStaking = await NFTStaking.deploy();
-    console.log("\nNFTStaking deployed to:", nftStaking.address);
+    const nftStaking = await upgrades.deployProxy(NFTStaking, { kind: 'uups' });
+    await nftStaking.deployed();
+
+    const implHex = await ethers.provider.getStorageAt(
+        nftStaking.address,
+        "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc"
+    );
+    const implAddress = ethers.utils.hexStripZeros(implHex);
+    console.log('NFTStaking Implementation Address: ', implAddress);
+    console.log('NFTStaking deployed to: ', nftStaking.address);
 
     let erc20;
     if(testRun) {
@@ -32,8 +40,7 @@ async function main() {
     await mustachio.setStakeRequired(stakeRequired);
     console.log("\nmustachio.setStakeRequired: " + stakeRequired);
 
-    // let stakeDuration = 300;
-    let stakeDuration = 0;
+    let stakeDuration = (testRun) ? 0 : 300;
     await mustachio.setStakeDuration(stakeDuration);
     console.log("\nmustachio.setStakeDuration: " + stakeDuration);
 

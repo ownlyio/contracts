@@ -1,14 +1,14 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.2;
 
-import "@openzeppelin/contracts/utils/Counters.sol";
-import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+import "@openzeppelin/contracts-upgradeable/utils/CountersUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/token/ERC20/IERC20Upgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 
-contract NFTStaking is Ownable, ReentrancyGuard {
-    using Counters for Counters.Counter;
-    Counters.Counter stakingItemIds;
+contract NFTStaking is Initializable, OwnableUpgradeable, UUPSUpgradeable {
+    using CountersUpgradeable for CountersUpgradeable.Counter;
+    CountersUpgradeable.Counter stakingItemIds;
 
     address stakingTokenAddress;
 
@@ -24,7 +24,16 @@ contract NFTStaking is Ownable, ReentrancyGuard {
     mapping(uint => StakingItem) idToStakingItem;
     mapping(address => uint) collectionMaxStaking;
 
-    constructor() {}
+    function initialize() initializer public {
+        __Ownable_init();
+        __UUPSUpgradeable_init();
+    }
+
+    function _authorizeUpgrade(address newImplementation) internal onlyOwner override {}
+
+    function version() pure public virtual returns (string memory) {
+        return "v1";
+    }
 
     function setStakingTokenAddress(address payable _stakingTokenAddress) public onlyOwner virtual {
         stakingTokenAddress = _stakingTokenAddress;
@@ -34,8 +43,8 @@ contract NFTStaking is Ownable, ReentrancyGuard {
         return stakingTokenAddress;
     }
 
-    function stake(address _nftContractAddress, uint amount) public nonReentrant {
-        IERC20 stakingTokenContract = IERC20(stakingTokenAddress);
+    function stake(address _nftContractAddress, uint amount) public virtual {
+        IERC20Upgradeable stakingTokenContract = IERC20Upgradeable(stakingTokenAddress);
         uint allowance = stakingTokenContract.allowance(msg.sender, address(this));
 
         require(amount >= allowance, "Please approve the staking contract with the right staking amount.");
@@ -55,52 +64,52 @@ contract NFTStaking is Ownable, ReentrancyGuard {
         );
     }
 
-    function unstake(uint _idToStakingItem) public {
+    function unstake(uint _idToStakingItem) public virtual {
         require(msg.sender == idToStakingItem[_idToStakingItem].account, "Staking item doesn't belong to this account.");
         idToStakingItem[_idToStakingItem].isWithdrawnWithoutMinting = true;
 
-        IERC20 stakingTokenContract = IERC20(stakingTokenAddress);
+        IERC20Upgradeable stakingTokenContract = IERC20Upgradeable(stakingTokenAddress);
         stakingTokenContract.transfer(idToStakingItem[_idToStakingItem].account, idToStakingItem[_idToStakingItem].amount);
     }
 
-    function setCollectionMaxStaking(address nftContractAddress, uint quantity) public onlyOwner {
+    function setCollectionMaxStaking(address nftContractAddress, uint quantity) public onlyOwner virtual {
         collectionMaxStaking[nftContractAddress] = quantity;
     }
 
-    function setStakingItemAsClaimed(uint _idToStakingItem) public {
+    function setStakingItemAsClaimed(uint _idToStakingItem) public virtual {
         require(collectionMaxStaking[msg.sender] > 0, "Collection is not in the whitelist.");
 
         idToStakingItem[_idToStakingItem].isClaimed = true;
 
-        IERC20 stakingTokenContract = IERC20(stakingTokenAddress);
+        IERC20Upgradeable stakingTokenContract = IERC20Upgradeable(stakingTokenAddress);
         stakingTokenContract.transfer(idToStakingItem[_idToStakingItem].account, idToStakingItem[_idToStakingItem].amount);
     }
 
-    function getStakingItemNftContractAddress(uint stakingItemId) public view returns (address) {
+    function getStakingItemNftContractAddress(uint stakingItemId) public view virtual returns (address) {
         return idToStakingItem[stakingItemId].nftContractAddress;
     }
 
-    function getStakingItemAccount(uint stakingItemId) public view returns (address) {
+    function getStakingItemAccount(uint stakingItemId) public view virtual returns (address) {
         return idToStakingItem[stakingItemId].account;
     }
 
-    function getStakingItemAmount(uint stakingItemId) public view returns (uint) {
+    function getStakingItemAmount(uint stakingItemId) public view virtual returns (uint) {
         return idToStakingItem[stakingItemId].amount;
     }
 
-    function getStakingItemStartTime(uint stakingItemId) public view returns (uint) {
+    function getStakingItemStartTime(uint stakingItemId) public view virtual returns (uint) {
         return idToStakingItem[stakingItemId].startTime;
     }
 
-    function getStakingItemIsWithdrawnWithoutMinting(uint stakingItemId) public view returns (bool) {
+    function getStakingItemIsWithdrawnWithoutMinting(uint stakingItemId) public view virtual returns (bool) {
         return idToStakingItem[stakingItemId].isWithdrawnWithoutMinting;
     }
 
-    function getStakingItemIsClaimed(uint stakingItemId) public view returns (bool) {
+    function getStakingItemIsClaimed(uint stakingItemId) public view virtual returns (bool) {
         return idToStakingItem[stakingItemId].isClaimed;
     }
 
-    function getStakingItems(address account) public view returns (StakingItem[] memory) {
+    function getStakingItems(address account) public view virtual returns (StakingItem[] memory) {
         uint count = 0;
         for(uint i = 0; i < stakingItemIds.current(); i++) {
             if(idToStakingItem[i].account == account) {
@@ -119,7 +128,7 @@ contract NFTStaking is Ownable, ReentrancyGuard {
         return stakingItems;
     }
 
-    function totalDeposits(address nftContractAddress) public view returns (uint) {
+    function totalDeposits(address nftContractAddress) public view virtual returns (uint) {
         uint _totalDeposits = 0;
 
         for(uint i = 0; i < stakingItemIds.current(); i++) {
@@ -131,7 +140,7 @@ contract NFTStaking is Ownable, ReentrancyGuard {
         return _totalDeposits;
     }
 
-    function totalStakes(address nftContractAddress) public view returns (uint) {
+    function totalStakes(address nftContractAddress) public view virtual returns (uint) {
         uint _totalStakes = 0;
 
         for(uint i = 0; i < stakingItemIds.current(); i++) {
@@ -143,7 +152,7 @@ contract NFTStaking is Ownable, ReentrancyGuard {
         return _totalStakes;
     }
 
-    function remainingRewards(address nftContractAddress) public view returns (uint) {
+    function remainingRewards(address nftContractAddress) public view virtual returns (uint) {
         return collectionMaxStaking[nftContractAddress] - totalStakes(nftContractAddress);
     }
 }
