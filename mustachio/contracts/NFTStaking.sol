@@ -109,10 +109,10 @@ contract NFTStaking is Initializable, OwnableUpgradeable, UUPSUpgradeable {
         return idToStakingItem[stakingItemId].isClaimed;
     }
 
-    function getStakingItems(address account) public view virtual returns (StakingItem[] memory) {
+    function getStakingItems(address account, address nftContractAddress) public view virtual returns (StakingItem[] memory) {
         uint count = 0;
         for(uint i = 0; i < stakingItemIds.current(); i++) {
-            if(idToStakingItem[i].account == account) {
+            if(idToStakingItem[i].account == account && idToStakingItem[i].nftContractAddress == nftContractAddress) {
                 count++;
             }
         }
@@ -120,7 +120,7 @@ contract NFTStaking is Initializable, OwnableUpgradeable, UUPSUpgradeable {
         StakingItem[] memory stakingItems = new StakingItem[](count);
 
         for(uint i = 0; i < stakingItemIds.current(); i++) {
-            if(idToStakingItem[i].account == account) {
+            if(idToStakingItem[i].account == account && idToStakingItem[i].nftContractAddress == nftContractAddress) {
                 stakingItems[i] = idToStakingItem[i];
             }
         }
@@ -128,12 +128,26 @@ contract NFTStaking is Initializable, OwnableUpgradeable, UUPSUpgradeable {
         return stakingItems;
     }
 
+    function getCurrentStakingItem(address account, address nftContractAddress) public view virtual returns (StakingItem memory) {
+        StakingItem[] memory stakingItems = getStakingItems(account, nftContractAddress);
+
+        StakingItem memory stakingItem;
+
+        for(uint i = 0; i < stakingItems.length; i++) {
+            if(!idToStakingItem[i].isWithdrawnWithoutMinting && !idToStakingItem[i].isClaimed) {
+                stakingItem = idToStakingItem[i];
+            }
+        }
+
+        return stakingItem;
+    }
+
     function totalDeposits(address nftContractAddress) public view virtual returns (uint) {
         uint _totalDeposits = 0;
 
         for(uint i = 0; i < stakingItemIds.current(); i++) {
             if(idToStakingItem[i].nftContractAddress == nftContractAddress && !idToStakingItem[i].isWithdrawnWithoutMinting && !idToStakingItem[i].isClaimed) {
-                _totalDeposits = idToStakingItem[i].amount;
+                _totalDeposits += idToStakingItem[i].amount;
             }
         }
 

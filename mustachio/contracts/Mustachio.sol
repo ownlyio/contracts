@@ -53,7 +53,7 @@ contract Mustachio is ERC721, Ownable {
     }
 
     function setStakeDuration(uint _stakeDuration) public onlyOwner virtual {
-        stakeDuration = _stakeDuration * 1 days;
+        stakeDuration = _stakeDuration;
     }
 
     function getStakeDuration() public view virtual returns (uint) {

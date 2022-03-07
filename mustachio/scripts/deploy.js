@@ -66,6 +66,10 @@ async function main() {
         await nftStaking.stake(mustachio.address, stakedAmount);
         console.log("\nnftStaking.stake: " + mustachio.address + ", " + stakedAmount);
 
+        let currentStakingItem = await nftStaking.getCurrentStakingItem(deployer.address, mustachio.address);
+        console.log("\nnftStaking.getCurrentStakingItem:");
+        console.log(currentStakingItem);
+
         let totalDeposits = await nftStaking.totalDeposits(mustachio.address);
         console.log("\nnftStaking.totalDeposits: " + totalDeposits);
 
@@ -81,7 +85,7 @@ async function main() {
         await mustachio.stakeMint(nftStaking.address, 0);
         console.log("\nmustachio.stakeMint:");
 
-        let stakingItems = await nftStaking.getStakingItems(deployer.address);
+        let stakingItems = await nftStaking.getStakingItems(deployer.address, mustachio.address);
         console.log("\nnftStaking.getStakingItems:");
         console.log(stakingItems);
 
