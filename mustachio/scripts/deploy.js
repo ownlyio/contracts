@@ -40,7 +40,7 @@ async function main() {
     await mustachio.setStakeRequired(stakeRequired);
     console.log("\nmustachio.setStakeRequired: " + stakeRequired);
 
-    let stakeDuration = (testRun) ? 0 : 300;
+    let stakeDuration = (testRun) ? 0 : 900;
     await mustachio.setStakeDuration(stakeDuration);
     console.log("\nmustachio.setStakeDuration: " + stakeDuration);
 
@@ -66,9 +66,12 @@ async function main() {
         await nftStaking.stake(mustachio.address, stakedAmount);
         console.log("\nnftStaking.stake: " + mustachio.address + ", " + stakedAmount);
 
-        let currentStakingItem = await nftStaking.getCurrentStakingItem(deployer.address, mustachio.address);
-        console.log("\nnftStaking.getCurrentStakingItem:");
-        console.log(currentStakingItem);
+        let currentStakingItemId = await nftStaking.getCurrentStakingItemId(deployer.address, mustachio.address);
+        console.log("\nnftStaking.getCurrentStakingItemId: " + currentStakingItemId);
+
+        let stakingItem = await nftStaking.getStakingItem(currentStakingItemId);
+        console.log("\nnftStaking.getStakingItem:");
+        console.log(stakingItem);
 
         let totalDeposits = await nftStaking.totalDeposits(mustachio.address);
         console.log("\nnftStaking.totalDeposits: " + totalDeposits);
@@ -82,7 +85,7 @@ async function main() {
         balance = await erc20.balanceOf(deployer.address);
         console.log("\nDeployer erc20.balanceOf: " + balance);
 
-        await mustachio.stakeMint(nftStaking.address, 0);
+        await mustachio.stakeMint(nftStaking.address, currentStakingItemId);
         console.log("\nmustachio.stakeMint:");
 
         let stakingItems = await nftStaking.getStakingItems(deployer.address, mustachio.address);

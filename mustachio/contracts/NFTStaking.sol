@@ -89,6 +89,10 @@ contract NFTStaking is Initializable, OwnableUpgradeable, UUPSUpgradeable {
         return idToStakingItem[stakingItemId].nftContractAddress;
     }
 
+    function getStakingItem(uint stakingItemId) public view virtual returns (StakingItem memory) {
+        return idToStakingItem[stakingItemId];
+    }
+
     function getStakingItemAccount(uint stakingItemId) public view virtual returns (address) {
         return idToStakingItem[stakingItemId].account;
     }
@@ -128,18 +132,15 @@ contract NFTStaking is Initializable, OwnableUpgradeable, UUPSUpgradeable {
         return stakingItems;
     }
 
-    function getCurrentStakingItem(address account, address nftContractAddress) public view virtual returns (StakingItem memory) {
-        StakingItem[] memory stakingItems = getStakingItems(account, nftContractAddress);
-
-        StakingItem memory stakingItem;
-
-        for(uint i = 0; i < stakingItems.length; i++) {
-            if(!idToStakingItem[i].isWithdrawnWithoutMinting && !idToStakingItem[i].isClaimed) {
-                stakingItem = idToStakingItem[i];
+    function getCurrentStakingItemId(address account, address nftContractAddress) public view virtual returns (uint) {
+        uint currentStakingItemId;
+        for(uint i = 0; i < stakingItemIds.current(); i++) {
+            if(idToStakingItem[i].account == account && idToStakingItem[i].nftContractAddress == nftContractAddress && !idToStakingItem[i].isWithdrawnWithoutMinting && !idToStakingItem[i].isClaimed) {
+                currentStakingItemId = i;
             }
         }
 
-        return stakingItem;
+        return currentStakingItemId;
     }
 
     function totalDeposits(address nftContractAddress) public view virtual returns (uint) {
