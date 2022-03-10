@@ -8,11 +8,11 @@ async function main() {
 
     // Start: Deployments
     const Mustachio = await hre.ethers.getContractFactory("Mustachio");
-    const mustachio = await Mustachio.attach("0xAe02A960b1f94EC806074821b3dfaB4728A6f9c2");
+    const mustachio = await Mustachio.attach("0xA628896ec46Ce7C68A0E6eB4aF14fD5EBc834d2d");
     console.log("\nMustachio deployed to:", mustachio.address);
 
     const NFTStaking = await hre.ethers.getContractFactory("NFTStaking");
-    const nftStaking = await NFTStaking.attach("0x4Ed4EaB801555860FcfAEa722430eb8d3A1f9c4F");
+    const nftStaking = await NFTStaking.attach("0xC5cBC08ADA3e0d20a537b9386CE9d560aE86058a");
     // End: Deployments
 
     // Start: Sample Transactions

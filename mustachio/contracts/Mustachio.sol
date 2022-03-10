@@ -4,6 +4,7 @@ pragma solidity ^0.8.2;
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 
 abstract contract INFTStaking {
     function setStakingItemAsClaimed(uint idToStakingItem) public virtual;
@@ -15,7 +16,7 @@ abstract contract INFTStaking {
     function getStakingItemIsClaimed(uint stakingItemId) public view virtual returns (bool);
 }
 
-contract Mustachio is ERC721, Ownable {
+contract Mustachio is ERC721Enumerable, Ownable {
     using Counters for Counters.Counter;
     Counters.Counter tokenIds;
     
@@ -26,15 +27,11 @@ contract Mustachio is ERC721, Ownable {
     uint stakeDuration;
 
     string public PROVENANCE_HASH = "";
-    string baseUri = "https://ownly.tk/api/mustachio/";
-    address payable admin = payable(0x768532c218f4f4e6E4960ceeA7F5a7A947a1dd61);
+    string baseUri = "https://ownly.tk/api/mustachio-3D/";
+    address payable admin = payable(0x672b733C5350034Ccbd265AA7636C3eBDDA2223B);
     bool public saleIsActive = false;
 
     constructor() ERC721("Mustachio", "MUSTACHIO") {}
-
-    function totalSupply() public view returns (uint256) {
-        return tokenIds.current();
-    }
 
     function setLastMintedTokenId(uint _value) public onlyOwner {
         tokenIds._value = _value;
@@ -62,10 +59,7 @@ contract Mustachio is ERC721, Ownable {
 
     function reserveMustachios(address[] memory accounts) public onlyOwner {
         for (uint i = 0; i < accounts.length; i++) {
-            tokenIds.increment();
-            uint tokenId = tokenIds.current();
-
-            _mint(accounts[i], tokenId);
+            mintNFT(accounts[i]);
         }
     }
 

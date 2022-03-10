@@ -1,0 +1,1222 @@
+{
+  "manifestVersion": "3.2",
+  "proxies": [
+    {
+      "address": "0xf5059a5D33d5853360D16C683c16e67980206f36",
+      "txHash": "0x145ecd61f22b59d40f25225ce8a6f90c5ae30a10305fb7adf371cc31724eaefd",
+      "kind": "uups"
+    },
+    {
+      "address": "0xb7278A61aa25c888815aFC32Ad3cC52fF24fE575",
+      "txHash": "0xcf9a6a5f032ef32b7220486630c6d8fdfdd49f75e8634db5e82c238f01959713",
+      "kind": "uups"
+    },
+    {
+      "address": "0xc5a5C42992dECbae36851359345FE25997F5C42d",
+      "txHash": "0x7330fdbd1f821e31f9f460c54b730649abd00d03e43dab04b9454d9879fd8447",
+      "kind": "uups"
+    },
+    {
+      "address": "0x998abeb3E57409262aE5b751f60747921B33613E",
+      "txHash": "0x298eb9e8beb0b6ee8f65290fc686719b85137b1a779754d1dfa81af1c47a4699",
+      "kind": "uups"
+    },
+    {
+      "address": "0xA51c1fc2f0D1a1b8494Ed1FE312d7C3a78Ed91C0",
+      "txHash": "0x75288909e08033ea06a1d5831090a1fdf194318d54ff5ab72efb04a4837cfef9",
+      "kind": "uups"
+    },
+    {
+      "address": "0x4ed7c70F96B99c776995fB64377f0d4aB3B0e1C1",
+      "txHash": "0xdcf715b98e3134799bdc21dc82391ee80543bfec5eb6bab6e9c4c3960b6cdf8e",
+      "kind": "uups"
+    },
+    {
+      "address": "0x84eA74d481Ee0A5332c457a4d796187F6Ba67fEB",
+      "txHash": "0x3cd8476c297b0b12a9bd21b8f19b74feee8732002cba0fe47ac0d893c3d17c0c",
+      "kind": "uups"
+    },
+    {
+      "address": "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0",
+      "txHash": "0x7f46069ced2630fff3d34b5d437235315de53eff11e334a8caf5d41fc0b85c9e",
+      "kind": "uups"
+    },
+    {
+      "address": "0x9A9f2CCfdE556A7E9Ff0848998Aa4a0CFD8863AE",
+      "txHash": "0xa5f0fa6210b920e219e8fc01b701a5752f05d19ec2706b8b0228c790d5ebdf44",
+      "kind": "uups"
+    },
+    {
+      "address": "0xc3e53F4d16Ae77Db1c982e75a937B9f60FE63690",
+      "txHash": "0x4f3a2acb718e44707fe5707ba8b63fdff4b16d4d4a74ee0647b020986e04d9ae",
+      "kind": "uups"
+    },
+    {
+      "address": "0x8f86403A4DE0BB5791fa46B8e795C547942fE4Cf",
+      "txHash": "0xa80ac145e97e3f17cbe175cf9104e72a19cf784a3e0b53e231fd23f0d51a2855",
+      "kind": "uups"
+    },
+    {
+      "address": "0xc351628EB244ec633d5f21fBD6621e1a683B1181",
+      "txHash": "0x9345ee8ef423a6396732b5daf5a49be2a3e5f319b1cac949129811a4f54cda78",
+      "kind": "uups"
+    },
+    {
+      "address": "0x4C4a2f8c81640e47606d3fd77B353E87Ba015584",
+      "txHash": "0xdfa56f403481225577f693f5b53d8a02c34ef84b4cdde548666545d1d0913607",
+      "kind": "uups"
+    },
+    {
+      "address": "0x172076E0166D1F9Cc711C77Adf8488051744980C",
+      "txHash": "0xe515e5739268a59db16cbf2673a7938bf81d00842bb51e8eb91005b3c2cb4f59",
+      "kind": "uups"
+    },
+    {
+      "address": "0x7A9Ec1d04904907De0ED7b6839CcdD59c3716AC9",
+      "txHash": "0xbefffde8edff12b7ab30ad2461573a58497d89ab70cf78b1ac6d65f180c876f3",
+      "kind": "uups"
+    },
+    {
+      "address": "0x18E317A7D70d8fBf8e6E893616b52390EbBdb629",
+      "txHash": "0xcaca660758e88a456d49a40cd59e3226f2277893961a8820fe0f1f33b2bc3922",
+      "kind": "uups"
+    },
+    {
+      "address": "0xA7c59f010700930003b33aB25a7a0679C860f29c",
+      "txHash": "0x7954c2c96ef650ab94e94017c8c743f027a12df0d615c366de17f4685e3043b2",
+      "kind": "uups"
+    },
+    {
+      "address": "0x457cCf29090fe5A24c19c1bc95F492168C0EaFdb",
+      "txHash": "0xfea4c081df39d6f5004b2dbfd0fe94606ca2050aad8e76394e55f48139a0f529",
+      "kind": "uups"
+    },
+    {
+      "address": "0x6F6f570F45833E249e27022648a26F4076F48f78",
+      "txHash": "0x8e3f74c81b105bd74a0664355d436067a65108330fede9d17863f495edf9b497",
+      "kind": "uups"
+    },
+    {
+      "address": "0x638A246F0Ec8883eF68280293FFE8Cfbabe61B44",
+      "txHash": "0x3756e5ec994a5a855b0969f56a25eb157a694b3ecf3e4492b9127e380328dcd2",
+      "kind": "uups"
+    },
+    {
+      "address": "0xe1Fd27F4390DcBE165f4D60DBF821e4B9Bb02dEd",
+      "txHash": "0x9c0f295d954cec7a4d95eff515ce0887d99d1353073b06f54663d775513e7f28",
+      "kind": "uups"
+    },
+    {
+      "address": "0xaca81583840B1bf2dDF6CDe824ada250C1936B4D",
+      "txHash": "0x97c9f5f1664d9704a091bcabccf2e4819cfc6bffe6cc4f30212fbf8c48979fb1",
+      "kind": "uups"
+    },
+    {
+      "address": "0x02df3a3F960393F5B349E40A599FEda91a7cc1A7",
+      "txHash": "0xec236abe3883b745eb6a46ab40315e791af5ddd2730ee4516b56532c7c6c97f7",
+      "kind": "uups"
+    },
+    {
+      "address": "0x9A676e781A523b5d0C0e43731313A708CB607508",
+      "txHash": "0x414d5a6e777ba28617983e96e0a2a21bfc520d8a67d8756308aff7b98cc9bb46",
+      "kind": "uups"
+    },
+    {
+      "address": "0x09635F643e140090A9A8Dcd712eD6285858ceBef",
+      "txHash": "0xfe936e8ea8ea049ddab5e01f8ca9ea8c5049a38d43d587e2d1865a8a80c2cc44",
+      "kind": "uups"
+    },
+    {
+      "address": "0x70e0bA845a1A0F2DA3359C97E0285013525FFC49",
+      "txHash": "0x74cba434e80129e878468680824dad8b60fc9b96ace5423223dc1c5aabf515f0",
+      "kind": "uups"
+    },
+    {
+      "address": "0xCD8a1C3ba11CF5ECfa6267617243239504a98d90",
+      "txHash": "0x3cb272cccd80e81a4664e10f61a205a3c652d27bbbf3754fd2e66872a023c6f8",
+      "kind": "uups"
+    }
+  ],
+  "impls": {
+    "c47d9c717c1c408a919ac6e48bd0e008e2940fa1e147306cadb577946246da8f": {
+      "address": "0x851356ae760d987E095750cCeb3bC6014560891C",
+      "txHash": "0x456c5c4aa07ce084b510fd113e0150033e98cafae622fb3dc9dc3929ce0f0d03",
+      "layout": {
+        "storage": [
+          {
+            "contract": "Initializable",
+            "label": "_initialized",
+            "type": "t_bool",
+            "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:21"
+          },
+          {
+            "contract": "Initializable",
+            "label": "_initializing",
+            "type": "t_bool",
+            "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:26"
+          },
+          {
+            "contract": "ContextUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)50_storage",
+            "src": "@openzeppelin\\contracts-upgradeable\\utils\\ContextUpgradeable.sol:30"
+          },
+          {
+            "contract": "OwnableUpgradeable",
+            "label": "_owner",
+            "type": "t_address",
+            "src": "@openzeppelin\\contracts-upgradeable\\access\\OwnableUpgradeable.sol:21"
+          },
+          {
+            "contract": "OwnableUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)49_storage",
+            "src": "@openzeppelin\\contracts-upgradeable\\access\\OwnableUpgradeable.sol:77"
+          },
+          {
+            "contract": "ERC1967UpgradeUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)50_storage",
+            "src": "@openzeppelin\\contracts-upgradeable\\proxy\\ERC1967\\ERC1967UpgradeUpgradeable.sol:233"
+          },
+          {
+            "contract": "UUPSUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)50_storage",
+            "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\UUPSUpgradeable.sol:64"
+          },
+          {
+            "contract": "NFTStaking",
+            "label": "stakingItemIds",
+            "type": "t_struct(Counter)1055_storage",
+            "src": "contracts\\NFTStaking.sol:11"
+          },
+          {
+            "contract": "NFTStaking",
+            "label": "stakingTokenAddress",
+            "type": "t_address",
+            "src": "contracts\\NFTStaking.sol:13"
+          },
+          {
+            "contract": "NFTStaking",
+            "label": "idToStakingItem",
+            "type": "t_mapping(t_uint256,t_struct(StakingItem)1217_storage)",
+            "src": "contracts\\NFTStaking.sol:24"
+          },
+          {
+            "contract": "NFTStaking",
+            "label": "collectionMaxStaking",
+            "type": "t_mapping(t_address,t_uint256)",
+            "src": "contracts\\NFTStaking.sol:25"
+          }
+        ],
+        "types": {
+          "t_struct(Counter)1055_storage": {
+            "label": "struct CountersUpgradeable.Counter",
+            "members": [
+              {
+                "label": "_value",
+                "type": "t_uint256"
+              }
+            ]
+          },
+          "t_uint256": {
+            "label": "uint256"
+          },
+          "t_address": {
+            "label": "address"
+          },
+          "t_mapping(t_uint256,t_struct(StakingItem)1217_storage)": {
+            "label": "mapping(uint256 => struct NFTStaking.StakingItem)"
+          },
+          "t_struct(StakingItem)1217_storage": {
+            "label": "struct NFTStaking.StakingItem",
+            "members": [
+              {
+                "label": "nftContractAddress",
+                "type": "t_address"
+              },
+              {
+                "label": "account",
+                "type": "t_address"
+              },
+              {
+                "label": "amount",
+                "type": "t_uint256"
+              },
+              {
+                "label": "startTime",
+                "type": "t_uint256"
+              },
+              {
+                "label": "isWithdrawnWithoutMinting",
+                "type": "t_bool"
+              },
+              {
+                "label": "isClaimed",
+                "type": "t_bool"
+              }
+            ]
+          },
+          "t_bool": {
+            "label": "bool"
+          },
+          "t_mapping(t_address,t_uint256)": {
+            "label": "mapping(address => uint256)"
+          },
+          "t_array(t_uint256)50_storage": {
+            "label": "uint256[50]"
+          },
+          "t_array(t_uint256)49_storage": {
+            "label": "uint256[49]"
+          }
+        }
+      }
+    },
+    "abc67bcbd065fd38ca69f5bffb14b06f0b63c911313fddafb06c40d296741951": {
+      "address": "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512",
+      "txHash": "0x1757dbc9039130be8bec186a1e99f82a0c7029caf929e600c312130037e5d4d1",
+      "layout": {
+        "storage": [
+          {
+            "contract": "Initializable",
+            "label": "_initialized",
+            "type": "t_bool",
+            "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:21"
+          },
+          {
+            "contract": "Initializable",
+            "label": "_initializing",
+            "type": "t_bool",
+            "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:26"
+          },
+          {
+            "contract": "ContextUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)50_storage",
+            "src": "@openzeppelin\\contracts-upgradeable\\utils\\ContextUpgradeable.sol:30"
+          },
+          {
+            "contract": "OwnableUpgradeable",
+            "label": "_owner",
+            "type": "t_address",
+            "src": "@openzeppelin\\contracts-upgradeable\\access\\OwnableUpgradeable.sol:21"
+          },
+          {
+            "contract": "OwnableUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)49_storage",
+            "src": "@openzeppelin\\contracts-upgradeable\\access\\OwnableUpgradeable.sol:77"
+          },
+          {
+            "contract": "ERC1967UpgradeUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)50_storage",
+            "src": "@openzeppelin\\contracts-upgradeable\\proxy\\ERC1967\\ERC1967UpgradeUpgradeable.sol:233"
+          },
+          {
+            "contract": "UUPSUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)50_storage",
+            "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\UUPSUpgradeable.sol:64"
+          },
+          {
+            "contract": "NFTStaking",
+            "label": "stakingItemIds",
+            "type": "t_struct(Counter)1055_storage",
+            "src": "contracts\\NFTStaking.sol:11"
+          },
+          {
+            "contract": "NFTStaking",
+            "label": "stakingTokenAddress",
+            "type": "t_address",
+            "src": "contracts\\NFTStaking.sol:13"
+          },
+          {
+            "contract": "NFTStaking",
+            "label": "idToStakingItem",
+            "type": "t_mapping(t_uint256,t_struct(StakingItem)1217_storage)",
+            "src": "contracts\\NFTStaking.sol:24"
+          },
+          {
+            "contract": "NFTStaking",
+            "label": "collectionMaxStaking",
+            "type": "t_mapping(t_address,t_uint256)",
+            "src": "contracts\\NFTStaking.sol:25"
+          }
+        ],
+        "types": {
+          "t_struct(Counter)1055_storage": {
+            "label": "struct CountersUpgradeable.Counter",
+            "members": [
+              {
+                "label": "_value",
+                "type": "t_uint256"
+              }
+            ]
+          },
+          "t_uint256": {
+            "label": "uint256"
+          },
+          "t_address": {
+            "label": "address"
+          },
+          "t_mapping(t_uint256,t_struct(StakingItem)1217_storage)": {
+            "label": "mapping(uint256 => struct NFTStaking.StakingItem)"
+          },
+          "t_struct(StakingItem)1217_storage": {
+            "label": "struct NFTStaking.StakingItem",
+            "members": [
+              {
+                "label": "nftContractAddress",
+                "type": "t_address"
+              },
+              {
+                "label": "account",
+                "type": "t_address"
+              },
+              {
+                "label": "amount",
+                "type": "t_uint256"
+              },
+              {
+                "label": "startTime",
+                "type": "t_uint256"
+              },
+              {
+                "label": "isWithdrawnWithoutMinting",
+                "type": "t_bool"
+              },
+              {
+                "label": "isClaimed",
+                "type": "t_bool"
+              }
+            ]
+          },
+          "t_bool": {
+            "label": "bool"
+          },
+          "t_mapping(t_address,t_uint256)": {
+            "label": "mapping(address => uint256)"
+          },
+          "t_array(t_uint256)50_storage": {
+            "label": "uint256[50]"
+          },
+          "t_array(t_uint256)49_storage": {
+            "label": "uint256[49]"
+          }
+        }
+      }
+    },
+    "bc5958a1441c2dbcae776438be6f9f50c6bb21442e8b1f83d323fb46423bcf07": {
+      "address": "0x959922bE3CAee4b8Cd9a407cc3ac1C251C2007B1",
+      "txHash": "0x3334e1ae7f9f47004152416659acaca63f22b780940f15fc01d766614782f6ca",
+      "layout": {
+        "storage": [
+          {
+            "contract": "Initializable",
+            "label": "_initialized",
+            "type": "t_bool",
+            "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:21"
+          },
+          {
+            "contract": "Initializable",
+            "label": "_initializing",
+            "type": "t_bool",
+            "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:26"
+          },
+          {
+            "contract": "ContextUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)50_storage",
+            "src": "@openzeppelin\\contracts-upgradeable\\utils\\ContextUpgradeable.sol:30"
+          },
+          {
+            "contract": "OwnableUpgradeable",
+            "label": "_owner",
+            "type": "t_address",
+            "src": "@openzeppelin\\contracts-upgradeable\\access\\OwnableUpgradeable.sol:21"
+          },
+          {
+            "contract": "OwnableUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)49_storage",
+            "src": "@openzeppelin\\contracts-upgradeable\\access\\OwnableUpgradeable.sol:77"
+          },
+          {
+            "contract": "ERC1967UpgradeUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)50_storage",
+            "src": "@openzeppelin\\contracts-upgradeable\\proxy\\ERC1967\\ERC1967UpgradeUpgradeable.sol:233"
+          },
+          {
+            "contract": "UUPSUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)50_storage",
+            "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\UUPSUpgradeable.sol:64"
+          },
+          {
+            "contract": "NFTStaking",
+            "label": "stakingItemIds",
+            "type": "t_struct(Counter)1055_storage",
+            "src": "contracts\\NFTStaking.sol:11"
+          },
+          {
+            "contract": "NFTStaking",
+            "label": "stakingTokenAddress",
+            "type": "t_address",
+            "src": "contracts\\NFTStaking.sol:13"
+          },
+          {
+            "contract": "NFTStaking",
+            "label": "idToStakingItem",
+            "type": "t_mapping(t_uint256,t_struct(StakingItem)1217_storage)",
+            "src": "contracts\\NFTStaking.sol:24"
+          },
+          {
+            "contract": "NFTStaking",
+            "label": "collectionMaxStaking",
+            "type": "t_mapping(t_address,t_uint256)",
+            "src": "contracts\\NFTStaking.sol:25"
+          }
+        ],
+        "types": {
+          "t_struct(Counter)1055_storage": {
+            "label": "struct CountersUpgradeable.Counter",
+            "members": [
+              {
+                "label": "_value",
+                "type": "t_uint256"
+              }
+            ]
+          },
+          "t_uint256": {
+            "label": "uint256"
+          },
+          "t_address": {
+            "label": "address"
+          },
+          "t_mapping(t_uint256,t_struct(StakingItem)1217_storage)": {
+            "label": "mapping(uint256 => struct NFTStaking.StakingItem)"
+          },
+          "t_struct(StakingItem)1217_storage": {
+            "label": "struct NFTStaking.StakingItem",
+            "members": [
+              {
+                "label": "nftContractAddress",
+                "type": "t_address"
+              },
+              {
+                "label": "account",
+                "type": "t_address"
+              },
+              {
+                "label": "amount",
+                "type": "t_uint256"
+              },
+              {
+                "label": "startTime",
+                "type": "t_uint256"
+              },
+              {
+                "label": "isWithdrawnWithoutMinting",
+                "type": "t_bool"
+              },
+              {
+                "label": "isClaimed",
+                "type": "t_bool"
+              }
+            ]
+          },
+          "t_bool": {
+            "label": "bool"
+          },
+          "t_mapping(t_address,t_uint256)": {
+            "label": "mapping(address => uint256)"
+          },
+          "t_array(t_uint256)50_storage": {
+            "label": "uint256[50]"
+          },
+          "t_array(t_uint256)49_storage": {
+            "label": "uint256[49]"
+          }
+        }
+      }
+    },
+    "f32654bfc14df682a0e7cadd4150d0522ad69707d870a4ef1eec1d3697a1eb73": {
+      "address": "0xE6E340D132b5f46d1e472DebcD681B2aBc16e57E",
+      "txHash": "0x76e7ecdb923f44cbb21070beb3f01ed76897a7ed2728bcb4ac922f47dee435d8",
+      "layout": {
+        "storage": [
+          {
+            "contract": "Initializable",
+            "label": "_initialized",
+            "type": "t_bool",
+            "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:21"
+          },
+          {
+            "contract": "Initializable",
+            "label": "_initializing",
+            "type": "t_bool",
+            "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:26"
+          },
+          {
+            "contract": "ContextUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)50_storage",
+            "src": "@openzeppelin\\contracts-upgradeable\\utils\\ContextUpgradeable.sol:30"
+          },
+          {
+            "contract": "OwnableUpgradeable",
+            "label": "_owner",
+            "type": "t_address",
+            "src": "@openzeppelin\\contracts-upgradeable\\access\\OwnableUpgradeable.sol:21"
+          },
+          {
+            "contract": "OwnableUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)49_storage",
+            "src": "@openzeppelin\\contracts-upgradeable\\access\\OwnableUpgradeable.sol:77"
+          },
+          {
+            "contract": "ERC1967UpgradeUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)50_storage",
+            "src": "@openzeppelin\\contracts-upgradeable\\proxy\\ERC1967\\ERC1967UpgradeUpgradeable.sol:233"
+          },
+          {
+            "contract": "UUPSUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)50_storage",
+            "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\UUPSUpgradeable.sol:64"
+          },
+          {
+            "contract": "NFTStaking",
+            "label": "stakingItemIds",
+            "type": "t_struct(Counter)1055_storage",
+            "src": "contracts\\NFTStaking.sol:11"
+          },
+          {
+            "contract": "NFTStaking",
+            "label": "stakingTokenAddress",
+            "type": "t_address",
+            "src": "contracts\\NFTStaking.sol:13"
+          },
+          {
+            "contract": "NFTStaking",
+            "label": "idToStakingItem",
+            "type": "t_mapping(t_uint256,t_struct(StakingItem)1217_storage)",
+            "src": "contracts\\NFTStaking.sol:24"
+          },
+          {
+            "contract": "NFTStaking",
+            "label": "collectionMaxStaking",
+            "type": "t_mapping(t_address,t_uint256)",
+            "src": "contracts\\NFTStaking.sol:25"
+          }
+        ],
+        "types": {
+          "t_struct(Counter)1055_storage": {
+            "label": "struct CountersUpgradeable.Counter",
+            "members": [
+              {
+                "label": "_value",
+                "type": "t_uint256"
+              }
+            ]
+          },
+          "t_uint256": {
+            "label": "uint256"
+          },
+          "t_address": {
+            "label": "address"
+          },
+          "t_mapping(t_uint256,t_struct(StakingItem)1217_storage)": {
+            "label": "mapping(uint256 => struct NFTStaking.StakingItem)"
+          },
+          "t_struct(StakingItem)1217_storage": {
+            "label": "struct NFTStaking.StakingItem",
+            "members": [
+              {
+                "label": "nftContractAddress",
+                "type": "t_address"
+              },
+              {
+                "label": "account",
+                "type": "t_address"
+              },
+              {
+                "label": "amount",
+                "type": "t_uint256"
+              },
+              {
+                "label": "startTime",
+                "type": "t_uint256"
+              },
+              {
+                "label": "isWithdrawnWithoutMinting",
+                "type": "t_bool"
+              },
+              {
+                "label": "isClaimed",
+                "type": "t_bool"
+              }
+            ]
+          },
+          "t_bool": {
+            "label": "bool"
+          },
+          "t_mapping(t_address,t_uint256)": {
+            "label": "mapping(address => uint256)"
+          },
+          "t_array(t_uint256)50_storage": {
+            "label": "uint256[50]"
+          },
+          "t_array(t_uint256)49_storage": {
+            "label": "uint256[49]"
+          }
+        }
+      }
+    },
+    "55e164d71fe393c3de2290929504ee6b62e03918229754afdc592c20e826fc97": {
+      "address": "0x7bc06c482DEAd17c0e297aFbC32f6e63d3846650",
+      "txHash": "0x0c56c0532333087a9a055251ebad40f2888d06658de7527c23b63a8ef87ab867",
+      "layout": {
+        "storage": [
+          {
+            "contract": "Initializable",
+            "label": "_initialized",
+            "type": "t_bool",
+            "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:21"
+          },
+          {
+            "contract": "Initializable",
+            "label": "_initializing",
+            "type": "t_bool",
+            "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:26"
+          },
+          {
+            "contract": "ContextUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)50_storage",
+            "src": "@openzeppelin\\contracts-upgradeable\\utils\\ContextUpgradeable.sol:30"
+          },
+          {
+            "contract": "OwnableUpgradeable",
+            "label": "_owner",
+            "type": "t_address",
+            "src": "@openzeppelin\\contracts-upgradeable\\access\\OwnableUpgradeable.sol:21"
+          },
+          {
+            "contract": "OwnableUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)49_storage",
+            "src": "@openzeppelin\\contracts-upgradeable\\access\\OwnableUpgradeable.sol:77"
+          },
+          {
+            "contract": "ERC1967UpgradeUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)50_storage",
+            "src": "@openzeppelin\\contracts-upgradeable\\proxy\\ERC1967\\ERC1967UpgradeUpgradeable.sol:233"
+          },
+          {
+            "contract": "UUPSUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)50_storage",
+            "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\UUPSUpgradeable.sol:64"
+          },
+          {
+            "contract": "NFTStaking",
+            "label": "stakingItemIds",
+            "type": "t_struct(Counter)1055_storage",
+            "src": "contracts\\NFTStaking.sol:11"
+          },
+          {
+            "contract": "NFTStaking",
+            "label": "stakingTokenAddress",
+            "type": "t_address",
+            "src": "contracts\\NFTStaking.sol:13"
+          },
+          {
+            "contract": "NFTStaking",
+            "label": "idToStakingItem",
+            "type": "t_mapping(t_uint256,t_struct(StakingItem)1217_storage)",
+            "src": "contracts\\NFTStaking.sol:24"
+          },
+          {
+            "contract": "NFTStaking",
+            "label": "collectionMaxStaking",
+            "type": "t_mapping(t_address,t_uint256)",
+            "src": "contracts\\NFTStaking.sol:25"
+          }
+        ],
+        "types": {
+          "t_struct(Counter)1055_storage": {
+            "label": "struct CountersUpgradeable.Counter",
+            "members": [
+              {
+                "label": "_value",
+                "type": "t_uint256"
+              }
+            ]
+          },
+          "t_uint256": {
+            "label": "uint256"
+          },
+          "t_address": {
+            "label": "address"
+          },
+          "t_mapping(t_uint256,t_struct(StakingItem)1217_storage)": {
+            "label": "mapping(uint256 => struct NFTStaking.StakingItem)"
+          },
+          "t_struct(StakingItem)1217_storage": {
+            "label": "struct NFTStaking.StakingItem",
+            "members": [
+              {
+                "label": "nftContractAddress",
+                "type": "t_address"
+              },
+              {
+                "label": "account",
+                "type": "t_address"
+              },
+              {
+                "label": "amount",
+                "type": "t_uint256"
+              },
+              {
+                "label": "startTime",
+                "type": "t_uint256"
+              },
+              {
+                "label": "isWithdrawnWithoutMinting",
+                "type": "t_bool"
+              },
+              {
+                "label": "isClaimed",
+                "type": "t_bool"
+              }
+            ]
+          },
+          "t_bool": {
+            "label": "bool"
+          },
+          "t_mapping(t_address,t_uint256)": {
+            "label": "mapping(address => uint256)"
+          },
+          "t_array(t_uint256)50_storage": {
+            "label": "uint256[50]"
+          },
+          "t_array(t_uint256)49_storage": {
+            "label": "uint256[49]"
+          }
+        }
+      }
+    },
+    "d91bd8a80dd5c42683c3a4b7fa87f4147da85527ba943a07768898bc0f3bc0dc": {
+      "address": "0x99dBE4AEa58E518C50a1c04aE9b48C9F6354612f",
+      "txHash": "0xd5160fbd0aee6cbfe8b1ecf3b5e228ccb69b29e41bb9715ec0b1217cd09dcd1d",
+      "layout": {
+        "storage": [
+          {
+            "contract": "Initializable",
+            "label": "_initialized",
+            "type": "t_bool",
+            "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:21"
+          },
+          {
+            "contract": "Initializable",
+            "label": "_initializing",
+            "type": "t_bool",
+            "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:26"
+          },
+          {
+            "contract": "ContextUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)50_storage",
+            "src": "@openzeppelin\\contracts-upgradeable\\utils\\ContextUpgradeable.sol:30"
+          },
+          {
+            "contract": "OwnableUpgradeable",
+            "label": "_owner",
+            "type": "t_address",
+            "src": "@openzeppelin\\contracts-upgradeable\\access\\OwnableUpgradeable.sol:21"
+          },
+          {
+            "contract": "OwnableUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)49_storage",
+            "src": "@openzeppelin\\contracts-upgradeable\\access\\OwnableUpgradeable.sol:77"
+          },
+          {
+            "contract": "ERC1967UpgradeUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)50_storage",
+            "src": "@openzeppelin\\contracts-upgradeable\\proxy\\ERC1967\\ERC1967UpgradeUpgradeable.sol:233"
+          },
+          {
+            "contract": "UUPSUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)50_storage",
+            "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\UUPSUpgradeable.sol:64"
+          },
+          {
+            "contract": "NFTStaking",
+            "label": "stakingItemIds",
+            "type": "t_struct(Counter)1055_storage",
+            "src": "contracts\\NFTStaking.sol:11"
+          },
+          {
+            "contract": "NFTStaking",
+            "label": "stakingTokenAddress",
+            "type": "t_address",
+            "src": "contracts\\NFTStaking.sol:13"
+          },
+          {
+            "contract": "NFTStaking",
+            "label": "idToStakingItem",
+            "type": "t_mapping(t_uint256,t_struct(StakingItem)1217_storage)",
+            "src": "contracts\\NFTStaking.sol:24"
+          },
+          {
+            "contract": "NFTStaking",
+            "label": "collectionMaxStaking",
+            "type": "t_mapping(t_address,t_uint256)",
+            "src": "contracts\\NFTStaking.sol:25"
+          }
+        ],
+        "types": {
+          "t_struct(Counter)1055_storage": {
+            "label": "struct CountersUpgradeable.Counter",
+            "members": [
+              {
+                "label": "_value",
+                "type": "t_uint256"
+              }
+            ]
+          },
+          "t_uint256": {
+            "label": "uint256"
+          },
+          "t_address": {
+            "label": "address"
+          },
+          "t_mapping(t_uint256,t_struct(StakingItem)1217_storage)": {
+            "label": "mapping(uint256 => struct NFTStaking.StakingItem)"
+          },
+          "t_struct(StakingItem)1217_storage": {
+            "label": "struct NFTStaking.StakingItem",
+            "members": [
+              {
+                "label": "nftContractAddress",
+                "type": "t_address"
+              },
+              {
+                "label": "account",
+                "type": "t_address"
+              },
+              {
+                "label": "amount",
+                "type": "t_uint256"
+              },
+              {
+                "label": "startTime",
+                "type": "t_uint256"
+              },
+              {
+                "label": "isWithdrawnWithoutMinting",
+                "type": "t_bool"
+              },
+              {
+                "label": "isClaimed",
+                "type": "t_bool"
+              }
+            ]
+          },
+          "t_bool": {
+            "label": "bool"
+          },
+          "t_mapping(t_address,t_uint256)": {
+            "label": "mapping(address => uint256)"
+          },
+          "t_array(t_uint256)50_storage": {
+            "label": "uint256[50]"
+          },
+          "t_array(t_uint256)49_storage": {
+            "label": "uint256[49]"
+          }
+        }
+      }
+    },
+    "0f9624ed8bd87441a1d17ec8df22807c60c816ff114cbfa7ad89cba0c2509c96": {
+      "address": "0xD49a0e9A4CD5979aE36840f542D2d7f02C4817Be",
+      "txHash": "0x1d4cb0d2093e7dde499cfadd04da3f22eac12c4846956db8c7a899fb22fb9be5",
+      "layout": {
+        "storage": [
+          {
+            "contract": "Initializable",
+            "label": "_initialized",
+            "type": "t_bool",
+            "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:21"
+          },
+          {
+            "contract": "Initializable",
+            "label": "_initializing",
+            "type": "t_bool",
+            "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:26"
+          },
+          {
+            "contract": "ContextUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)50_storage",
+            "src": "@openzeppelin\\contracts-upgradeable\\utils\\ContextUpgradeable.sol:30"
+          },
+          {
+            "contract": "OwnableUpgradeable",
+            "label": "_owner",
+            "type": "t_address",
+            "src": "@openzeppelin\\contracts-upgradeable\\access\\OwnableUpgradeable.sol:21"
+          },
+          {
+            "contract": "OwnableUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)49_storage",
+            "src": "@openzeppelin\\contracts-upgradeable\\access\\OwnableUpgradeable.sol:77"
+          },
+          {
+            "contract": "ERC1967UpgradeUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)50_storage",
+            "src": "@openzeppelin\\contracts-upgradeable\\proxy\\ERC1967\\ERC1967UpgradeUpgradeable.sol:233"
+          },
+          {
+            "contract": "UUPSUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)50_storage",
+            "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\UUPSUpgradeable.sol:64"
+          },
+          {
+            "contract": "NFTStaking",
+            "label": "stakingItemIds",
+            "type": "t_struct(Counter)1055_storage",
+            "src": "contracts\\NFTStaking.sol:11"
+          },
+          {
+            "contract": "NFTStaking",
+            "label": "stakingTokenAddress",
+            "type": "t_address",
+            "src": "contracts\\NFTStaking.sol:13"
+          },
+          {
+            "contract": "NFTStaking",
+            "label": "idToStakingItem",
+            "type": "t_mapping(t_uint256,t_struct(StakingItem)1217_storage)",
+            "src": "contracts\\NFTStaking.sol:24"
+          },
+          {
+            "contract": "NFTStaking",
+            "label": "collectionMaxStaking",
+            "type": "t_mapping(t_address,t_uint256)",
+            "src": "contracts\\NFTStaking.sol:25"
+          }
+        ],
+        "types": {
+          "t_struct(Counter)1055_storage": {
+            "label": "struct CountersUpgradeable.Counter",
+            "members": [
+              {
+                "label": "_value",
+                "type": "t_uint256"
+              }
+            ]
+          },
+          "t_uint256": {
+            "label": "uint256"
+          },
+          "t_address": {
+            "label": "address"
+          },
+          "t_mapping(t_uint256,t_struct(StakingItem)1217_storage)": {
+            "label": "mapping(uint256 => struct NFTStaking.StakingItem)"
+          },
+          "t_struct(StakingItem)1217_storage": {
+            "label": "struct NFTStaking.StakingItem",
+            "members": [
+              {
+                "label": "nftContractAddress",
+                "type": "t_address"
+              },
+              {
+                "label": "account",
+                "type": "t_address"
+              },
+              {
+                "label": "amount",
+                "type": "t_uint256"
+              },
+              {
+                "label": "startTime",
+                "type": "t_uint256"
+              },
+              {
+                "label": "isWithdrawnWithoutMinting",
+                "type": "t_bool"
+              },
+              {
+                "label": "isClaimed",
+                "type": "t_bool"
+              }
+            ]
+          },
+          "t_bool": {
+            "label": "bool"
+          },
+          "t_mapping(t_address,t_uint256)": {
+            "label": "mapping(address => uint256)"
+          },
+          "t_array(t_uint256)50_storage": {
+            "label": "uint256[50]"
+          },
+          "t_array(t_uint256)49_storage": {
+            "label": "uint256[49]"
+          }
+        }
+      }
+    },
+    "1d1b5acde57b214f5ff0c47fd3ead92719f59fdcd9752aa3a16619cacf90d149": {
+      "address": "0x0DCd1Bf9A1b36cE34237eEaFef220932846BCD82",
+      "txHash": "0x965605974f0e92325458da108a2c097b2ff3eca883e1e130cd39812b7ebdaf69",
+      "layout": {
+        "storage": [
+          {
+            "contract": "Initializable",
+            "label": "_initialized",
+            "type": "t_bool",
+            "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:21"
+          },
+          {
+            "contract": "Initializable",
+            "label": "_initializing",
+            "type": "t_bool",
+            "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:26"
+          },
+          {
+            "contract": "ContextUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)50_storage",
+            "src": "@openzeppelin\\contracts-upgradeable\\utils\\ContextUpgradeable.sol:30"
+          },
+          {
+            "contract": "OwnableUpgradeable",
+            "label": "_owner",
+            "type": "t_address",
+            "src": "@openzeppelin\\contracts-upgradeable\\access\\OwnableUpgradeable.sol:21"
+          },
+          {
+            "contract": "OwnableUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)49_storage",
+            "src": "@openzeppelin\\contracts-upgradeable\\access\\OwnableUpgradeable.sol:77"
+          },
+          {
+            "contract": "ERC1967UpgradeUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)50_storage",
+            "src": "@openzeppelin\\contracts-upgradeable\\proxy\\ERC1967\\ERC1967UpgradeUpgradeable.sol:233"
+          },
+          {
+            "contract": "UUPSUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)50_storage",
+            "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\UUPSUpgradeable.sol:64"
+          },
+          {
+            "contract": "NFTStaking",
+            "label": "stakingItemIds",
+            "type": "t_struct(Counter)1055_storage",
+            "src": "contracts\\NFTStaking.sol:11"
+          },
+          {
+            "contract": "NFTStaking",
+            "label": "stakingTokenAddress",
+            "type": "t_address",
+            "src": "contracts\\NFTStaking.sol:13"
+          },
+          {
+            "contract": "NFTStaking",
+            "label": "idToStakingItem",
+            "type": "t_mapping(t_uint256,t_struct(StakingItem)1217_storage)",
+            "src": "contracts\\NFTStaking.sol:24"
+          },
+          {
+            "contract": "NFTStaking",
+            "label": "collectionMaxStaking",
+            "type": "t_mapping(t_address,t_uint256)",
+            "src": "contracts\\NFTStaking.sol:25"
+          }
+        ],
+        "types": {
+          "t_struct(Counter)1055_storage": {
+            "label": "struct CountersUpgradeable.Counter",
+            "members": [
+              {
+                "label": "_value",
+                "type": "t_uint256"
+              }
+            ]
+          },
+          "t_uint256": {
+            "label": "uint256"
+          },
+          "t_address": {
+            "label": "address"
+          },
+          "t_mapping(t_uint256,t_struct(StakingItem)1217_storage)": {
+            "label": "mapping(uint256 => struct NFTStaking.StakingItem)"
+          },
+          "t_struct(StakingItem)1217_storage": {
+            "label": "struct NFTStaking.StakingItem",
+            "members": [
+              {
+                "label": "nftContractAddress",
+                "type": "t_address"
+              },
+              {
+                "label": "account",
+                "type": "t_address"
+              },
+              {
+                "label": "amount",
+                "type": "t_uint256"
+              },
+              {
+                "label": "startTime",
+                "type": "t_uint256"
+              },
+              {
+                "label": "isWithdrawnWithoutMinting",
+                "type": "t_bool"
+              },
+              {
+                "label": "isClaimed",
+                "type": "t_bool"
+              }
+            ]
+          },
+          "t_bool": {
+            "label": "bool"
+          },
+          "t_mapping(t_address,t_uint256)": {
+            "label": "mapping(address => uint256)"
+          },
+          "t_array(t_uint256)50_storage": {
+            "label": "uint256[50]"
+          },
+          "t_array(t_uint256)49_storage": {
+            "label": "uint256[49]"
+          }
+        }
+      }
+    }
+  }
+}
