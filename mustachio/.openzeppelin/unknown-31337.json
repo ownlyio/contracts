@@ -22,11 +22,6 @@
       "kind": "uups"
     },
     {
-      "address": "0xA51c1fc2f0D1a1b8494Ed1FE312d7C3a78Ed91C0",
-      "txHash": "0x75288909e08033ea06a1d5831090a1fdf194318d54ff5ab72efb04a4837cfef9",
-      "kind": "uups"
-    },
-    {
       "address": "0x4ed7c70F96B99c776995fB64377f0d4aB3B0e1C1",
       "txHash": "0xdcf715b98e3134799bdc21dc82391ee80543bfec5eb6bab6e9c4c3960b6cdf8e",
       "kind": "uups"
@@ -134,6 +129,31 @@
     {
       "address": "0xCD8a1C3ba11CF5ECfa6267617243239504a98d90",
       "txHash": "0x3cb272cccd80e81a4664e10f61a205a3c652d27bbbf3754fd2e66872a023c6f8",
+      "kind": "uups"
+    },
+    {
+      "address": "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9",
+      "txHash": "0xd6b3b67fb604446b83bee63d1cf9219ea137a7762348d899bbf5df60a8553ca2",
+      "kind": "uups"
+    },
+    {
+      "address": "0x5FC8d32690cc91D4c39d9d3abcBD16989F875707",
+      "txHash": "0x55ac4e0cb684188ce2b775f2ec0097d250c15f026a082bd17601a7c3034e7d07",
+      "kind": "uups"
+    },
+    {
+      "address": "0xA51c1fc2f0D1a1b8494Ed1FE312d7C3a78Ed91C0",
+      "txHash": "0x895acc0b6fafb50b84caef563af169cb24f8578df50975518263dcd5d7f4e838",
+      "kind": "uups"
+    },
+    {
+      "address": "0x322813Fd9A801c5507c9de605d63CEA4f2CE6c44",
+      "txHash": "0xbc2e958b13840ac73675fa591eff43026c57b6daa88069a896e631f1f6374325",
+      "kind": "uups"
+    },
+    {
+      "address": "0xa82fF9aFd8f496c3d6ac40E2a0F282E47488CFc9",
+      "txHash": "0xce9cb8c118e9d31e8423d963be09c3ece38e8c23b8d4f406cf1c6249f8c85ded",
       "kind": "uups"
     }
   ],
@@ -1084,8 +1104,8 @@
       }
     },
     "1d1b5acde57b214f5ff0c47fd3ead92719f59fdcd9752aa3a16619cacf90d149": {
-      "address": "0x0DCd1Bf9A1b36cE34237eEaFef220932846BCD82",
-      "txHash": "0x965605974f0e92325458da108a2c097b2ff3eca883e1e130cd39812b7ebdaf69",
+      "address": "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0",
+      "txHash": "0x0db1ddfa27772ff0c5f48ebc78eb681ddeaa3a975a5d0404e114de7b8becdb81",
       "layout": {
         "storage": [
           {
@@ -1131,28 +1151,28 @@
             "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\UUPSUpgradeable.sol:64"
           },
           {
-            "contract": "NFTStaking",
+            "contract": "NFTRewardStaking",
             "label": "stakingItemIds",
             "type": "t_struct(Counter)1055_storage",
-            "src": "contracts\\NFTStaking.sol:11"
+            "src": "contracts\\NFTRewardStaking.sol:11"
           },
           {
-            "contract": "NFTStaking",
+            "contract": "NFTRewardStaking",
             "label": "stakingTokenAddress",
             "type": "t_address",
-            "src": "contracts\\NFTStaking.sol:13"
+            "src": "contracts\\NFTRewardStaking.sol:13"
           },
           {
-            "contract": "NFTStaking",
+            "contract": "NFTRewardStaking",
             "label": "idToStakingItem",
             "type": "t_mapping(t_uint256,t_struct(StakingItem)1217_storage)",
-            "src": "contracts\\NFTStaking.sol:24"
+            "src": "contracts\\NFTRewardStaking.sol:24"
           },
           {
-            "contract": "NFTStaking",
+            "contract": "NFTRewardStaking",
             "label": "collectionMaxStaking",
             "type": "t_mapping(t_address,t_uint256)",
-            "src": "contracts\\NFTStaking.sol:25"
+            "src": "contracts\\NFTRewardStaking.sol:25"
           }
         ],
         "types": {
@@ -1172,10 +1192,10 @@
             "label": "address"
           },
           "t_mapping(t_uint256,t_struct(StakingItem)1217_storage)": {
-            "label": "mapping(uint256 => struct NFTStaking.StakingItem)"
+            "label": "mapping(uint256 => struct NFTRewardStaking.StakingItem)"
           },
           "t_struct(StakingItem)1217_storage": {
-            "label": "struct NFTStaking.StakingItem",
+            "label": "struct NFTRewardStaking.StakingItem",
             "members": [
               {
                 "label": "nftContractAddress",
