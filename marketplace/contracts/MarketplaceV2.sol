@@ -2,6 +2,7 @@
 pragma solidity 0.8.2;
 
 import "./Marketplace.sol";
+import "@openzeppelin/contracts-upgradeable/token/ERC721/IERC721Upgradeable.sol";
 
 abstract contract PancakeSwapRouterInterface {
     function getAmountsIn(uint amountOut, address[] memory path) public view virtual returns (uint[] memory);
@@ -38,6 +39,46 @@ contract MarketplaceV2 is Marketplace {
 
     function getOwnDiscountAmount() public view virtual returns (uint256) {
         return ownDiscountAmount;
+    }
+
+    function createMarketItem(address chainId, address nftContractAddress, uint256 tokenId, uint256 price, string memory currency) public virtual payable nonReentrant {
+        IERC721Upgradeable nftContract = IERC721Upgradeable(nftContractAddress);
+        address nftOwner = nftContract.ownerOf(tokenId);
+        bool isApprovedForAll = nftContract.isApprovedForAll(nftOwner, address(this));
+
+        require(compareStrings(currency, "BNB") || compareStrings(currency, "OWN"), "Invalid price currency");
+        require(nftOwner == msg.sender, "You must be the owner of the token");
+        require(isApprovedForAll, "You must give permission for this marketplace to access your token");
+        require(price > 0, "Price must be at least 1 wei");
+        require(msg.value == listingPrice, "Value must be equal to listing price");
+
+        MarketItem memory marketItem = fetchMarketItem(nftContractAddress, tokenId);
+        require(marketItem.itemId == 0, "Market item already exists");
+
+        _itemIds.increment();
+        uint256 itemId = _itemIds.current();
+
+        idToMarketItem[itemId] = MarketItem(
+            itemId,
+            nftContractAddress,
+            tokenId,
+            payable(msg.sender),
+            payable(address(0)),
+            price,
+            currency,
+            listingPrice,
+            false
+        );
+
+        emit MarketItemCreated(
+            itemId,
+            nftContractAddress,
+            tokenId,
+            msg.sender,
+            price,
+            currency,
+            listingPrice
+        );
     }
 
     function createMarketSale(uint256 itemId, string memory currency, uint256 nftChainId, address nftContract, uint256 tokenId, address seller, uint256 price, uint256 listingPrice, bytes memory signature) public virtual payable nonReentrant {
