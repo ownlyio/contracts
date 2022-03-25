@@ -41,7 +41,7 @@ contract MarketplaceV2 is Marketplace {
         return ownDiscountAmount;
     }
 
-    function createMarketItem(address chainId, address nftContractAddress, uint256 tokenId, uint256 price, string memory currency) public virtual payable nonReentrant {
+    function createMarketItem(address nftContractAddress, uint256 tokenId, uint256 price, string memory currency) public virtual payable override nonReentrant {
         IERC721Upgradeable nftContract = IERC721Upgradeable(nftContractAddress);
         address nftOwner = nftContract.ownerOf(tokenId);
         bool isApprovedForAll = nftContract.isApprovedForAll(nftOwner, address(this));
@@ -85,7 +85,6 @@ contract MarketplaceV2 is Marketplace {
         address ownly_address = 0xC3Df366fAf79c6Caff3C70948363f00b9Ac55FEE;
         //        address ownly_address = 0x7665CB7b0d01Df1c9f9B9cC66019F00aBD6959bA;
         string memory _currency = currency;
-
 
 //        if(nftChainId == 56) {  // mainnet
         if(nftChainId == 97) {  // testnet

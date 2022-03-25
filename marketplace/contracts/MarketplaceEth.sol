@@ -29,7 +29,6 @@ contract MarketplaceEth is Initializable, OwnableUpgradeable, UUPSUpgradeable, R
         address payable seller;
         address payable owner;
         uint256 price;
-        string currency;
         uint256 listingPrice;
         bool cancelled;
     }
@@ -43,7 +42,6 @@ contract MarketplaceEth is Initializable, OwnableUpgradeable, UUPSUpgradeable, R
         uint256 indexed tokenId,
         address seller,
         uint256 price,
-        string currency,
         uint256 listingPrice
     );
 
@@ -86,7 +84,7 @@ contract MarketplaceEth is Initializable, OwnableUpgradeable, UUPSUpgradeable, R
         return idToMarketItem[marketItemId];
     }
 
-    function createMarketItem(address nftContractAddress, uint256 tokenId, uint256 price, string memory currency) public virtual payable nonReentrant {
+    function createMarketItem(address nftContractAddress, uint256 tokenId, uint256 price) public virtual payable nonReentrant {
         IERC721Upgradeable nftContract = IERC721Upgradeable(nftContractAddress);
         address nftOwner = nftContract.ownerOf(tokenId);
         bool isApprovedForAll = nftContract.isApprovedForAll(nftOwner, address(this));
@@ -109,7 +107,6 @@ contract MarketplaceEth is Initializable, OwnableUpgradeable, UUPSUpgradeable, R
             payable(msg.sender),
             payable(address(0)),
             price,
-            currency,
             listingPrice,
             false
         );
@@ -120,20 +117,17 @@ contract MarketplaceEth is Initializable, OwnableUpgradeable, UUPSUpgradeable, R
             tokenId,
             msg.sender,
             price,
-            currency,
             listingPrice
         );
     }
 
-    function createMarketSale(uint256 itemId, string memory currency) public virtual payable nonReentrant returns (uint) {
+    function createMarketSale(uint256 itemId) public virtual payable nonReentrant returns (uint) {
         address payable seller = idToMarketItem[itemId].seller;
         uint price = idToMarketItem[itemId].price;
         uint tokenId = idToMarketItem[itemId].tokenId;
 
-        if(compareStrings(currency, "BNB") && compareStrings(idToMarketItem[itemId].currency, "BNB")) {
-            require(msg.value == price, "Please submit the asking price in order to complete the purchase");
-            seller.transfer(msg.value);
-        }
+        require(msg.value == price, "Please submit the asking price in order to complete the purchase");
+        seller.transfer(msg.value);
 
         IERC721Upgradeable(idToMarketItem[itemId].nftContract).transferFrom(seller, msg.sender, tokenId);
         idToMarketItem[itemId].owner = payable(msg.sender);
