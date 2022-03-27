@@ -6,16 +6,12 @@ async function main () {
     console.log("Deploying contracts with the account:", deployer.address);
     console.log("Account balance:", (await deployer.getBalance()).toString());
 
-    const BNFT = await ethers.getContractFactory('BNFT');
+    const MyERC721Token = await ethers.getContractFactory('MyERC721Token');
 
-    console.log('Deploying BNFT...');
+    console.log('Deploying myERC721Token...');
 
-    const bnft = await BNFT.deploy();
-
-    await hre.run("verify:verify", {
-        address: bnft.address,
-        contract: "contracts/bep721/BNFT.sol:BNFT"
-    });
+    const myERC721Token = await MyERC721Token.deploy();
+    console.log("\nmyERC721Token.address:", myERC721Token.address);
 }
 
 main()
