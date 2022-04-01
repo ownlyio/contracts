@@ -48,5 +48,9 @@
 /nft_staking/hardhat.config.js
 /nft_staking/artifacts
 /nft_staking/cache
+/self_minting_nft/node_modules/
+/self_minting_nft/hardhat.config.js
+/self_minting_nft/artifacts
+/self_minting_nft/cache
 .DS_Store
 .idea
