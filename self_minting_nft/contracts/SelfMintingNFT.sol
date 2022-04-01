@@ -9,9 +9,9 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 contract SelfMintingNFT is ERC721Enumerable, Ownable {
     uint mintPrice = 200000 ether;
-    uint fee = 20;
+    uint feePercentage = 2;
 
-    string baseUri = "https://ownly.tk/api/mustachio-3D/";
+    string baseUri = "https://ownly.tk/api/launchpad/self-minting-nft/";
 
     address payable adminAddress;
     address payable artistAddress;
@@ -101,7 +101,7 @@ contract SelfMintingNFT is ERC721Enumerable, Ownable {
 
         require(balance > 0, "No OWN tokens can be withdrawn.");
 
-        ownTokenContract.transfer(adminAddress, (balance * 2) / 100);
-        ownTokenContract.transfer(artistAddress, (balance * 98) / 100);
+        ownTokenContract.transfer(adminAddress, (balance * feePercentage) / 100);
+        ownTokenContract.transfer(artistAddress, (balance * (100 - feePercentage)) / 100);
     }
 }
