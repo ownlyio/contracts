@@ -2,7 +2,7 @@ const hre = require("hardhat");
 
 async function main() {
     let production = false;
-    let testRun = true;
+    let testRun = false;
 
     const [deployer] = await ethers.getSigners();
     console.log("Deployer:", deployer.address);
@@ -30,6 +30,10 @@ async function main() {
 
     await selfMintingNFT.setArtistAddress(deployer.address);
     console.log("\nselfMintingNFT.setArtistAddress: " + deployer.address);
+
+    let baseUri = "http://ownly-api.test/api/launchpad/self-minting-nft/";
+    await selfMintingNFT.setBaseUri(baseUri);
+    console.log("\nselfMintingNFT.setBaseUri: " + baseUri);
     // End: Contract Initializations
 
     // Start: Sample Transactions
