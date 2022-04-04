@@ -2,7 +2,7 @@ const hre = require("hardhat");
 
 async function main() {
     let production = false;
-    let testRun = false;
+    let testRun = true;
 
     const [deployer] = await ethers.getSigners();
     console.log("Deployer:", deployer.address);
@@ -45,6 +45,27 @@ async function main() {
         console.log("\nerc20.approve: " + mintPrice);
 
         let tokenId = 1;
+        await selfMintingNFT.purchase(tokenId);
+        console.log("\nselfMintingNFT.purchase: " + tokenId);
+
+        await erc20.approve(selfMintingNFT.address, mintPrice);
+        console.log("\nerc20.approve: " + mintPrice);
+
+        tokenId = 2;
+        await selfMintingNFT.purchase(tokenId);
+        console.log("\nselfMintingNFT.purchase: " + tokenId);
+
+        await erc20.approve(selfMintingNFT.address, mintPrice);
+        console.log("\nerc20.approve: " + mintPrice);
+
+        tokenId = 3;
+        await selfMintingNFT.purchase(tokenId);
+        console.log("\nselfMintingNFT.purchase: " + tokenId);
+
+        await erc20.approve(selfMintingNFT.address, mintPrice);
+        console.log("\nerc20.approve: " + mintPrice);
+
+        tokenId = 4;
         await selfMintingNFT.purchase(tokenId);
         console.log("\nselfMintingNFT.purchase: " + tokenId);
 

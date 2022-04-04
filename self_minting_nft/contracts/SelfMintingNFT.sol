@@ -7,8 +7,12 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
+abstract contract SparkSwapRouterInterface {
+    function getAmountsIn(uint amountOut, address[] memory path) public view virtual returns (uint[] memory);
+}
+
 contract SelfMintingNFT is ERC721Enumerable, Ownable {
-    uint mintPrice = 200000 ether;
+    uint mintPrice = 600000000000000000;
     uint feePercentage = 2;
 
     string baseUri = "https://ownly.tk/api/launchpad/self-minting-nft/";
@@ -20,6 +24,14 @@ contract SelfMintingNFT is ERC721Enumerable, Ownable {
     bool public saleIsActive = true;
 
     constructor() ERC721("SelfMintingNFT", "SMN") {}
+
+    function setFeePercentage(uint _feePercentage) public onlyOwner virtual {
+        feePercentage = _feePercentage;
+    }
+
+    function getFeePercentage() public view virtual returns (address) {
+        return feePercentage;
+    }
 
     function setAdminAddress(address payable _adminAddress) public onlyOwner virtual {
         adminAddress = _adminAddress;
@@ -74,13 +86,32 @@ contract SelfMintingNFT is ERC721Enumerable, Ownable {
 
     function purchase(uint _tokenId) public virtual payable {
         require(saleIsActive, "Sale must be active to mint your Mustachio.");
+        require(msg.value == price, "Please submit the asking price in order to complete the purchase");
+
+        mintNFT(msg.sender, _tokenId);
+    }
+
+    function purchaseWithOWN(uint _tokenId) public virtual payable {
+        require(saleIsActive, "Sale must be active to mint your Mustachio.");
+
+        SparkSwapRouterInterface sparkSwapRouterContract = SparkSwapRouterInterface(0xeB98E6e5D34c94F56708133579abB8a6A2aC2F26);
+
+        address[] memory path = new address[](2);
+        path[0] = ownAddress;
+        path[1] = 0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c;
+
+        uint[] memory ownPrice = sparkSwapRouterContract.getAmountsIn(mintPrice, path);
 
         IERC20 ownTokenContract = IERC20(ownTokenAddress);
         uint allowance = ownTokenContract.allowance(msg.sender, address(this));
 
-        require(allowance >= mintPrice, "Please approve the NFT contract with the right minting amount.");
+        uint finalPrice = ownPrice[0];
+//        uint finalPrice = 1000000000000000000000;
+        finalPrice = (finalPrice * 8) / 10;
 
-        ownTokenContract.transferFrom(msg.sender, address(this), mintPrice);
+        require(allowance >= finalPrice, "Please submit the asking price in order to complete the purchase.");
+
+        IERC20(ownAddress).transferFrom(msg.sender, address(this), finalPrice);
 
         mintNFT(msg.sender, _tokenId);
     }
@@ -89,11 +120,16 @@ contract SelfMintingNFT is ERC721Enumerable, Ownable {
         _mint(_address, _tokenId);
     }
 
-    function withdraw() public onlyOwner {
-        adminAddress.transfer(address(this).balance);
+    function withdraw() public {
+        require(msg.sender == adminAddress || msg.sender == artistAddress, "Withdraw function is only accessible to the admin and artist.");
+
+        uint balance = address(this).balance;
+
+        adminAddress.transfer((balance * feePercentage) / 100);
+        artistAddress.transfer((balance * (100 - feePercentage)) / 100);
     }
 
-    function withdrawOwnTokens() public onlyOwner {
+    function withdrawOwnTokens() public {
         require(msg.sender == adminAddress || msg.sender == artistAddress, "Withdraw function is only accessible to the admin and artist.");
 
         IERC20 ownTokenContract = IERC20(ownTokenAddress);
