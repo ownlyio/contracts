@@ -28,6 +28,10 @@
 /bridge/hardhat.config.js
 /bridge/artifacts
 /bridge/cache
+/bridge2/node_modules/
+/bridge2/hardhat.config.js
+/bridge2/artifacts
+/bridge2/cache
 /ownly_house_of_art/node_modules/
 /ownly_house_of_art/hardhat.config.js
 /ownly_house_of_art/artifacts

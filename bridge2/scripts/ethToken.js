@@ -1,6 +1,6 @@
 const hre = require("hardhat");
-let argumentPermittableToken = require("bridge/scripts/arguments/PermittableToken");
-let argumentTokenProxy = require("bridge/scripts/arguments/TokenProxy");
+let argumentPermittableToken = require("bridge2/scripts/arguments/PermittableToken");
+let argumentTokenProxy = require("bridge2/scripts/arguments/TokenProxy");
 
 async function main() {
     const [deployer] = await ethers.getSigners();
