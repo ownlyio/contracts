@@ -2,15 +2,15 @@ const hre = require("hardhat");
 
 async function main() {
     let production = false;
-    let testRun = true;
+    let testRun = false;
 
     const [deployer] = await ethers.getSigners();
     console.log("Deployer:", deployer.address);
 
     // Start: Deployments
-    const SelfMintingNFT = await hre.ethers.getContractFactory("SelfMintingNFT");
-    const selfMintingNFT = await SelfMintingNFT.deploy();
-    console.log("\nSelfMintingNFT deployed to:", selfMintingNFT.address);
+    const MainBridge = await hre.ethers.getContractFactory("MainBridge");
+    const mainBridge = await MainBridge.deploy();
+    console.log("\nMainBridge deployed to:", mainBridge.address);
 
     let erc20;
     if(testRun) {
@@ -22,64 +22,28 @@ async function main() {
 
     // Start: Contract Initializations
     let erc20Address = (testRun) ? erc20.address : ((production) ? "0x7665CB7b0d01Df1c9f9B9cC66019F00aBD6959bA" : "0xC3Df366fAf79c6Caff3C70948363f00b9Ac55FEE");
-    await selfMintingNFT.setOwnTokenAddress(erc20Address);
-    console.log("\nselfMintingNFT.setOwnTokenAddress: " + erc20Address);
-
-    await selfMintingNFT.setAdminAddress(deployer.address);
-    console.log("\nselfMintingNFT.setAdminAddress: " + deployer.address);
-
-    await selfMintingNFT.setArtistAddress(deployer.address);
-    console.log("\nselfMintingNFT.setArtistAddress: " + deployer.address);
-
-    let baseUri = "http://ownly-api.test/api/launchpad/self-minting-nft/";
-    await selfMintingNFT.setBaseUri(baseUri);
-    console.log("\nselfMintingNFT.setBaseUri: " + baseUri);
+    await mainBridge.setOwnToken(erc20Address);
+    console.log("\nmainBridge.setOwnToken: " + erc20Address);
     // End: Contract Initializations
 
     // Start: Sample Transactions
     if(testRun) {
-        let mintPrice = await selfMintingNFT.getMintPrice();
-        console.log("\nselfMintingNFT.getMintPrice: " + mintPrice);
+        let bridgeAmount = "1000000000000000000000000";
+        await erc20.approve(mainBridge.address, bridgeAmount);
+        console.log("\nerc20.approve: " + bridgeAmount);
 
-        await erc20.approve(selfMintingNFT.address, mintPrice);
-        console.log("\nerc20.approve: " + mintPrice);
+        await mainBridge.bridge(bridgeAmount);
+        console.log("\nmainBridge.bridge: " + bridgeAmount);
 
-        let tokenId = 1;
-        await selfMintingNFT.purchase(tokenId);
-        console.log("\nselfMintingNFT.purchase: " + tokenId);
-
-        await erc20.approve(selfMintingNFT.address, mintPrice);
-        console.log("\nerc20.approve: " + mintPrice);
-
-        tokenId = 2;
-        await selfMintingNFT.purchase(tokenId);
-        console.log("\nselfMintingNFT.purchase: " + tokenId);
-
-        await erc20.approve(selfMintingNFT.address, mintPrice);
-        console.log("\nerc20.approve: " + mintPrice);
-
-        tokenId = 3;
-        await selfMintingNFT.purchase(tokenId);
-        console.log("\nselfMintingNFT.purchase: " + tokenId);
-
-        await erc20.approve(selfMintingNFT.address, mintPrice);
-        console.log("\nerc20.approve: " + mintPrice);
-
-        tokenId = 4;
-        await selfMintingNFT.purchase(tokenId);
-        console.log("\nselfMintingNFT.purchase: " + tokenId);
-
-        let balanceOf = await erc20.balanceOf(selfMintingNFT.address);
-        console.log("\nerc20.balanceOf(selfMintingNFT.address): " + balanceOf);
-
-        balanceOf = await erc20.balanceOf(deployer.address);
+        let balanceOf = await erc20.balanceOf(deployer.address);
         console.log("\nerc20.balanceOf(deployer.address): " + balanceOf);
 
-        await selfMintingNFT.withdrawOwnTokens();
-        console.log("\nselfMintingNFT.withdrawOwnTokens:");
+        balanceOf = await erc20.balanceOf(mainBridge.address);
+        console.log("\nerc20.balanceOf(mainBridge.address): " + balanceOf);
 
-        balanceOf = await erc20.balanceOf(deployer.address);
-        console.log("\nerc20.balanceOf(deployer.address): " + balanceOf);
+        let bridgeItems = await mainBridge.fetchBridgeItems(deployer.address);
+        console.log("\nmainBridge.fetchBridgeItems:");
+        console.log(bridgeItems);
     }
     // End: Sample Transactions
 }

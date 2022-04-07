@@ -6,8 +6,8 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/security/Pausable.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
-contract MainBridge is Pausable, wnable {
-    using Counter for Counters.Counter;
+contract MainBridge is Pausable, Ownable {
+    using Counters for Counters.Counter;
     Counters.Counter _itemIds;
 
     IERC20 ownToken;
@@ -18,7 +18,8 @@ contract MainBridge is Pausable, wnable {
         uint amount;
     }
 
-    mapping(uint256 => BridgeItem) idToBridgeItem;
+    mapping(uint => BridgeItem) idToBridgeItem;
+    mapping(address => uint[]) accountBridgeItemIds;
 
     event BridgeItemCreated (
         uint indexed itemId,
@@ -26,8 +27,8 @@ contract MainBridge is Pausable, wnable {
         uint indexed amount
     );
 
-    function setOwnToken(uint _ownToken) public onlyOwner virtual {
-        ownToken = IERC20(_ownToken);
+    function setOwnToken(address _ownTokenAddress) public onlyOwner virtual {
+        ownToken = IERC20(_ownTokenAddress);
     }
 
     function pause() public onlyOwner {
@@ -38,7 +39,7 @@ contract MainBridge is Pausable, wnable {
         _unpause();
     }
 
-    function bridge(uint amount) public payable whenNotPaused {
+    function bridge(uint amount) public whenNotPaused {
         uint allowance = ownToken.allowance(msg.sender, address(this));
 
         require(allowance >= amount, "Please submit the asking price in order to complete the purchase.");
@@ -53,33 +54,21 @@ contract MainBridge is Pausable, wnable {
             amount
         );
 
-        emit BridgeItemItemCreated(
+        accountBridgeItemIds[msg.sender].push(itemId);
+
+        emit BridgeItemCreated(
             itemId,
             msg.sender,
             amount
         );
     }
 
-    function fetchBridgeItems() public view virtual returns (BridgeItem[] memory) {
-        uint itemCount = _itemIds.current();
-        uint unsoldItemCount = _itemIds.current() - _itemsSold.current();
-        uint bridgeItemsCount = 0;
-        uint currentIndex = 0;
+    function fetchBridgeItems(address account) public view virtual returns (BridgeItem[] memory) {
+        uint itemCount = accountBridgeItemIds[account].length;
 
-        for (uint i = 0; i < idToBridgeItem.length; i++) {
-            if(idToBridgeItem[i].account == msg.sender) {
-                bridgeItemsCount++;
-            }
-        }
-
-        BridgeItem[] memory items = new BridgeItem[](bridgeItemsCount);
-        for (uint i = 0; i < itemCount; i++) {
-            if(idToBridgeItem[i].account == msg.sender) {
-                uint currentId = idToMarketItem[i].itemId;
-                BridgeItem storage currentItem = idToMarketItem[currentId];
-                items[currentIndex] = currentItem;
-                currentIndex++;
-            }
+        BridgeItem[] memory items = new BridgeItem[](itemCount);
+        for(uint i = 0; i < itemCount; i++) {
+            items[i] = idToBridgeItem[accountBridgeItemIds[account][i]];
         }
 
         return items;
