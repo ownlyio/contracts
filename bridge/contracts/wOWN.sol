@@ -2,13 +2,37 @@
 
 pragma solidity ^0.8.2;
 
-import "@openzeppelin/contracts/token/ERC20/presets/ERC20PresetFixedSupply.sol";
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract MyERC20Token is ERC20PresetFixedSupply {
-    constructor(address owner) ERC20PresetFixedSupply ("MyERC20Token", "MYERC20TOKEN", 10000000000 * 10**18, owner) {}
+contract WrappedOwnly is ERC20, Ownable {
+    address bridgeValidator;
 
-    function getMessageHash(uint item_, uint itemId, address nftContract, uint256 tokenId, address seller, uint256 price, string memory currency, uint256 listingPrice) public pure returns (bytes32) {
-        return keccak256(abi.encodePacked(chain_id, itemId, nftContract, tokenId, seller, price, currency, listingPrice));
+    mapping(uint => bool) itemIdIsClaimed;
+
+    constructor() ERC20("Wrapped Ownly", "wOWN") {}
+
+    function mint(uint itemId, address account, uint amount, bytes memory signature) public onlyOwner {
+        require(account == msg.sender, "Account is not valid for this transaction.");
+        require(verify(itemId, account, amount, signature), "Signature is invalid.");
+
+        _mint(to, amount);
+    }
+
+    function setBridgeValidator(uint _itemId) public onlyOwner virtual {
+        bridgeItemIsClaimed[_itemId];
+    }
+
+    function setBridgeValidator(address _bridgeValidator) public onlyOwner virtual {
+        bridgeValidator = _bridgeValidator;
+    }
+
+    function getBridgeValidator() public view virtual returns (address) {
+        return bridgeValidator;
+    }
+
+    function getMessageHash(uint itemId, address account, uint amount) public pure returns (bytes32) {
+        return keccak256(abi.encodePacked(itemId, account, amount));
     }
 
     function getEthSignedMessageHash(bytes32 _messageHash) public pure virtual returns (bytes32) {
@@ -22,11 +46,11 @@ contract MyERC20Token is ERC20PresetFixedSupply {
         );
     }
 
-    function verify(uint chain_id, uint itemId, address nftContract, uint256 tokenId, address seller, uint256 price, string memory currency, uint256 listingPrice, bytes memory signature) public view virtual returns (bool) {
-        bytes32 messageHash = getMessageHash(chain_id, itemId, nftContract, tokenId, seller, price, currency, listingPrice);
+    function verify(uint itemId, address account, uint amount, bytes memory signature) public view virtual returns (bool) {
+        bytes32 messageHash = getMessageHash(itemId, account, amount);
         bytes32 ethSignedMessageHash = getEthSignedMessageHash(messageHash);
 
-        return recoverSigner(ethSignedMessageHash, signature) == marketplaceValidator;
+        return recoverSigner(ethSignedMessageHash, signature) == bridgeValidator;
     }
 
     function recoverSigner(bytes32 _ethSignedMessageHash, bytes memory _signature) public pure virtual returns (address) {
