@@ -3,24 +3,29 @@
 pragma solidity ^0.8.2;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/security/Pausable.sol";
 
-contract WrappedOwnly is ERC20, Ownable {
+contract WrappedOwnly is ERC20, ERC20Burnable, Pausable, Ownable {
     address bridgeValidator;
 
     mapping(uint => bool) itemIdIsClaimed;
 
     constructor() ERC20("Wrapped Ownly", "wOWN") {}
 
-    function mint(uint itemId, address account, uint amount, bytes memory signature) public onlyOwner {
-        require(account == msg.sender, "Account is not valid for this transaction.");
-        require(verify(itemId, account, amount, signature), "Signature is invalid.");
-
-        _mint(to, amount);
+    function getItemIdIsClaimed(uint itemId) public view returns (bool) {
+        return itemIdIsClaimed[itemId];
     }
 
-    function setBridgeValidator(uint _itemId) public onlyOwner virtual {
-        bridgeItemIsClaimed[_itemId];
+    function claim(uint itemId, address account, uint amount, bytes memory signature) public onlyOwner whenNotPaused {
+        require(account == msg.sender, "Account is not valid for this transaction.");
+        require(itemIdIsClaimed[itemId] == false, "Bridge Item is already claimed");
+        require(verify(itemId, account, amount, signature) == true, "Signature is invalid.");
+
+        itemIdIsClaimed[itemId] = true;
+
+        _mint(account, amount);
     }
 
     function setBridgeValidator(address _bridgeValidator) public onlyOwner virtual {
