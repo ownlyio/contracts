@@ -21,13 +21,19 @@ async function main() {
     // End: Deployments
 
     // Start: Contract Initializations
-    let erc20Address = (testRun) ? erc20.address : ((production) ? "0x7665CB7b0d01Df1c9f9B9cC66019F00aBD6959bA" : "0xC3Df366fAf79c6Caff3C70948363f00b9Ac55FEE");
-    await mainBridge.setOwnToken(erc20Address);
-    console.log("\nmainBridge.setOwnToken: " + erc20Address);
+
     // End: Contract Initializations
 
     // Start: Sample Transactions
     if(testRun) {
+        let erc20Address = (testRun) ? erc20.address : ((production) ? "0x7665CB7b0d01Df1c9f9B9cC66019F00aBD6959bA" : "0xC3Df366fAf79c6Caff3C70948363f00b9Ac55FEE");
+        await mainBridge.setOwnToken(erc20Address);
+        console.log("\nmainBridge.setOwnToken: " + erc20Address);
+
+        let bridgeValidator = (testRun) ? deployer.address : "0xe5B4f53Eb4c651377e0f98AF67fF506a1c5fC1C9";
+        await mainBridge.setBridgeValidator(bridgeValidator);
+        console.log("\nmainBridge.setBridgeValidator: " + bridgeValidator);
+
         let bridgeAmount = "1000000000000000000000000";
         await erc20.approve(mainBridge.address, bridgeAmount);
         console.log("\nerc20.approve: " + bridgeAmount);
