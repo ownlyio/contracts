@@ -83,7 +83,7 @@ contract MainBridge is Pausable, Ownable {
         return items;
     }
 
-    function claim(uint chainId, address contractAddress, uint itemId, address account, uint amount, bytes memory signature) public onlyOwner whenNotPaused {
+    function claim(uint chainId, address contractAddress, uint itemId, address account, uint amount, bytes memory signature) public whenNotPaused {
         require(account == msg.sender, "Account is not valid for this transaction.");
         require(itemIdIsClaimed[chainId][itemId] == false, "Bridge Item is already claimed.");
         require(verify(chainId, contractAddress, itemId, account, amount, signature) == true, "Signature is invalid.");

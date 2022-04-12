@@ -38,7 +38,7 @@ contract WrappedOwnly is ERC20, ERC20Burnable, Pausable, Ownable {
         return itemIdIsClaimed[itemId];
     }
 
-    function claim(address contractAddress, uint itemId, address account, uint amount, bytes memory signature) public onlyOwner whenNotPaused {
+    function claim(address contractAddress, uint itemId, address account, uint amount, bytes memory signature) public whenNotPaused {
         require(account == msg.sender, "Account is not valid for this transaction.");
         require(itemIdIsClaimed[itemId] == false, "Bridge Item is already claimed.");
         require(verify(contractAddress, itemId, account, amount, signature) == true, "Signature is invalid.");
