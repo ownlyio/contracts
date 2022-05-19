@@ -12,7 +12,7 @@ abstract contract SparkSwapRouterInterface {
 }
 
 contract SelfMintingNFT is ERC721Enumerable, Ownable {
-    uint mintPrice = 600000000000000000;
+    uint mintPrice = 6000000000000000;
     uint feePercentage = 2;
 
     string baseUri = "https://ownly.tk/api/launchpad/self-minting-nft/";
@@ -29,7 +29,7 @@ contract SelfMintingNFT is ERC721Enumerable, Ownable {
         feePercentage = _feePercentage;
     }
 
-    function getFeePercentage() public view virtual returns (address) {
+    function getFeePercentage() public view virtual returns (uint) {
         return feePercentage;
     }
 
@@ -86,32 +86,29 @@ contract SelfMintingNFT is ERC721Enumerable, Ownable {
 
     function purchase(uint _tokenId) public virtual payable {
         require(saleIsActive, "Sale must be active to mint your Mustachio.");
-        require(msg.value == price, "Please submit the asking price in order to complete the purchase");
+        require(msg.value == mintPrice, "Please submit the asking price in order to complete the purchase");
 
         mintNFT(msg.sender, _tokenId);
     }
 
-    function purchaseWithOWN(uint _tokenId) public virtual payable {
+    function purchaseWithOWN(uint _tokenId) public virtual {
         require(saleIsActive, "Sale must be active to mint your Mustachio.");
 
-        SparkSwapRouterInterface sparkSwapRouterContract = SparkSwapRouterInterface(0xeB98E6e5D34c94F56708133579abB8a6A2aC2F26);
-
-        address[] memory path = new address[](2);
-        path[0] = ownAddress;
-        path[1] = 0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c;
-
-        uint[] memory ownPrice = sparkSwapRouterContract.getAmountsIn(mintPrice, path);
+//        SparkSwapRouterInterface sparkSwapRouterContract = SparkSwapRouterInterface(0xeB98E6e5D34c94F56708133579abB8a6A2aC2F26);
+//
+//        address[] memory path = new address[](2);
+//        path[0] = ownAddress;
+//        path[1] = 0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c;
+//
+//        uint[] memory ownPrice = sparkSwapRouterContract.getAmountsIn(mintPrice, path);
 
         IERC20 ownTokenContract = IERC20(ownTokenAddress);
-        uint allowance = ownTokenContract.allowance(msg.sender, address(this));
 
-        uint finalPrice = ownPrice[0];
-//        uint finalPrice = 1000000000000000000000;
+//        uint finalPrice = ownPrice[0];
+        uint finalPrice = 1000000000000000000000;
         finalPrice = (finalPrice * 8) / 10;
 
-        require(allowance >= finalPrice, "Please submit the asking price in order to complete the purchase.");
-
-        IERC20(ownAddress).transferFrom(msg.sender, address(this), finalPrice);
+        ownTokenContract.transferFrom(msg.sender, address(this), finalPrice);
 
         mintNFT(msg.sender, _tokenId);
     }

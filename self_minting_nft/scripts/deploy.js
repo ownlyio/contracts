@@ -2,7 +2,7 @@ const hre = require("hardhat");
 
 async function main() {
     let production = false;
-    let testRun = true;
+    let testRun = false;
 
     const [deployer] = await ethers.getSigners();
     console.log("Deployer:", deployer.address);
@@ -30,8 +30,8 @@ async function main() {
 
     await selfMintingNFT.setArtistAddress(deployer.address);
     console.log("\nselfMintingNFT.setArtistAddress: " + deployer.address);
-
-    let baseUri = "http://ownly-api.test/api/launchpad/self-minting-nft/";
+    
+    let baseUri = "https://ownly.io/nft/sample/api/";
     await selfMintingNFT.setBaseUri(baseUri);
     console.log("\nselfMintingNFT.setBaseUri: " + baseUri);
     // End: Contract Initializations
@@ -45,28 +45,7 @@ async function main() {
         console.log("\nerc20.approve: " + mintPrice);
 
         let tokenId = 1;
-        await selfMintingNFT.purchase(tokenId);
-        console.log("\nselfMintingNFT.purchase: " + tokenId);
-
-        await erc20.approve(selfMintingNFT.address, mintPrice);
-        console.log("\nerc20.approve: " + mintPrice);
-
-        tokenId = 2;
-        await selfMintingNFT.purchase(tokenId);
-        console.log("\nselfMintingNFT.purchase: " + tokenId);
-
-        await erc20.approve(selfMintingNFT.address, mintPrice);
-        console.log("\nerc20.approve: " + mintPrice);
-
-        tokenId = 3;
-        await selfMintingNFT.purchase(tokenId);
-        console.log("\nselfMintingNFT.purchase: " + tokenId);
-
-        await erc20.approve(selfMintingNFT.address, mintPrice);
-        console.log("\nerc20.approve: " + mintPrice);
-
-        tokenId = 4;
-        await selfMintingNFT.purchase(tokenId);
+        await selfMintingNFT.purchase(tokenId, { value: ethers.utils.parseEther("0.006") });
         console.log("\nselfMintingNFT.purchase: " + tokenId);
 
         let balanceOf = await erc20.balanceOf(selfMintingNFT.address);
@@ -75,8 +54,11 @@ async function main() {
         balanceOf = await erc20.balanceOf(deployer.address);
         console.log("\nerc20.balanceOf(deployer.address): " + balanceOf);
 
-        await selfMintingNFT.withdrawOwnTokens();
-        console.log("\nselfMintingNFT.withdrawOwnTokens:");
+        await selfMintingNFT.withdraw();
+        console.log("\nselfMintingNFT.withdraw:");
+
+        // await selfMintingNFT.withdrawOwnTokens();
+        // console.log("\nselfMintingNFT.withdrawOwnTokens:");
 
         balanceOf = await erc20.balanceOf(deployer.address);
         console.log("\nerc20.balanceOf(deployer.address): " + balanceOf);
