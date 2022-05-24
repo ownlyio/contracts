@@ -1,7 +1,9 @@
 const { ethers, upgrades } = require('hardhat');
 
 async function main () {
-    const [deployer] = await ethers.getSigners();
+    let testRun = true;
+
+    const [deployer, address1, address2, address3, address4, address5] = await ethers.getSigners();
 
     const Marketplace = await ethers.getContractFactory('Marketplace');
 
@@ -27,6 +29,60 @@ async function main () {
 
     console.log('MarketplaceV2 deployed to: ', marketplacev2.address);
     console.log('Version: ', await marketplacev2.version());
+
+    // Initializations
+    await marketplacev2.addressList(0, [], 0);
+    console.log("\nmarketplacev2.addressList(0, [], 0)");
+
+    if(testRun) {
+        const MyERC721Token = await hre.ethers.getContractFactory("MyERC721Token");
+        let erc721 = await MyERC721Token.deploy();
+        console.log("\nMyERC721Token deployed to:", erc721.address);
+
+        const MyERC20Token = await hre.ethers.getContractFactory("OdoKo");
+        let erc20 = await MyERC20Token.deploy(deployer.address);
+        console.log("\nMyERC20Token deployed to:", erc20.address);
+
+        await marketplacev2.setOwnlyAddress(erc20.address);
+        console.log("\nmarketplacev2.setOwnlyAddress(erc20.address)");
+
+        await erc20.transfer(address1.address, "5000000000000000000000000");
+        console.log("\nerc20.transfer(address1, 5000000000000000000000000)");
+
+        await erc721.safeMint(deployer.address);
+        console.log("\nerc721.safeMint(deployer.address)");
+
+        let ownerOf = await erc721.ownerOf(0);
+        console.log("\nerc721.ownerOf(0)");
+        console.log(ownerOf);
+
+        await erc721.setApprovalForAll(marketplacev2.address, true);
+        console.log("\nerc721.setApprovalForAll(marketplacev2.address, true)");
+
+        await marketplacev2.addressList(1, [], 20);
+        console.log("\nmarketplacev2.addressList(0, [deployer.address], 20)");
+
+        await marketplacev2.createMarketItemV2(erc721.address, 0, "5000000000000000000000000", "OWN", 20, 1);
+        console.log("\nmarketplacev2.createMarketItemV2(erc721.address, 1, 5000000000000000000000000, OWN, 40, 1)");
+
+        let marketItem = await marketplacev2.fetchMarketItemV2(erc721.address, 0);
+        console.log("\nmarketplacev2.fetchMarketItemV2(erc721.address, 0)");
+        console.log(marketItem.toString());
+
+        await erc20.connect(address1).approve(marketplacev2.address, "3000000000000000000000000");
+        console.log("\nerc20.connect(address1).approve(marketplacev2.address, 3000000000000000000000000)");
+
+        await marketplacev2.connect(address1).createMarketSaleV2(1, "OWN");
+        console.log("\nmarketplacev2.connect(address1).createMarketSaleV2");
+
+        let balanceOf = await erc20.balanceOf(address1.address);
+        console.log("\nerc20.balanceOf(address1.address)");
+        console.log(balanceOf.toString());
+
+        ownerOf = await erc721.ownerOf(0);
+        console.log("\nerc721.ownerOf(0)");
+        console.log(ownerOf);
+    }
 }
 
 main()

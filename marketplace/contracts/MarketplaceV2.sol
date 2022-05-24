@@ -2,63 +2,88 @@
 pragma solidity 0.8.2;
 
 import "./Marketplace.sol";
-import "@openzeppelin/contracts-upgradeable/token/ERC721/IERC721Upgradeable.sol";
 
-abstract contract PancakeSwapRouterInterface {
-    function getAmountsIn(uint amountOut, address[] memory path) public view virtual returns (uint[] memory);
+abstract contract IPancakeSwapRouter {
+    function getAmountsIn(uint amountOut, address[] calldata path) external view virtual returns (uint[] memory amounts);
+    function getAmountsOut(uint amountIn, address[] calldata path) external view virtual returns (uint[] memory amounts);
 }
 
 contract MarketplaceV2 is Marketplace {
     using CountersUpgradeable for CountersUpgradeable.Counter;
+    CountersUpgradeable.Counter _itemIdsV2;
+    CountersUpgradeable.Counter _itemsSoldV2;
 
-    address marketplaceValidator;
-    uint256 ownDiscountAmount;
+    address ownlyAddress;
 
-    event MarketItemPaidForOtherChain (
-        uint nftChainID,
+    struct MarketItemV2 {
+        uint itemId;
+        address nftContract;
+        uint256 tokenId;
+        address payable seller;
+        address payable owner;
+        uint256 price;
+        string currency;
+        uint discountPercentage;
+        uint idToAddressList;
+        uint256 listingPrice;
+        bool cancelled;
+    }
+
+    mapping(uint256 => MarketItemV2) idToMarketItemV2;
+    mapping(uint256 => address[]) idToAddressList;
+    mapping(uint256 => uint256) idToDiscountPercentage;
+
+    event MarketItemCreatedV2 (
         uint indexed itemId,
         address indexed nftContract,
         uint256 indexed tokenId,
         address seller,
         uint256 price,
         string currency,
+        uint discountPercentage,
+        uint idToAddressList,
         uint256 listingPrice
     );
 
-    function setMarketplaceValidator(address _marketplaceValidator) public onlyOwner virtual {
-        marketplaceValidator = _marketplaceValidator;
+    event MarketItemCancelledV2 (
+        uint indexed itemId
+    );
+
+    event MarketItemSoldV2 (
+        uint indexed itemId
+    );
+
+    function getOwnlyAddress() public view virtual returns (address) {
+        return ownlyAddress;
     }
 
-    function getMarketplaceValidator() public view virtual returns (address) {
-        return marketplaceValidator;
+    function setOwnlyAddress(address _ownlyAddress) public onlyOwner virtual {
+        ownlyAddress = _ownlyAddress;
     }
 
-    function setOwnDiscountAmount(uint256 _ownDiscountAmount) public onlyOwner virtual {
-        ownDiscountAmount = _ownDiscountAmount;
+    function getMarketItemV2(uint256 itemId) public view virtual returns (MarketItemV2 memory) {
+        return idToMarketItemV2[itemId];
     }
 
-    function getOwnDiscountAmount() public view virtual returns (uint256) {
-        return ownDiscountAmount;
-    }
-
-    function createMarketItem(address nftContractAddress, uint256 tokenId, uint256 price, string memory currency) public virtual payable override nonReentrant {
+    function createMarketItemV2(address nftContractAddress, uint256 tokenId, uint256 price, string memory currency, uint256 discountPercentage, uint256 _idToAddressList) public virtual payable nonReentrant {
         IERC721Upgradeable nftContract = IERC721Upgradeable(nftContractAddress);
         address nftOwner = nftContract.ownerOf(tokenId);
         bool isApprovedForAll = nftContract.isApprovedForAll(nftOwner, address(this));
 
-        require(compareStrings(currency, "BNB") || compareStrings(currency, "OWN"), "Invalid price currency");
-        require(nftOwner == msg.sender, "You must be the owner of the token");
-        require(isApprovedForAll, "You must give permission for this marketplace to access your token");
-        require(price > 0, "Price must be at least 1 wei");
-        require(msg.value == listingPrice, "Value must be equal to listing price");
+        require(compareStrings(currency, "BNB") || compareStrings(currency, "OWN"), "Invalid price currency.");
+        require(nftOwner == msg.sender, "You must be the owner of the token.");
+        require(isApprovedForAll, "You must give permission for this marketplace to access your token.");
+        require(price > 0, "Price must be at least 1 wei.");
+        require(msg.value == listingPrice, "Value must be equal to listing price.");
+        require(discountPercentage < 100, "Invalid discount percentage.");
 
-        MarketItem memory marketItem = fetchMarketItem(nftContractAddress, tokenId);
-        require(marketItem.itemId == 0, "Market item already exists");
+        MarketItemV2 memory marketItemV2 = fetchMarketItemV2(nftContractAddress, tokenId);
+        require(marketItemV2.itemId == 0, "Market item already exists.");
 
         _itemIds.increment();
         uint256 itemId = _itemIds.current();
 
-        idToMarketItem[itemId] = MarketItem(
+        idToMarketItemV2[itemId] = MarketItemV2(
             itemId,
             nftContractAddress,
             tokenId,
@@ -66,176 +91,146 @@ contract MarketplaceV2 is Marketplace {
             payable(address(0)),
             price,
             currency,
+            discountPercentage,
+            _idToAddressList,
             listingPrice,
             false
         );
 
-        emit MarketItemCreated(
+        emit MarketItemCreatedV2(
             itemId,
             nftContractAddress,
             tokenId,
             msg.sender,
             price,
             currency,
+            discountPercentage,
+            _idToAddressList,
             listingPrice
         );
     }
 
-    function createMarketSale(uint256 itemId, string memory currency, uint256 nftChainId, address nftContract, uint256 tokenId, address seller, uint256 price, uint256 listingPrice, bytes memory signature) public virtual payable nonReentrant {
-        address ownly_address = 0xC3Df366fAf79c6Caff3C70948363f00b9Ac55FEE;
-        //        address ownly_address = 0x7665CB7b0d01Df1c9f9B9cC66019F00aBD6959bA;
-        string memory _currency = currency;
+    function createMarketSaleV2(uint256 itemId, string memory currency) public virtual payable nonReentrant returns (uint) {
+        MarketItemV2 memory marketItem = idToMarketItemV2[itemId];
 
-//        if(nftChainId == 56) {  // mainnet
-        if(nftChainId == 97) {  // testnet
-            MarketItem memory marketItem = idToMarketItem[itemId];
+        require(marketItem.cancelled == false, "Market item is already cancelled.");
 
-            if(compareStrings(currency, "BNB") && compareStrings(marketItem.currency, "BNB")) {
-                require(msg.value == marketItem.price, "Please submit the asking price in order to complete the purchase");
-                marketItem.seller.transfer(msg.value);
+        if(compareStrings(currency, "BNB") && compareStrings(marketItem.currency, "BNB")) {
+            require(msg.value == marketItem.price, "Please submit the asking price in order to complete the purchase.");
+            marketItem.seller.transfer(msg.value);
+        } else if(compareStrings(currency, "OWN") && compareStrings(marketItem.currency, "OWN")) {
+            IERC20Upgradeable ownlyContract = IERC20Upgradeable(ownlyAddress);
+
+            uint totalDiscountPercentage = marketItem.discountPercentage;
+
+            if(isInAddressList(marketItem.idToAddressList, msg.sender)) {
+                totalDiscountPercentage += idToDiscountPercentage[marketItem.idToAddressList];
             }
 
-            if(compareStrings(currency, "OWN") && compareStrings(marketItem.currency, "OWN")) {
-                IERC20Upgradeable ownlyContract = IERC20Upgradeable(ownly_address);
-                uint ownlyAllowance = ownlyContract.allowance(msg.sender, address(this));
+            uint finalPrice = (marketItem.price * (100 - totalDiscountPercentage)) / 100;
 
-                require(marketItem.price == ownlyAllowance, "Please submit the asking price in order to complete the purchase");
+            ownlyContract.transferFrom(msg.sender, marketItem.seller, finalPrice);
+        } else if(compareStrings(currency, "OWN") && compareStrings(marketItem.currency, "BNB")) {
+            IPancakeSwapRouter pancakeSwapRouterContract = IPancakeSwapRouter(0xeB98E6e5D34c94F56708133579abB8a6A2aC2F26);
 
-                IERC20Upgradeable(ownly_address).transferFrom(msg.sender, marketItem.seller, marketItem.price);
-            }
+            address[] memory path = new address[](2);
+            path[0] = ownlyAddress;
+            path[1] = 0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c;
 
-            if(compareStrings(currency, "OWN") && compareStrings(marketItem.currency, "BNB")) {
-                SparkSwapRouterInterface sparkSwapRouterContract = SparkSwapRouterInterface(0xeB98E6e5D34c94F56708133579abB8a6A2aC2F26);
+            uint[] memory ownPrice = pancakeSwapRouterContract.getAmountsIn(marketItem.price, path);
+            uint finalPrice = (ownPrice[0] * (100 - marketItem.discountPercentage)) / 100;
 
-                address[] memory path = new address[](2);
-                path[0] = ownly_address;
-                path[1] = 0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c;
+            IERC20Upgradeable ownlyContract = IERC20Upgradeable(ownlyAddress);
+            ownlyContract.transferFrom(msg.sender, marketItem.seller, finalPrice);
+        } else if(compareStrings(currency, "BNB") && compareStrings(marketItem.currency, "OWN")) {
+            IPancakeSwapRouter pancakeSwapRouterContract = IPancakeSwapRouter(0xeB98E6e5D34c94F56708133579abB8a6A2aC2F26);
 
-                uint[] memory ownPrice = sparkSwapRouterContract.getAmountsIn(marketItem.price, path);
+            address[] memory path = new address[](2);
+            path[0] = ownlyAddress;
+            path[1] = 0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c;
 
-                IERC20Upgradeable ownlyContract = IERC20Upgradeable(ownly_address);
-                uint ownlyAllowance = ownlyContract.allowance(msg.sender, address(this));
+            uint[] memory bnbPrice = pancakeSwapRouterContract.getAmountsOut(marketItem.price, path);
 
-                uint finalPrice = getOwnDiscountedAmount(ownPrice[0]);
-
-                require(ownlyAllowance >= finalPrice, "Please submit the asking price in order to complete the purchase");
-
-                IERC20Upgradeable(ownly_address).transferFrom(msg.sender, marketItem.seller, finalPrice);
-            }
-
-            IERC721Upgradeable(marketItem.nftContract).transferFrom(marketItem.seller, msg.sender, marketItem.tokenId);
-            idToMarketItem[itemId].owner = payable(msg.sender);
-            _itemsSold.increment();
-
-            if(marketItem.listingPrice > 0) {
-                payable(marketplaceOwner).transfer(marketItem.listingPrice);
-            }
-
-            emit MarketItemSold(
-                itemId
-            );
-//        } else if(nftChainId == 1) { // mainnet
-        } else if(nftChainId == 4) { // testnet
-            require(verify(nftChainId, itemId, nftContract, tokenId, seller, price, _currency, listingPrice, signature), "Invalid Market Item");
-
-            // mainnet
-//            uint ownPrice = getOwnDiscountedAmount(ethToOWNConversion(price));
-
-            // testnet
-            uint ownPrice = getOwnDiscountedAmount(1000000000000000000000);
-            ownPrice = (ownPrice * 8) / 10; // 20% discount
-
-            IERC20Upgradeable(ownly_address).transferFrom(msg.sender, seller, ownPrice);
-            payable(marketplaceOwner).transfer(idToMarketItem[itemId].listingPrice);
-
-            emit MarketItemPaidForOtherChain(
-                nftChainId,
-                itemId,
-                nftContract,
-                tokenId,
-                seller,
-                ownPrice,
-                _currency,
-                listingPrice
-            );
+            require(msg.value == bnbPrice[1], "Please submit the asking price in order to complete the purchase.");
+            marketItem.seller.transfer(msg.value);
         }
+
+        IERC721Upgradeable(marketItem.nftContract).transferFrom(marketItem.seller, msg.sender, marketItem.tokenId);
+        marketItem.owner = payable(msg.sender);
+        _itemsSold.increment();
+
+        if(marketItem.listingPrice > 0) {
+            payable(marketplaceOwner).transfer(marketItem.listingPrice);
+        }
+
+        emit MarketItemSoldV2(
+            itemId
+        );
+
+        return 0;
     }
 
-    function getOwnDiscountedAmount(uint256 amount) public view virtual returns (uint256) {
-        return (amount * (100 - ownDiscountAmount)) / 100; // 20% discount
-    }
+    function cancelMarketItemV2(uint256 itemId) public virtual nonReentrant {
+        MarketItemV2 memory marketItem = idToMarketItemV2[itemId];
 
-    function ethToOWNConversion(uint256 amount) public view virtual returns (uint256) {
-        PancakeSwapRouterInterface pancakeSwapRouterContract = PancakeSwapRouterInterface(0x10ED43C718714eb63d5aA57B78B54704E256024E);
+        require(marketItem.cancelled == false, "Market item is already cancelled.");
 
-        address own_address = 0x7665CB7b0d01Df1c9f9B9cC66019F00aBD6959bA;
-        address busd_address = 0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56;
-        address eth_address = 0x2170Ed0880ac9A755fd29B2688956BD959F933F8;
+        IERC721Upgradeable nftContract = IERC721Upgradeable(marketItem.nftContract);
+        address nftOwner = nftContract.ownerOf(marketItem.tokenId);
+        bool isApprovedForAll = nftContract.isApprovedForAll(nftOwner, address(this));
 
-        address[] memory busd_eth_path = new address[](2);
-        busd_eth_path[0] = busd_address;
-        busd_eth_path[1] = eth_address;
+        require(marketItem.owner == address(0), "This market item is already sold.");
+        require(nftOwner == marketItem.seller && nftOwner == msg.sender, "You must be the owner of the token.");
+        require(isApprovedForAll, "You must give permission for this marketplace to access your token.");
 
-        address[] memory own_busd_path = new address[](2);
-        own_busd_path[0] = own_address;
-        own_busd_path[1] = busd_address;
+        marketItem.cancelled = true;
 
-        uint[] memory busdPrice = pancakeSwapRouterContract.getAmountsIn(amount, busd_eth_path);
-        uint[] memory ownPrice = pancakeSwapRouterContract.getAmountsIn(busdPrice[0], own_busd_path);
+        if(marketItem.listingPrice > 0) {
+            payable(msg.sender).transfer(marketItem.listingPrice);
+        }
 
-        return ownPrice[0];
-    }
-
-    function getMessageHash(uint chain_id, uint itemId, address nftContract, uint256 tokenId, address seller, uint256 price, string memory currency, uint256 listingPrice) public pure returns (bytes32) {
-        return keccak256(abi.encodePacked(chain_id, itemId, nftContract, tokenId, seller, price, currency, listingPrice));
-    }
-
-    function getEthSignedMessageHash(bytes32 _messageHash) public pure virtual returns (bytes32) {
-        /*
-        Signature is produced by signing a keccak256 hash with the following format:
-        "\x19Ethereum Signed Message\n" + len(msg) + msg
-        */
-        return
-        keccak256(
-            abi.encodePacked("\x19Ethereum Signed Message:\n32", _messageHash)
+        emit MarketItemCancelledV2(
+            itemId
         );
     }
 
-    function verify(uint chain_id, uint itemId, address nftContract, uint256 tokenId, address seller, uint256 price, string memory currency, uint256 listingPrice, bytes memory signature) public view virtual returns (bool) {
-        bytes32 messageHash = getMessageHash(chain_id, itemId, nftContract, tokenId, seller, price, currency, listingPrice);
-        bytes32 ethSignedMessageHash = getEthSignedMessageHash(messageHash);
+    function fetchMarketItemV2(address nftContractAddress, uint256 tokenId) public view virtual returns (MarketItemV2 memory) {
+        uint itemCount = _itemIds.current();
 
-        return recoverSigner(ethSignedMessageHash, signature) == marketplaceValidator;
-    }
+        MarketItemV2 memory item;
 
-    function recoverSigner(bytes32 _ethSignedMessageHash, bytes memory _signature) public pure virtual returns (address) {
-        (bytes32 r, bytes32 s, uint8 v) = splitSignature(_signature);
+        for (uint i = 1; i <= itemCount; i++) {
+            MarketItemV2 memory marketItem = idToMarketItemV2[i];
 
-        return ecrecover(_ethSignedMessageHash, v, r, s);
-    }
+            if (marketItem.nftContract == nftContractAddress && marketItem.tokenId == tokenId && marketItem.owner == address(0) && marketItem.cancelled == false) {
+                IERC721Upgradeable nftContract = IERC721Upgradeable(marketItem.nftContract);
+                address nftOwner = nftContract.ownerOf(marketItem.tokenId);
+                bool isApprovedForAll = nftContract.isApprovedForAll(nftOwner, address(this));
 
-    function splitSignature(bytes memory sig) public pure virtual returns (bytes32 r, bytes32 s, uint8 v) {
-        require(sig.length == 65, "invalid signature length");
-
-        assembly {
-        /*
-        First 32 bytes stores the length of the signature
-
-        add(sig, 32) = pointer of sig + 32
-        effectively, skips first 32 bytes of signature
-
-        mload(p) loads next 32 bytes starting at the memory address p into memory
-        */
-
-        // first 32 bytes, after the length prefix
-            r := mload(add(sig, 32))
-        // second 32 bytes
-            s := mload(add(sig, 64))
-        // final byte (first byte of the next 32 bytes)
-            v := byte(0, mload(add(sig, 96)))
+                if (nftOwner == marketItem.seller && isApprovedForAll) {
+                    item = marketItem;
+                    break;
+                }
+            }
         }
 
-        // implicitly return (r, s, v)
+        return item;
+    }
+
+    function isInAddressList(uint id, address _user) public view returns (bool) {
+        for (uint i = 0; i < idToAddressList[id].length; i++) {
+            if (idToAddressList[id][i] == _user) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    function addressList(uint id, address[] calldata _addresses, uint discountPercentage) public onlyOwner {
+        delete idToAddressList[id];
+        idToAddressList[id] = _addresses;
+
+        idToDiscountPercentage[id] = discountPercentage;
     }
 
     function version() pure public virtual override returns (string memory) {

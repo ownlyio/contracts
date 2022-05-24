@@ -90,6 +90,8 @@ contract NFTStaking is Initializable, OwnableUpgradeable, UUPSUpgradeable {
 
     function unstake(uint _idToStakingItem) public virtual {
         require(msg.sender == idToStakingItem[_idToStakingItem].account, "Staking item doesn't belong to this account.");
+        require(idToStakingItem[_idToStakingItem].isWithdrawnWithoutMinting == false, "");
+
         idToStakingItem[_idToStakingItem].isWithdrawnWithoutMinting = true;
 
         IERC20Upgradeable stakingTokenContract = IERC20Upgradeable(stakingTokenAddress);

@@ -1,6 +1,7 @@
 /marketplace/node_modules/
 /marketplace/hardhat.config.js
 /marketplace/artifacts
+/marketplace/cache
 /bnft/node_modules/
 /bnft/hardhat.config.js
 /bnft/artifacts
