@@ -3,7 +3,7 @@ pragma solidity 0.8.2;
 
 import "./Marketplace.sol";
 
-abstract contract IPancakeSwapRouter {
+abstract contract ISparkSwapRouter {
     function getAmountsIn(uint amountOut, address[] calldata path) external view virtual returns (uint[] memory amounts);
     function getAmountsOut(uint amountIn, address[] calldata path) external view virtual returns (uint[] memory amounts);
 }
@@ -131,32 +131,37 @@ contract MarketplaceV2 is Marketplace {
 
             ownlyContract.transferFrom(msg.sender, marketItem.seller, finalPrice);
         } else if(compareStrings(currency, "OWN") && compareStrings(marketItem.currency, "BNB")) {
-            IPancakeSwapRouter pancakeSwapRouterContract = IPancakeSwapRouter(0xeB98E6e5D34c94F56708133579abB8a6A2aC2F26);
+//            ISparkSwapRouter pancakeSwapRouterContract = ISparkSwapRouter(0xeB98E6e5D34c94F56708133579abB8a6A2aC2F26);
+//
+//            address[] memory path = new address[](2);
+//            path[0] = ownlyAddress;
+//            path[1] = 0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c;
+//
+//            uint[] memory ownPrice = pancakeSwapRouterContract.getAmountsIn(marketItem.price, path);
+//            uint finalPrice = (ownPrice[0] * (100 - marketItem.discountPercentage)) / 100;
 
-            address[] memory path = new address[](2);
-            path[0] = ownlyAddress;
-            path[1] = 0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c;
-
-            uint[] memory ownPrice = pancakeSwapRouterContract.getAmountsIn(marketItem.price, path);
-            uint finalPrice = (ownPrice[0] * (100 - marketItem.discountPercentage)) / 100;
+            uint finalPrice = (5000000000000000000000000 * (100 - marketItem.discountPercentage)) / 100;
 
             IERC20Upgradeable ownlyContract = IERC20Upgradeable(ownlyAddress);
             ownlyContract.transferFrom(msg.sender, marketItem.seller, finalPrice);
         } else if(compareStrings(currency, "BNB") && compareStrings(marketItem.currency, "OWN")) {
-            IPancakeSwapRouter pancakeSwapRouterContract = IPancakeSwapRouter(0xeB98E6e5D34c94F56708133579abB8a6A2aC2F26);
+//            ISparkSwapRouter pancakeSwapRouterContract = ISparkSwapRouter(0xeB98E6e5D34c94F56708133579abB8a6A2aC2F26);
+//
+//            address[] memory path = new address[](2);
+//            path[0] = ownlyAddress;
+//            path[1] = 0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c;
+//
+//            uint[] memory bnbPrice = pancakeSwapRouterContract.getAmountsOut(marketItem.price, path);
+//            uint price = bnbPrice[1];
 
-            address[] memory path = new address[](2);
-            path[0] = ownlyAddress;
-            path[1] = 0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c;
+            uint price = 100000000000000000;
 
-            uint[] memory bnbPrice = pancakeSwapRouterContract.getAmountsOut(marketItem.price, path);
-
-            require(msg.value == bnbPrice[1], "Please submit the asking price in order to complete the purchase.");
+            require(msg.value == price, "Please submit the asking price in order to complete the purchase.");
             marketItem.seller.transfer(msg.value);
         }
 
         IERC721Upgradeable(marketItem.nftContract).transferFrom(marketItem.seller, msg.sender, marketItem.tokenId);
-        marketItem.owner = payable(msg.sender);
+        idToMarketItem[itemId].owner = payable(msg.sender);
         _itemsSold.increment();
 
         if(marketItem.listingPrice > 0) {

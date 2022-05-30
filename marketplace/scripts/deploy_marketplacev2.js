@@ -1,7 +1,8 @@
 const { ethers, upgrades } = require('hardhat');
 
 async function main () {
-    let testRun = true;
+    let testRun = false;
+    let env = "staging";
 
     const [deployer, address1, address2, address3, address4, address5] = await ethers.getSigners();
 
@@ -34,6 +35,17 @@ async function main () {
     await marketplacev2.addressList(0, [], 0);
     console.log("\nmarketplacev2.addressList(0, [], 0)");
 
+    let erc20Address;
+    if(env === "staging") {
+        erc20Address = "0xC3Df366fAf79c6Caff3C70948363f00b9Ac55FEE";
+    } else {
+        erc20Address = "0x7665CB7b0d01Df1c9f9B9cC66019F00aBD6959bA";
+    }
+
+    await marketplacev2.setOwnlyAddress(erc20Address);
+    console.log("\nmarketplacev2.setOwnlyAddress(erc20Address)");
+    // Initializations
+
     if(testRun) {
         const MyERC721Token = await hre.ethers.getContractFactory("MyERC721Token");
         let erc721 = await MyERC721Token.deploy();
@@ -43,8 +55,10 @@ async function main () {
         let erc20 = await MyERC20Token.deploy(deployer.address);
         console.log("\nMyERC20Token deployed to:", erc20.address);
 
-        await marketplacev2.setOwnlyAddress(erc20.address);
-        console.log("\nmarketplacev2.setOwnlyAddress(erc20.address)");
+        if(env === "local") {
+            await marketplacev2.setOwnlyAddress(erc20.address);
+            console.log("\nmarketplacev2.setOwnlyAddress(erc20.address)");
+        }
 
         await erc20.transfer(address1.address, "5000000000000000000000000");
         console.log("\nerc20.transfer(address1, 5000000000000000000000000)");
