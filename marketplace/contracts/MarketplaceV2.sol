@@ -30,8 +30,10 @@ contract MarketplaceV2 is Marketplace {
     }
 
     mapping(uint256 => MarketItemV2) idToMarketItemV2;
+
     mapping(uint256 => address[]) idToAddressList;
-    mapping(uint256 => uint256) idToDiscountPercentage;
+    mapping(uint256 => uint256) idToAddressListDiscountPercentage;
+    mapping(uint256 => uint256) idToAddressListMaxMintQuantity;
 
     event MarketItemCreatedV2 (
         uint indexed itemId,
@@ -124,7 +126,7 @@ contract MarketplaceV2 is Marketplace {
             uint totalDiscountPercentage = marketItem.discountPercentage;
 
             if(isInAddressList(marketItem.idToAddressList, msg.sender)) {
-                totalDiscountPercentage += idToDiscountPercentage[marketItem.idToAddressList];
+                totalDiscountPercentage += idToAddressListDiscountPercentage[marketItem.idToAddressList];
             }
 
             uint finalPrice = (marketItem.price * (100 - totalDiscountPercentage)) / 100;
@@ -231,11 +233,12 @@ contract MarketplaceV2 is Marketplace {
         return false;
     }
 
-    function addressList(uint id, address[] calldata _addresses, uint discountPercentage) public onlyOwner {
+    function addressList(uint id, address[] calldata _addresses, uint discountPercentage, uint maxMintQuantity) public onlyOwner {
         delete idToAddressList[id];
         idToAddressList[id] = _addresses;
 
-        idToDiscountPercentage[id] = discountPercentage;
+        idToAddressListDiscountPercentage[id] = discountPercentage;
+        idToAddressListMaxMintQuantity[id] = maxMintQuantity;
     }
 
     function version() pure public virtual override returns (string memory) {
