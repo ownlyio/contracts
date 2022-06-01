@@ -122,12 +122,7 @@ contract MarketplaceV2 is Marketplace {
         } else if(compareStrings(currency, "OWN") && compareStrings(marketItem.currency, "OWN")) {
             IERC20Upgradeable ownlyContract = IERC20Upgradeable(ownlyAddress);
 
-            uint totalDiscountPercentage = marketItem.discountPercentage;
-
-            if(isInAddressList(marketItem.idToAddressList, msg.sender)) {
-                totalDiscountPercentage += idToAddressListDiscountPercentage[marketItem.idToAddressList];
-            }
-
+            uint totalDiscountPercentage = marketItem.discountPercentage + getAddressListDiscountPercentage(marketItem.idToAddressList, msg.sender);
             uint finalPrice = (marketItem.price * (100 - totalDiscountPercentage)) / 100;
 
             ownlyContract.transferFrom(msg.sender, marketItem.seller, finalPrice);
