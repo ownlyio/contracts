@@ -33,7 +33,6 @@ contract MarketplaceV2 is Marketplace {
 
     mapping(uint256 => address[]) idToAddressList;
     mapping(uint256 => uint256) idToAddressListDiscountPercentage;
-    mapping(uint256 => uint256) idToAddressListMaxMintQuantity;
 
     event MarketItemCreatedV2 (
         uint indexed itemId,
@@ -224,21 +223,24 @@ contract MarketplaceV2 is Marketplace {
         return item;
     }
 
-    function isInAddressList(uint id, address _user) public view returns (bool) {
+    function getAddressListDiscountPercentage(uint id, address _user) public view returns (uint) {
+        uint discountPercentage = 0;
+
         for (uint i = 0; i < idToAddressList[id].length; i++) {
             if (idToAddressList[id][i] == _user) {
-                return true;
+                discountPercentage = idToAddressListDiscountPercentage[id];
+                break;
             }
         }
-        return false;
+
+        return discountPercentage;
     }
 
-    function addressList(uint id, address[] calldata _addresses, uint discountPercentage, uint maxMintQuantity) public onlyOwner {
+    function addressList(uint id, address[] calldata _addresses, uint discountPercentage) public onlyOwner {
         delete idToAddressList[id];
         idToAddressList[id] = _addresses;
 
         idToAddressListDiscountPercentage[id] = discountPercentage;
-        idToAddressListMaxMintQuantity[id] = maxMintQuantity;
     }
 
     function version() pure public virtual override returns (string memory) {
