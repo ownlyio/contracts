@@ -151,8 +151,9 @@ contract MarketplaceV2 is Marketplace {
 //            uint price = bnbPrice[1];
 
             uint price = 100000000000000000;
+            price = price - 3000000000000000;
 
-            require(msg.value == price, "Please submit the asking price in order to complete the purchase.");
+            require(msg.value >= price, "Please submit the asking price in order to complete the purchase.");
             marketItem.seller.transfer(msg.value);
         }
 
