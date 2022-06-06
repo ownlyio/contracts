@@ -47,11 +47,6 @@
       "kind": "uups"
     },
     {
-      "address": "0x70e0bA845a1A0F2DA3359C97E0285013525FFC49",
-      "txHash": "0x6cf9ae638db299a99dd2adf84f98f962e8fec9c537d4d9c2dcceb5225837dba5",
-      "kind": "uups"
-    },
-    {
       "address": "0x0E801D84Fa97b50751Dbf25036d067dCf18858bF",
       "txHash": "0xa9035b9264c4fdfbbb4aaa7bb336d195130478afd6e443dc67b0b253eec818c0",
       "kind": "uups"
@@ -507,11 +502,6 @@
       "kind": "uups"
     },
     {
-      "address": "0xc5a5C42992dECbae36851359345FE25997F5C42d",
-      "txHash": "0xc93a278229335807063d239ad56f215f102d74efb0686535d1c116412812e1d9",
-      "kind": "uups"
-    },
-    {
       "address": "0xc3e53F4d16Ae77Db1c982e75a937B9f60FE63690",
       "txHash": "0x84b753b62830622ff1cb2561ebb7af0f33d2ba21698cc16ecb1c10eaa1286b0e",
       "kind": "uups"
@@ -524,11 +514,6 @@
     {
       "address": "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9",
       "txHash": "0x0076b83d5669c5213b2dc0c0c82e27a564e76f8d714dd40753cf33040097d2f7",
-      "kind": "uups"
-    },
-    {
-      "address": "0x0165878A594ca255338adfa4d48449f69242Eb8F",
-      "txHash": "0x77f4db37e14795cff10a6f5f38619681c229f4087813b6028ebd09bcdf1809e6",
       "kind": "uups"
     },
     {
@@ -554,11 +539,6 @@
     {
       "address": "0x59b670e9fA9D0A427751Af201D676719a970857b",
       "txHash": "0xdf09e02956b6b0a52ec2734b8113b1f891ff4c82a6ea7032b1a64f1473f48b37",
-      "kind": "uups"
-    },
-    {
-      "address": "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512",
-      "txHash": "0x9eb927792a20e4115ea06ad6c625b7247fe9fb804cfe92586a2bd58d10e4533c",
       "kind": "uups"
     },
     {
@@ -754,6 +734,51 @@
     {
       "address": "0x90b97E83e22AFa2e6A96b3549A0E495D5Bae61aF",
       "txHash": "0x2210824e64e12066eaba1f062ec32f4ff5c369946fb40178fbe4a164b6e71fb2",
+      "kind": "uups"
+    },
+    {
+      "address": "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512",
+      "txHash": "0x9eb927792a20e4115ea06ad6c625b7247fe9fb804cfe92586a2bd58d10e4533c",
+      "kind": "uups"
+    },
+    {
+      "address": "0x0165878A594ca255338adfa4d48449f69242Eb8F",
+      "txHash": "0xc62e3cee09a0319b2fb0b45ed93124321bcd25203ccaa22459a2edbf5b5d03d0",
+      "kind": "uups"
+    },
+    {
+      "address": "0x959922bE3CAee4b8Cd9a407cc3ac1C251C2007B1",
+      "txHash": "0xafbc37d93d64f8018df5c52c346cc92764ec7dba247cbfe0094f1dba4d583fda",
+      "kind": "uups"
+    },
+    {
+      "address": "0xc5a5C42992dECbae36851359345FE25997F5C42d",
+      "txHash": "0x53dac759d6353451f1b7bce9c02ebf0afdc38be2af7ef508782fed8425cd0653",
+      "kind": "uups"
+    },
+    {
+      "address": "0x70e0bA845a1A0F2DA3359C97E0285013525FFC49",
+      "txHash": "0x121b73966e6c73b2ce69dd538ebd63a97e2d622d11e45ec3263796a39ab2c56a",
+      "kind": "uups"
+    },
+    {
+      "address": "0xb7278A61aa25c888815aFC32Ad3cC52fF24fE575",
+      "txHash": "0x06e8741a304e0ee4510ad69671948e03c07f5c398d9921ae1c1c8b75f5488f1c",
+      "kind": "uups"
+    },
+    {
+      "address": "0x922D6956C99E12DFeB3224DEA977D0939758A1Fe",
+      "txHash": "0xf3c3643d78446bf2b614eb2feedb9f5a9796beacece17b957e871c5a50b442e6",
+      "kind": "uups"
+    },
+    {
+      "address": "0x36b58F5C1969B7b6591D752ea6F5486D069010AB",
+      "txHash": "0xbedb2e450d17720f79fa825a7992fa41c0ad8e75781384a71257cbc48d15ef9b",
+      "kind": "uups"
+    },
+    {
+      "address": "0xC9a43158891282A2B1475592D5719c001986Aaec",
+      "txHash": "0x6086ba74f9aa96488f6b377a11b44251e169a60aeae674671c0c3b6162481ce9",
       "kind": "uups"
     }
   ],
@@ -8673,265 +8698,6 @@
         }
       }
     },
-    "dd166c613ff087a28bd24463cdb8a5354d78d0c5155f999720c7317c4ef14287": {
-      "address": "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0",
-      "txHash": "0x41101ff003c7b181a554638e8113830ed6769aea5d3c89eb6795eca448ea2486",
-      "layout": {
-        "storage": [
-          {
-            "contract": "Initializable",
-            "label": "_initialized",
-            "type": "t_bool",
-            "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:39"
-          },
-          {
-            "contract": "Initializable",
-            "label": "_initializing",
-            "type": "t_bool",
-            "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:44"
-          },
-          {
-            "contract": "ContextUpgradeable",
-            "label": "__gap",
-            "type": "t_array(t_uint256)50_storage",
-            "src": "@openzeppelin\\contracts-upgradeable\\utils\\ContextUpgradeable.sol:31"
-          },
-          {
-            "contract": "OwnableUpgradeable",
-            "label": "_owner",
-            "type": "t_address",
-            "src": "@openzeppelin\\contracts-upgradeable\\access\\OwnableUpgradeable.sol:22"
-          },
-          {
-            "contract": "OwnableUpgradeable",
-            "label": "__gap",
-            "type": "t_array(t_uint256)49_storage",
-            "src": "@openzeppelin\\contracts-upgradeable\\access\\OwnableUpgradeable.sol:82"
-          },
-          {
-            "contract": "ERC1967UpgradeUpgradeable",
-            "label": "__gap",
-            "type": "t_array(t_uint256)50_storage",
-            "src": "@openzeppelin\\contracts-upgradeable\\proxy\\ERC1967\\ERC1967UpgradeUpgradeable.sol:215"
-          },
-          {
-            "contract": "UUPSUpgradeable",
-            "label": "__gap",
-            "type": "t_array(t_uint256)50_storage",
-            "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\UUPSUpgradeable.sol:81"
-          },
-          {
-            "contract": "ReentrancyGuardUpgradeable",
-            "label": "_status",
-            "type": "t_uint256",
-            "src": "@openzeppelin\\contracts-upgradeable\\security\\ReentrancyGuardUpgradeable.sol:38"
-          },
-          {
-            "contract": "ReentrancyGuardUpgradeable",
-            "label": "__gap",
-            "type": "t_array(t_uint256)49_storage",
-            "src": "@openzeppelin\\contracts-upgradeable\\security\\ReentrancyGuardUpgradeable.sol:68"
-          },
-          {
-            "contract": "Marketplace",
-            "label": "_itemIds",
-            "type": "t_struct(Counter)2882_storage",
-            "src": "contracts\\Marketplace.sol:36"
-          },
-          {
-            "contract": "Marketplace",
-            "label": "_itemsSold",
-            "type": "t_struct(Counter)2882_storage",
-            "src": "contracts\\Marketplace.sol:37"
-          },
-          {
-            "contract": "Marketplace",
-            "label": "marketplaceOwner",
-            "type": "t_address_payable",
-            "src": "contracts\\Marketplace.sol:39"
-          },
-          {
-            "contract": "Marketplace",
-            "label": "listingPrice",
-            "type": "t_uint256",
-            "src": "contracts\\Marketplace.sol:40"
-          },
-          {
-            "contract": "Marketplace",
-            "label": "nftFirstOwner",
-            "type": "t_mapping(t_address,t_address)",
-            "src": "contracts\\Marketplace.sol:54"
-          },
-          {
-            "contract": "Marketplace",
-            "label": "idToMarketItem",
-            "type": "t_mapping(t_uint256,t_struct(MarketItem)3369_storage)",
-            "src": "contracts\\Marketplace.sol:55"
-          },
-          {
-            "contract": "MarketplaceV2",
-            "label": "_itemIdsV2",
-            "type": "t_struct(Counter)2882_storage",
-            "src": "contracts\\MarketplaceV2.sol:14"
-          },
-          {
-            "contract": "MarketplaceV2",
-            "label": "_itemsSoldV2",
-            "type": "t_struct(Counter)2882_storage",
-            "src": "contracts\\MarketplaceV2.sol:15"
-          },
-          {
-            "contract": "MarketplaceV2",
-            "label": "idToMarketItemV2",
-            "type": "t_mapping(t_uint256,t_struct(MarketItemV2)5535_storage)",
-            "src": "contracts\\MarketplaceV2.sol:31"
-          },
-          {
-            "contract": "MarketplaceV2",
-            "label": "idToAddressList",
-            "type": "t_mapping(t_uint256,t_array(t_address)dyn_storage)",
-            "src": "contracts\\MarketplaceV2.sol:32"
-          }
-        ],
-        "types": {
-          "t_struct(Counter)2882_storage": {
-            "label": "struct CountersUpgradeable.Counter",
-            "members": [
-              {
-                "label": "_value",
-                "type": "t_uint256"
-              }
-            ]
-          },
-          "t_uint256": {
-            "label": "uint256"
-          },
-          "t_mapping(t_uint256,t_struct(MarketItemV2)5535_storage)": {
-            "label": "mapping(uint256 => struct MarketplaceV2.MarketItemV2)"
-          },
-          "t_struct(MarketItemV2)5535_storage": {
-            "label": "struct MarketplaceV2.MarketItemV2",
-            "members": [
-              {
-                "label": "itemId",
-                "type": "t_uint256"
-              },
-              {
-                "label": "nftContract",
-                "type": "t_address"
-              },
-              {
-                "label": "tokenId",
-                "type": "t_uint256"
-              },
-              {
-                "label": "seller",
-                "type": "t_address_payable"
-              },
-              {
-                "label": "owner",
-                "type": "t_address_payable"
-              },
-              {
-                "label": "price",
-                "type": "t_uint256"
-              },
-              {
-                "label": "currency",
-                "type": "t_string_storage"
-              },
-              {
-                "label": "discountPercentage",
-                "type": "t_uint256"
-              },
-              {
-                "label": "idToAddressList",
-                "type": "t_uint256"
-              },
-              {
-                "label": "listingPrice",
-                "type": "t_uint256"
-              },
-              {
-                "label": "cancelled",
-                "type": "t_bool"
-              }
-            ]
-          },
-          "t_address": {
-            "label": "address"
-          },
-          "t_address_payable": {
-            "label": "address payable"
-          },
-          "t_string_storage": {
-            "label": "string"
-          },
-          "t_bool": {
-            "label": "bool"
-          },
-          "t_mapping(t_uint256,t_array(t_address)dyn_storage)": {
-            "label": "mapping(uint256 => address[])"
-          },
-          "t_array(t_address)dyn_storage": {
-            "label": "address[]"
-          },
-          "t_mapping(t_address,t_address)": {
-            "label": "mapping(address => address)"
-          },
-          "t_mapping(t_uint256,t_struct(MarketItem)3369_storage)": {
-            "label": "mapping(uint256 => struct Marketplace.MarketItem)"
-          },
-          "t_struct(MarketItem)3369_storage": {
-            "label": "struct Marketplace.MarketItem",
-            "members": [
-              {
-                "label": "itemId",
-                "type": "t_uint256"
-              },
-              {
-                "label": "nftContract",
-                "type": "t_address"
-              },
-              {
-                "label": "tokenId",
-                "type": "t_uint256"
-              },
-              {
-                "label": "seller",
-                "type": "t_address_payable"
-              },
-              {
-                "label": "owner",
-                "type": "t_address_payable"
-              },
-              {
-                "label": "price",
-                "type": "t_uint256"
-              },
-              {
-                "label": "currency",
-                "type": "t_string_storage"
-              },
-              {
-                "label": "listingPrice",
-                "type": "t_uint256"
-              },
-              {
-                "label": "cancelled",
-                "type": "t_bool"
-              }
-            ]
-          },
-          "t_array(t_uint256)49_storage": {
-            "label": "uint256[49]"
-          },
-          "t_array(t_uint256)50_storage": {
-            "label": "uint256[50]"
-          }
-        }
-      }
-    },
     "11146b4fd73e1ecf2bf0c31068bd3a80950b8747a9ef09dd1b45a7c6075e00e1": {
       "address": "0x59b670e9fA9D0A427751Af201D676719a970857b",
       "txHash": "0x70d496ed449d605019ff3130d48a6f2a0810aff7b36c58253ed457332e587a22",
@@ -11522,6 +11288,554 @@
             "label": "idToDiscountPercentage",
             "type": "t_mapping(t_uint256,t_uint256)",
             "src": "contracts\\MarketplaceV2.sol:34"
+          }
+        ],
+        "types": {
+          "t_struct(Counter)2882_storage": {
+            "label": "struct CountersUpgradeable.Counter",
+            "members": [
+              {
+                "label": "_value",
+                "type": "t_uint256"
+              }
+            ]
+          },
+          "t_uint256": {
+            "label": "uint256"
+          },
+          "t_address": {
+            "label": "address"
+          },
+          "t_mapping(t_uint256,t_struct(MarketItemV2)5536_storage)": {
+            "label": "mapping(uint256 => struct MarketplaceV2.MarketItemV2)"
+          },
+          "t_struct(MarketItemV2)5536_storage": {
+            "label": "struct MarketplaceV2.MarketItemV2",
+            "members": [
+              {
+                "label": "itemId",
+                "type": "t_uint256"
+              },
+              {
+                "label": "nftContract",
+                "type": "t_address"
+              },
+              {
+                "label": "tokenId",
+                "type": "t_uint256"
+              },
+              {
+                "label": "seller",
+                "type": "t_address_payable"
+              },
+              {
+                "label": "owner",
+                "type": "t_address_payable"
+              },
+              {
+                "label": "price",
+                "type": "t_uint256"
+              },
+              {
+                "label": "currency",
+                "type": "t_string_storage"
+              },
+              {
+                "label": "discountPercentage",
+                "type": "t_uint256"
+              },
+              {
+                "label": "idToAddressList",
+                "type": "t_uint256"
+              },
+              {
+                "label": "listingPrice",
+                "type": "t_uint256"
+              },
+              {
+                "label": "cancelled",
+                "type": "t_bool"
+              }
+            ]
+          },
+          "t_address_payable": {
+            "label": "address payable"
+          },
+          "t_string_storage": {
+            "label": "string"
+          },
+          "t_bool": {
+            "label": "bool"
+          },
+          "t_mapping(t_uint256,t_array(t_address)dyn_storage)": {
+            "label": "mapping(uint256 => address[])"
+          },
+          "t_array(t_address)dyn_storage": {
+            "label": "address[]"
+          },
+          "t_mapping(t_uint256,t_uint256)": {
+            "label": "mapping(uint256 => uint256)"
+          },
+          "t_mapping(t_address,t_address)": {
+            "label": "mapping(address => address)"
+          },
+          "t_mapping(t_uint256,t_struct(MarketItem)3369_storage)": {
+            "label": "mapping(uint256 => struct Marketplace.MarketItem)"
+          },
+          "t_struct(MarketItem)3369_storage": {
+            "label": "struct Marketplace.MarketItem",
+            "members": [
+              {
+                "label": "itemId",
+                "type": "t_uint256"
+              },
+              {
+                "label": "nftContract",
+                "type": "t_address"
+              },
+              {
+                "label": "tokenId",
+                "type": "t_uint256"
+              },
+              {
+                "label": "seller",
+                "type": "t_address_payable"
+              },
+              {
+                "label": "owner",
+                "type": "t_address_payable"
+              },
+              {
+                "label": "price",
+                "type": "t_uint256"
+              },
+              {
+                "label": "currency",
+                "type": "t_string_storage"
+              },
+              {
+                "label": "listingPrice",
+                "type": "t_uint256"
+              },
+              {
+                "label": "cancelled",
+                "type": "t_bool"
+              }
+            ]
+          },
+          "t_array(t_uint256)49_storage": {
+            "label": "uint256[49]"
+          },
+          "t_array(t_uint256)50_storage": {
+            "label": "uint256[50]"
+          }
+        }
+      }
+    },
+    "2846ad8311ed6de4faa6128dbe690d88b786ad9d1d86c94d3b4eb947502bfda1": {
+      "address": "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0",
+      "txHash": "0x326dfe4ce388e90ad1c034238b642d60a23700d8afb8203b9df9cc1c8b006e35",
+      "layout": {
+        "storage": [
+          {
+            "contract": "Initializable",
+            "label": "_initialized",
+            "type": "t_bool",
+            "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:39"
+          },
+          {
+            "contract": "Initializable",
+            "label": "_initializing",
+            "type": "t_bool",
+            "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:44"
+          },
+          {
+            "contract": "ContextUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)50_storage",
+            "src": "@openzeppelin\\contracts-upgradeable\\utils\\ContextUpgradeable.sol:31"
+          },
+          {
+            "contract": "OwnableUpgradeable",
+            "label": "_owner",
+            "type": "t_address",
+            "src": "@openzeppelin\\contracts-upgradeable\\access\\OwnableUpgradeable.sol:22"
+          },
+          {
+            "contract": "OwnableUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)49_storage",
+            "src": "@openzeppelin\\contracts-upgradeable\\access\\OwnableUpgradeable.sol:82"
+          },
+          {
+            "contract": "ERC1967UpgradeUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)50_storage",
+            "src": "@openzeppelin\\contracts-upgradeable\\proxy\\ERC1967\\ERC1967UpgradeUpgradeable.sol:215"
+          },
+          {
+            "contract": "UUPSUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)50_storage",
+            "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\UUPSUpgradeable.sol:81"
+          },
+          {
+            "contract": "ReentrancyGuardUpgradeable",
+            "label": "_status",
+            "type": "t_uint256",
+            "src": "@openzeppelin\\contracts-upgradeable\\security\\ReentrancyGuardUpgradeable.sol:38"
+          },
+          {
+            "contract": "ReentrancyGuardUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)49_storage",
+            "src": "@openzeppelin\\contracts-upgradeable\\security\\ReentrancyGuardUpgradeable.sol:68"
+          },
+          {
+            "contract": "Marketplace",
+            "label": "_itemIds",
+            "type": "t_struct(Counter)2882_storage",
+            "src": "contracts\\Marketplace.sol:36"
+          },
+          {
+            "contract": "Marketplace",
+            "label": "_itemsSold",
+            "type": "t_struct(Counter)2882_storage",
+            "src": "contracts\\Marketplace.sol:37"
+          },
+          {
+            "contract": "Marketplace",
+            "label": "marketplaceOwner",
+            "type": "t_address_payable",
+            "src": "contracts\\Marketplace.sol:39"
+          },
+          {
+            "contract": "Marketplace",
+            "label": "listingPrice",
+            "type": "t_uint256",
+            "src": "contracts\\Marketplace.sol:40"
+          },
+          {
+            "contract": "Marketplace",
+            "label": "nftFirstOwner",
+            "type": "t_mapping(t_address,t_address)",
+            "src": "contracts\\Marketplace.sol:54"
+          },
+          {
+            "contract": "Marketplace",
+            "label": "idToMarketItem",
+            "type": "t_mapping(t_uint256,t_struct(MarketItem)3369_storage)",
+            "src": "contracts\\Marketplace.sol:55"
+          },
+          {
+            "contract": "MarketplaceV2",
+            "label": "_itemIdsV2",
+            "type": "t_struct(Counter)2882_storage",
+            "src": "contracts\\MarketplaceV2.sol:13"
+          },
+          {
+            "contract": "MarketplaceV2",
+            "label": "_itemsSoldV2",
+            "type": "t_struct(Counter)2882_storage",
+            "src": "contracts\\MarketplaceV2.sol:14"
+          },
+          {
+            "contract": "MarketplaceV2",
+            "label": "ownlyAddress",
+            "type": "t_address",
+            "src": "contracts\\MarketplaceV2.sol:16"
+          },
+          {
+            "contract": "MarketplaceV2",
+            "label": "idToMarketItemV2",
+            "type": "t_mapping(t_uint256,t_struct(MarketItemV2)5536_storage)",
+            "src": "contracts\\MarketplaceV2.sol:32"
+          },
+          {
+            "contract": "MarketplaceV2",
+            "label": "idToAddressList",
+            "type": "t_mapping(t_uint256,t_array(t_address)dyn_storage)",
+            "src": "contracts\\MarketplaceV2.sol:34"
+          },
+          {
+            "contract": "MarketplaceV2",
+            "label": "idToAddressListDiscountPercentage",
+            "type": "t_mapping(t_uint256,t_uint256)",
+            "src": "contracts\\MarketplaceV2.sol:35"
+          }
+        ],
+        "types": {
+          "t_struct(Counter)2882_storage": {
+            "label": "struct CountersUpgradeable.Counter",
+            "members": [
+              {
+                "label": "_value",
+                "type": "t_uint256"
+              }
+            ]
+          },
+          "t_uint256": {
+            "label": "uint256"
+          },
+          "t_address": {
+            "label": "address"
+          },
+          "t_mapping(t_uint256,t_struct(MarketItemV2)5536_storage)": {
+            "label": "mapping(uint256 => struct MarketplaceV2.MarketItemV2)"
+          },
+          "t_struct(MarketItemV2)5536_storage": {
+            "label": "struct MarketplaceV2.MarketItemV2",
+            "members": [
+              {
+                "label": "itemId",
+                "type": "t_uint256"
+              },
+              {
+                "label": "nftContract",
+                "type": "t_address"
+              },
+              {
+                "label": "tokenId",
+                "type": "t_uint256"
+              },
+              {
+                "label": "seller",
+                "type": "t_address_payable"
+              },
+              {
+                "label": "owner",
+                "type": "t_address_payable"
+              },
+              {
+                "label": "price",
+                "type": "t_uint256"
+              },
+              {
+                "label": "currency",
+                "type": "t_string_storage"
+              },
+              {
+                "label": "discountPercentage",
+                "type": "t_uint256"
+              },
+              {
+                "label": "idToAddressList",
+                "type": "t_uint256"
+              },
+              {
+                "label": "listingPrice",
+                "type": "t_uint256"
+              },
+              {
+                "label": "cancelled",
+                "type": "t_bool"
+              }
+            ]
+          },
+          "t_address_payable": {
+            "label": "address payable"
+          },
+          "t_string_storage": {
+            "label": "string"
+          },
+          "t_bool": {
+            "label": "bool"
+          },
+          "t_mapping(t_uint256,t_array(t_address)dyn_storage)": {
+            "label": "mapping(uint256 => address[])"
+          },
+          "t_array(t_address)dyn_storage": {
+            "label": "address[]"
+          },
+          "t_mapping(t_uint256,t_uint256)": {
+            "label": "mapping(uint256 => uint256)"
+          },
+          "t_mapping(t_address,t_address)": {
+            "label": "mapping(address => address)"
+          },
+          "t_mapping(t_uint256,t_struct(MarketItem)3369_storage)": {
+            "label": "mapping(uint256 => struct Marketplace.MarketItem)"
+          },
+          "t_struct(MarketItem)3369_storage": {
+            "label": "struct Marketplace.MarketItem",
+            "members": [
+              {
+                "label": "itemId",
+                "type": "t_uint256"
+              },
+              {
+                "label": "nftContract",
+                "type": "t_address"
+              },
+              {
+                "label": "tokenId",
+                "type": "t_uint256"
+              },
+              {
+                "label": "seller",
+                "type": "t_address_payable"
+              },
+              {
+                "label": "owner",
+                "type": "t_address_payable"
+              },
+              {
+                "label": "price",
+                "type": "t_uint256"
+              },
+              {
+                "label": "currency",
+                "type": "t_string_storage"
+              },
+              {
+                "label": "listingPrice",
+                "type": "t_uint256"
+              },
+              {
+                "label": "cancelled",
+                "type": "t_bool"
+              }
+            ]
+          },
+          "t_array(t_uint256)49_storage": {
+            "label": "uint256[49]"
+          },
+          "t_array(t_uint256)50_storage": {
+            "label": "uint256[50]"
+          }
+        }
+      }
+    },
+    "66c0590abff9618f75640c36b48970d0535caa566b8b61e595ae2aab4bd3c587": {
+      "address": "0x1c85638e118b37167e9298c2268758e058DdfDA0",
+      "txHash": "0xecbd7450a6f9fcafb05576f58c72603e72a64da7620eea1d4c7fbe4ca5db4ce9",
+      "layout": {
+        "storage": [
+          {
+            "contract": "Initializable",
+            "label": "_initialized",
+            "type": "t_bool",
+            "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:39"
+          },
+          {
+            "contract": "Initializable",
+            "label": "_initializing",
+            "type": "t_bool",
+            "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:44"
+          },
+          {
+            "contract": "ContextUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)50_storage",
+            "src": "@openzeppelin\\contracts-upgradeable\\utils\\ContextUpgradeable.sol:31"
+          },
+          {
+            "contract": "OwnableUpgradeable",
+            "label": "_owner",
+            "type": "t_address",
+            "src": "@openzeppelin\\contracts-upgradeable\\access\\OwnableUpgradeable.sol:22"
+          },
+          {
+            "contract": "OwnableUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)49_storage",
+            "src": "@openzeppelin\\contracts-upgradeable\\access\\OwnableUpgradeable.sol:82"
+          },
+          {
+            "contract": "ERC1967UpgradeUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)50_storage",
+            "src": "@openzeppelin\\contracts-upgradeable\\proxy\\ERC1967\\ERC1967UpgradeUpgradeable.sol:215"
+          },
+          {
+            "contract": "UUPSUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)50_storage",
+            "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\UUPSUpgradeable.sol:81"
+          },
+          {
+            "contract": "ReentrancyGuardUpgradeable",
+            "label": "_status",
+            "type": "t_uint256",
+            "src": "@openzeppelin\\contracts-upgradeable\\security\\ReentrancyGuardUpgradeable.sol:38"
+          },
+          {
+            "contract": "ReentrancyGuardUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)49_storage",
+            "src": "@openzeppelin\\contracts-upgradeable\\security\\ReentrancyGuardUpgradeable.sol:68"
+          },
+          {
+            "contract": "Marketplace",
+            "label": "_itemIds",
+            "type": "t_struct(Counter)2882_storage",
+            "src": "contracts\\Marketplace.sol:36"
+          },
+          {
+            "contract": "Marketplace",
+            "label": "_itemsSold",
+            "type": "t_struct(Counter)2882_storage",
+            "src": "contracts\\Marketplace.sol:37"
+          },
+          {
+            "contract": "Marketplace",
+            "label": "marketplaceOwner",
+            "type": "t_address_payable",
+            "src": "contracts\\Marketplace.sol:39"
+          },
+          {
+            "contract": "Marketplace",
+            "label": "listingPrice",
+            "type": "t_uint256",
+            "src": "contracts\\Marketplace.sol:40"
+          },
+          {
+            "contract": "Marketplace",
+            "label": "nftFirstOwner",
+            "type": "t_mapping(t_address,t_address)",
+            "src": "contracts\\Marketplace.sol:54"
+          },
+          {
+            "contract": "Marketplace",
+            "label": "idToMarketItem",
+            "type": "t_mapping(t_uint256,t_struct(MarketItem)3369_storage)",
+            "src": "contracts\\Marketplace.sol:55"
+          },
+          {
+            "contract": "MarketplaceV2",
+            "label": "_itemIdsV2",
+            "type": "t_struct(Counter)2882_storage",
+            "src": "contracts\\MarketplaceV2.sol:13"
+          },
+          {
+            "contract": "MarketplaceV2",
+            "label": "_itemsSoldV2",
+            "type": "t_struct(Counter)2882_storage",
+            "src": "contracts\\MarketplaceV2.sol:14"
+          },
+          {
+            "contract": "MarketplaceV2",
+            "label": "ownlyAddress",
+            "type": "t_address",
+            "src": "contracts\\MarketplaceV2.sol:16"
+          },
+          {
+            "contract": "MarketplaceV2",
+            "label": "idToMarketItemV2",
+            "type": "t_mapping(t_uint256,t_struct(MarketItemV2)5536_storage)",
+            "src": "contracts\\MarketplaceV2.sol:32"
+          },
+          {
+            "contract": "MarketplaceV2",
+            "label": "idToAddressList",
+            "type": "t_mapping(t_uint256,t_array(t_address)dyn_storage)",
+            "src": "contracts\\MarketplaceV2.sol:34"
+          },
+          {
+            "contract": "MarketplaceV2",
+            "label": "idToAddressListDiscountPercentage",
+            "type": "t_mapping(t_uint256,t_uint256)",
+            "src": "contracts\\MarketplaceV2.sol:35"
           }
         ],
         "types": {

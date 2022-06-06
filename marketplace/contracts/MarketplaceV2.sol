@@ -54,6 +54,65 @@ contract MarketplaceV2 is Marketplace {
         uint indexed itemId
     );
 
+    function createMarketSale(uint256 itemId, string memory currency) public virtual payable override nonReentrant returns (uint) {
+        address payable seller = idToMarketItem[itemId].seller;
+        uint price = idToMarketItem[itemId].price;
+        uint tokenId = idToMarketItem[itemId].tokenId;
+        //        address ownly_address = 0xC3Df366fAf79c6Caff3C70948363f00b9Ac55FEE;
+        address ownly_address = 0x7665CB7b0d01Df1c9f9B9cC66019F00aBD6959bA;
+
+        require(compareStrings(currency, "BNB") || compareStrings(currency, "OWN"), "Invalid price currency.");
+
+        if(compareStrings(currency, "BNB") && compareStrings(idToMarketItem[itemId].currency, "BNB")) {
+            require(msg.value == price, "Please submit the asking price in order to complete the purchase");
+            seller.transfer(msg.value);
+        }
+
+        if(compareStrings(currency, "OWN") && compareStrings(idToMarketItem[itemId].currency, "OWN")) {
+            OwnlyInterface ownlyContract = OwnlyInterface(ownly_address);
+            uint ownlyAllowance = ownlyContract.allowance(msg.sender, address(this));
+
+            require(idToMarketItem[itemId].price == ownlyAllowance, "Please submit the asking price in order to complete the purchase");
+
+            IERC20Upgradeable(ownly_address).transferFrom(msg.sender, seller, idToMarketItem[itemId].price);
+        }
+
+        if(compareStrings(currency, "OWN") && compareStrings(idToMarketItem[itemId].currency, "BNB")) {
+            SparkSwapRouterInterface sparkSwapRouterContract = SparkSwapRouterInterface(0xeB98E6e5D34c94F56708133579abB8a6A2aC2F26);
+
+            address[] memory path = new address[](2);
+            path[0] = ownly_address;
+            path[1] = 0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c;
+
+            uint[] memory ownPrice = sparkSwapRouterContract.getAmountsIn(price, path);
+
+            OwnlyInterface ownlyContract = OwnlyInterface(ownly_address);
+            uint ownlyAllowance = ownlyContract.allowance(msg.sender, address(this));
+
+            uint finalPrice = ownPrice[0];
+            //            uint finalPrice = 1000000000000000000000;
+            finalPrice = (finalPrice * 8) / 10;
+
+            require(ownlyAllowance >= finalPrice, "Please submit the asking price in order to complete the purchase");
+
+            IERC20Upgradeable(ownly_address).transferFrom(msg.sender, seller, finalPrice);
+        }
+
+        IERC721Upgradeable(idToMarketItem[itemId].nftContract).transferFrom(seller, msg.sender, tokenId);
+        idToMarketItem[itemId].owner = payable(msg.sender);
+        _itemsSold.increment();
+
+        if(idToMarketItem[itemId].listingPrice > 0) {
+            payable(marketplaceOwner).transfer(idToMarketItem[itemId].listingPrice);
+        }
+
+        emit MarketItemSold(
+            itemId
+        );
+
+        return 2;
+    }
+
     function getOwnlyAddress() public view virtual returns (address) {
         return ownlyAddress;
     }
@@ -115,6 +174,8 @@ contract MarketplaceV2 is Marketplace {
         MarketItemV2 memory marketItem = idToMarketItemV2[itemId];
 
         require(marketItem.cancelled == false, "Market item is already cancelled.");
+        require(marketItem.owner == address(0), "Market item is already sold.");
+        require(compareStrings(currency, "BNB") || compareStrings(currency, "OWN"), "Invalid price currency.");
 
         if(compareStrings(currency, "BNB") && compareStrings(marketItem.currency, "BNB")) {
             require(msg.value == marketItem.price, "Please submit the asking price in order to complete the purchase.");
@@ -175,6 +236,7 @@ contract MarketplaceV2 is Marketplace {
     function cancelMarketItemV2(uint256 itemId) public virtual nonReentrant {
         MarketItemV2 memory marketItem = idToMarketItemV2[itemId];
 
+        require(marketItem.seller == msg.sender, "You do not own this market item.");
         require(marketItem.cancelled == false, "Market item is already cancelled.");
 
         IERC721Upgradeable nftContract = IERC721Upgradeable(marketItem.nftContract);
@@ -182,13 +244,13 @@ contract MarketplaceV2 is Marketplace {
         bool isApprovedForAll = nftContract.isApprovedForAll(nftOwner, address(this));
 
         require(marketItem.owner == address(0), "This market item is already sold.");
-        require(nftOwner == marketItem.seller && nftOwner == msg.sender, "You must be the owner of the token.");
+        require(nftOwner == marketItem.seller, "You must be the owner of the token.");
         require(isApprovedForAll, "You must give permission for this marketplace to access your token.");
 
-        marketItem.cancelled = true;
+        idToMarketItemV2[itemId].cancelled = true;
 
-        if(marketItem.listingPrice > 0) {
-            payable(msg.sender).transfer(marketItem.listingPrice);
+        if(idToMarketItem[itemId].listingPrice > 0) {
+            payable(msg.sender).transfer(idToMarketItem[itemId].listingPrice);
         }
 
         emit MarketItemCancelledV2(

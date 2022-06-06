@@ -1,10 +1,13 @@
 const { ethers, upgrades } = require('hardhat');
 
 async function main () {
-    let testRun = false;
-    let env = "staging";
+    let testRun = true;
+    let env = "local";
 
     const [deployer, address1, address2, address3, address4, address5] = await ethers.getSigners();
+
+    console.log(deployer.address);
+    console.log(address1.address);
 
     const Marketplace = await ethers.getContractFactory('Marketplace');
 
@@ -83,8 +86,8 @@ async function main () {
         console.log("\nmarketplacev2.fetchMarketItemV2(erc721.address, 0)");
         console.log(marketItem.toString());
 
-        await erc20.connect(address1).approve(marketplacev2.address, "3000000000000000000000000");
-        console.log("\nerc20.connect(address1).approve(marketplacev2.address, 3000000000000000000000000)");
+        await erc20.connect(address1).approve(marketplacev2.address, "4000000000000000000000000");
+        console.log("\nerc20.connect(address1).approve(marketplacev2.address, 4000000000000000000000000)");
 
         await marketplacev2.connect(address1).createMarketSaleV2(1, "OWN");
         console.log("\nmarketplacev2.connect(address1).createMarketSaleV2");
