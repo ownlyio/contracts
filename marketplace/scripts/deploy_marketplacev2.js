@@ -77,7 +77,10 @@ async function main () {
         console.log("\nerc721.setApprovalForAll(marketplacev2.address, true)");
 
         await marketplacev2.addressList(1, [], 20);
-        console.log("\nmarketplacev2.addressList(0, [deployer.address], 20)");
+        console.log("\nmarketplacev2.addressList(0, [address1.address], 20)");
+
+        await marketplacev2.setIdToAddressListIsOnlyAllowed(1, false);
+        console.log("\nmarketplacev2.setIdToAddressListIsOnlyAllowed(1, false)");
 
         await marketplacev2.createMarketItemV2(erc721.address, 0, "5000000000000000000000000", "OWN", 20, 1);
         console.log("\nmarketplacev2.createMarketItemV2(erc721.address, 1, 5000000000000000000000000, OWN, 40, 1)");

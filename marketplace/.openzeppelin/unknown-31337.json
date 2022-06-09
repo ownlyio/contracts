@@ -487,11 +487,6 @@
       "kind": "uups"
     },
     {
-      "address": "0x0B306BF915C4d645ff596e518fAf3F9669b97016",
-      "txHash": "0x1dc7981fa3452e03ad9b4d5206f6004978f411c777148f5a1e32685cf25de4e5",
-      "kind": "uups"
-    },
-    {
       "address": "0x322813Fd9A801c5507c9de605d63CEA4f2CE6c44",
       "txHash": "0x2e916b2d26bb465619bf48099ba872b63070d443397c9ae214073f27ee114ac5",
       "kind": "uups"
@@ -737,11 +732,6 @@
       "kind": "uups"
     },
     {
-      "address": "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512",
-      "txHash": "0x9eb927792a20e4115ea06ad6c625b7247fe9fb804cfe92586a2bd58d10e4533c",
-      "kind": "uups"
-    },
-    {
       "address": "0x0165878A594ca255338adfa4d48449f69242Eb8F",
       "txHash": "0xc62e3cee09a0319b2fb0b45ed93124321bcd25203ccaa22459a2edbf5b5d03d0",
       "kind": "uups"
@@ -749,11 +739,6 @@
     {
       "address": "0x959922bE3CAee4b8Cd9a407cc3ac1C251C2007B1",
       "txHash": "0xafbc37d93d64f8018df5c52c346cc92764ec7dba247cbfe0094f1dba4d583fda",
-      "kind": "uups"
-    },
-    {
-      "address": "0xc5a5C42992dECbae36851359345FE25997F5C42d",
-      "txHash": "0x53dac759d6353451f1b7bce9c02ebf0afdc38be2af7ef508782fed8425cd0653",
       "kind": "uups"
     },
     {
@@ -779,6 +764,26 @@
     {
       "address": "0xC9a43158891282A2B1475592D5719c001986Aaec",
       "txHash": "0x6086ba74f9aa96488f6b377a11b44251e169a60aeae674671c0c3b6162481ce9",
+      "kind": "uups"
+    },
+    {
+      "address": "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512",
+      "txHash": "0x9eb927792a20e4115ea06ad6c625b7247fe9fb804cfe92586a2bd58d10e4533c",
+      "kind": "uups"
+    },
+    {
+      "address": "0x0B306BF915C4d645ff596e518fAf3F9669b97016",
+      "txHash": "0x8d9d71ea49a8242005eedbf8c75fa5139e95fb1d4e3c85c736e33015d8ad6070",
+      "kind": "uups"
+    },
+    {
+      "address": "0xc5a5C42992dECbae36851359345FE25997F5C42d",
+      "txHash": "0xae3c0150bbb1c1f1af25daeeee943bb6d8e102faa1c7317c035c3468c7773a4f",
+      "kind": "uups"
+    },
+    {
+      "address": "0x4826533B4897376654Bb4d4AD88B7faFD0C98528",
+      "txHash": "0x18ffb1dcacb5d72cc5e9661b1012f8dd2c330b126971dbf1a90daf3eaaf1a57b",
       "kind": "uups"
     }
   ],
@@ -11432,9 +11437,9 @@
         }
       }
     },
-    "2846ad8311ed6de4faa6128dbe690d88b786ad9d1d86c94d3b4eb947502bfda1": {
-      "address": "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0",
-      "txHash": "0x326dfe4ce388e90ad1c034238b642d60a23700d8afb8203b9df9cc1c8b006e35",
+    "66c0590abff9618f75640c36b48970d0535caa566b8b61e595ae2aab4bd3c587": {
+      "address": "0x1c85638e118b37167e9298c2268758e058DdfDA0",
+      "txHash": "0xecbd7450a6f9fcafb05576f58c72603e72a64da7620eea1d4c7fbe4ca5db4ce9",
       "layout": {
         "storage": [
           {
@@ -11706,9 +11711,9 @@
         }
       }
     },
-    "66c0590abff9618f75640c36b48970d0535caa566b8b61e595ae2aab4bd3c587": {
-      "address": "0x1c85638e118b37167e9298c2268758e058DdfDA0",
-      "txHash": "0xecbd7450a6f9fcafb05576f58c72603e72a64da7620eea1d4c7fbe4ca5db4ce9",
+    "6af599389ca36b3ac865a55a10fa5bcd0fc21dc50348a68834672c61d4d1408f": {
+      "address": "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0",
+      "txHash": "0x85063f94bea52ca7009a70f2c4b4766a131727105e2dd97e45a345b86359f5f9",
       "layout": {
         "storage": [
           {
@@ -11836,6 +11841,12 @@
             "label": "idToAddressListDiscountPercentage",
             "type": "t_mapping(t_uint256,t_uint256)",
             "src": "contracts\\MarketplaceV2.sol:35"
+          },
+          {
+            "contract": "MarketplaceV2",
+            "label": "idToAddressListIsOnlyAllowed",
+            "type": "t_mapping(t_uint256,t_bool)",
+            "src": "contracts\\MarketplaceV2.sol:36"
           }
         ],
         "types": {
@@ -11923,6 +11934,9 @@
           },
           "t_mapping(t_uint256,t_uint256)": {
             "label": "mapping(uint256 => uint256)"
+          },
+          "t_mapping(t_uint256,t_bool)": {
+            "label": "mapping(uint256 => bool)"
           },
           "t_mapping(t_address,t_address)": {
             "label": "mapping(address => address)"

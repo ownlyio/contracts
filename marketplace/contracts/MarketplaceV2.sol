@@ -33,6 +33,7 @@ contract MarketplaceV2 is Marketplace {
 
     mapping(uint256 => address[]) idToAddressList;
     mapping(uint256 => uint256) idToAddressListDiscountPercentage;
+    mapping(uint256 => bool) idToAddressListIsOnlyAllowed;
 
     event MarketItemCreatedV2 (
         uint indexed itemId,
@@ -177,6 +178,10 @@ contract MarketplaceV2 is Marketplace {
         require(marketItem.owner == address(0), "Market item is already sold.");
         require(compareStrings(currency, "BNB") || compareStrings(currency, "OWN"), "Invalid price currency.");
 
+        if(getIdToAddressListIsOnlyAllowed(marketItem.idToAddressList)) {
+            require(getIsInAddressList(marketItem.idToAddressList, msg.sender), "Only those in the whitelist can purchase.");
+        }
+
         if(compareStrings(currency, "BNB") && compareStrings(marketItem.currency, "BNB")) {
             require(msg.value == marketItem.price, "Please submit the asking price in order to complete the purchase.");
             marketItem.seller.transfer(msg.value);
@@ -281,6 +286,19 @@ contract MarketplaceV2 is Marketplace {
         return item;
     }
 
+    function getIsInAddressList(uint id, address _user) public view returns (bool) {
+        bool isInAddressList = false;
+
+        for (uint i = 0; i < idToAddressList[id].length; i++) {
+            if (idToAddressList[id][i] == _user) {
+                isInAddressList = true;
+                break;
+            }
+        }
+
+        return isInAddressList;
+    }
+
     function getAddressListDiscountPercentage(uint id, address _user) public view returns (uint) {
         uint discountPercentage = 0;
 
@@ -299,6 +317,14 @@ contract MarketplaceV2 is Marketplace {
         idToAddressList[id] = _addresses;
 
         idToAddressListDiscountPercentage[id] = discountPercentage;
+    }
+
+    function getIdToAddressListIsOnlyAllowed(uint id) public view returns (bool) {
+        return idToAddressListIsOnlyAllowed[id];
+    }
+
+    function setIdToAddressListIsOnlyAllowed(uint id, bool state) public onlyOwner {
+        idToAddressListIsOnlyAllowed[id] = state;
     }
 
     function version() pure public virtual override returns (string memory) {
