@@ -1,13 +1,17 @@
 const { ethers, upgrades } = require('hardhat');
 
 async function main () {
-    let testRun = true;
+    let testRun = false;
     let env = "local";
+    env = "staging";
 
     const [deployer, address1, address2, address3, address4, address5] = await ethers.getSigners();
 
     console.log(deployer.address);
-    console.log(address1.address);
+
+    if(testRun) {
+        console.log(address1.address);
+    }
 
     const Marketplace = await ethers.getContractFactory('Marketplace');
 

@@ -59,9 +59,6 @@ contract MarketplaceV2 is Marketplace {
         address payable seller = idToMarketItem[itemId].seller;
         uint price = idToMarketItem[itemId].price;
         uint tokenId = idToMarketItem[itemId].tokenId;
-        //        address ownly_address = 0xC3Df366fAf79c6Caff3C70948363f00b9Ac55FEE;
-        address ownly_address = 0x7665CB7b0d01Df1c9f9B9cC66019F00aBD6959bA;
-
         require(compareStrings(currency, "BNB") || compareStrings(currency, "OWN"), "Invalid price currency.");
 
         if(compareStrings(currency, "BNB") && compareStrings(idToMarketItem[itemId].currency, "BNB")) {
@@ -70,33 +67,32 @@ contract MarketplaceV2 is Marketplace {
         }
 
         if(compareStrings(currency, "OWN") && compareStrings(idToMarketItem[itemId].currency, "OWN")) {
-            OwnlyInterface ownlyContract = OwnlyInterface(ownly_address);
+            OwnlyInterface ownlyContract = OwnlyInterface(ownlyAddress);
             uint ownlyAllowance = ownlyContract.allowance(msg.sender, address(this));
 
             require(idToMarketItem[itemId].price == ownlyAllowance, "Please submit the asking price in order to complete the purchase");
 
-            IERC20Upgradeable(ownly_address).transferFrom(msg.sender, seller, idToMarketItem[itemId].price);
+            IERC20Upgradeable(ownlyAddress).transferFrom(msg.sender, seller, idToMarketItem[itemId].price);
         }
 
         if(compareStrings(currency, "OWN") && compareStrings(idToMarketItem[itemId].currency, "BNB")) {
             SparkSwapRouterInterface sparkSwapRouterContract = SparkSwapRouterInterface(0xeB98E6e5D34c94F56708133579abB8a6A2aC2F26);
 
             address[] memory path = new address[](2);
-            path[0] = ownly_address;
+            path[0] = ownlyAddress;
             path[1] = 0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c;
 
             uint[] memory ownPrice = sparkSwapRouterContract.getAmountsIn(price, path);
 
-            OwnlyInterface ownlyContract = OwnlyInterface(ownly_address);
+            OwnlyInterface ownlyContract = OwnlyInterface(ownlyAddress);
             uint ownlyAllowance = ownlyContract.allowance(msg.sender, address(this));
 
             uint finalPrice = ownPrice[0];
-            //            uint finalPrice = 1000000000000000000000;
             finalPrice = (finalPrice * 8) / 10;
 
             require(ownlyAllowance >= finalPrice, "Please submit the asking price in order to complete the purchase");
 
-            IERC20Upgradeable(ownly_address).transferFrom(msg.sender, seller, finalPrice);
+            IERC20Upgradeable(ownlyAddress).transferFrom(msg.sender, seller, finalPrice);
         }
 
         IERC721Upgradeable(idToMarketItem[itemId].nftContract).transferFrom(seller, msg.sender, tokenId);
