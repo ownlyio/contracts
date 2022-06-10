@@ -15,10 +15,11 @@ async function main () {
 
     const Marketplace = await ethers.getContractFactory('Marketplace');
 
-    console.log('\nDeploying Marketplace...');
+    // const marketplace = await upgrades.deployProxy(Marketplace, { kind: 'uups' });
+    // await marketplace.deployed();
+    // console.log('\nDeploying Marketplace...');
 
-    const marketplace = await upgrades.deployProxy(Marketplace, { kind: 'uups' });
-    await marketplace.deployed();
+    const marketplace = await Marketplace.attach("0x6fCdeF3F1ee15109Aa91e7195834438264e91744");
 
     let implAddress = await upgrades.erc1967.getImplementationAddress(marketplace.address);
     console.log('Marketplace Implementation Address: ', implAddress);
