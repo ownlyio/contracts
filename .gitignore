@@ -1,3 +1,11 @@
+/dreaded_shrooms/node_modules/
+/dreaded_shrooms/hardhat.config.js
+/dreaded_shrooms/artifacts
+/dreaded_shrooms/cache
+/badge/node_modules/
+/badge/hardhat.config.js
+/badge/artifacts
+/badge/cache
 /marketplace/node_modules/
 /marketplace/hardhat.config.js
 /marketplace/artifacts
