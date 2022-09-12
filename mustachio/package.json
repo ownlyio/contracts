@@ -13,6 +13,7 @@
     "@openzeppelin/contracts-upgradeable": "^4.2.0",
     "@openzeppelin/hardhat-upgrades": "^1.9.0",
     "chai": "^4.3.4",
+    "erc721a": "^4.2.2",
     "ethereum-waffle": "^3.4.0",
     "ethers": "^5.4.2",
     "hardhat": "^2.5.0"

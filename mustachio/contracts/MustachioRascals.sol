@@ -1,152 +1,209 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.2;
+pragma solidity ^0.8.4;
 
-import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-import "@openzeppelin/contracts/utils/Counters.sol";
+import "erc721a/contracts/ERC721A.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "@openzeppelin/contracts/utils/Strings.sol";
 
-abstract contract INFTStaking {
-    function setStakingItemAsClaimed(uint idToStakingItem) public virtual;
-    function getStakingItemNftContractAddress(uint stakingItemId) public view virtual returns (address);
-    function getStakingItemAccount(uint stakingItemId) public view virtual returns (address);
-    function getStakingItemAmount(uint stakingItemId) public view virtual returns (uint);
-    function getStakingItemStartTime(uint stakingItemId) public view virtual returns (uint);
-    function getStakingItemIsWithdrawnWithoutMinting(uint stakingItemId) public view virtual returns (bool);
-    function getStakingItemIsClaimed(uint stakingItemId) public view virtual returns (bool);
-}
+contract MustachioRascals is ERC721A, Ownable {
+    using Strings for uint256;
 
-contract MustachioRascals is ERC721, Ownable {
-    using Counters for Counters.Counter;
-    Counters.Counter tokenIds;
-    
-    uint mintPrice = 150000 ether;
-    uint public max_mustachios = 10000;
+    string public baseURI;
+    string public notRevealedUri;
+    uint256 public cost = 0.01 ether;
+    uint256 public maxSupply = 10000;
+    uint256 freeMintCount;
+    bool public paused = false;
+    bool public revealed = false;
+    bool public onlyWhitelisted = true;
+    address validator;
+    address[] public whitelistedAddresses;
 
-    uint stakeRequired;
-    uint stakeDuration;
+    mapping(uint => address) freeMints;
+    mapping(uint => bool) freeMintIsClaimed;
 
-    string public PROVENANCE_HASH = "";
-    string baseUri = "https://ownly.tk/api/mustachio-rascals/";
-
-    address payable admin = payable(0x672b733C5350034Ccbd265AA7636C3eBDDA2223B);
-    address paymentTokenAddress;
-
-    bool public saleIsActive = false;
-
-    constructor() ERC721("Mustachio Rascals", "RASCALS") {}
-
-    function setPaymentTokenAddress(address payable _paymentTokenAddress) public onlyOwner virtual {
-        paymentTokenAddress = _paymentTokenAddress;
+    constructor(
+        string memory _name,
+        string memory _symbol,
+        string memory _initBaseURI,
+        string memory _initNotRevealedUri,
+        address _validator
+    ) ERC721A(_name, _symbol) {
+        setBaseURI(_initBaseURI);
+        setNotRevealedURI(_initNotRevealedUri);
+        setValidator(_validator);
     }
 
-    function getPaymentTokenAddress() public view virtual returns (address) {
-        return paymentTokenAddress;
+    function _baseURI() internal view virtual override returns (string memory) {
+        return baseURI;
     }
 
-    function setStakeRequired(uint _stakeRequired) public onlyOwner virtual {
-        stakeRequired = _stakeRequired;
+    function mint(uint256 _mintAmount) public payable {
+        require(!paused, "the contract is paused");
+        uint256 supply = totalSupply();
+        require(_mintAmount > 0, "need to mint at least 1 NFT");
+        require(supply + _mintAmount <= maxSupply, "max NFT limit exceeded");
+
+        if(msg.sender != owner()) {
+            if(onlyWhitelisted == true) {
+                require(isWhitelisted(msg.sender), "user is not whitelisted");
+            }
+            require(msg.value >= cost * _mintAmount, "insufficient funds");
+        }
+
+        _mint(msg.sender, _mintAmount);
     }
 
-    function getStakeRequired() public view virtual returns (uint) {
-        return stakeRequired;
-    }
+    function freeMint() public {
+        require(!paused, "the contract is paused");
 
-    function setStakeDuration(uint _stakeDuration) public onlyOwner virtual {
-        stakeDuration = _stakeDuration;
-    }
+        uint256 supply = totalSupply();
+        uint256 quantity = 0;
 
-    function getStakeDuration() public view virtual returns (uint) {
-        return stakeDuration;
-    }
+        for(uint256 i = 1; i <= freeMintCount; i++) {
+            if(freeMints[i] == msg.sender && !freeMintIsClaimed[i]) {
+                quantity++;
+            }
+        }
 
-    function reserveMustachios(address[] memory accounts) public onlyOwner {
-        for (uint i = 0; i < accounts.length; i++) {
-            mintNFT(accounts[i]);
+        require(supply + quantity <= maxSupply, "max NFT limit exceeded");
+        require(quantity > 0, "No free mints available for this account.");
+
+        _mint(msg.sender, quantity);
+
+        for(uint256 i = 1; i <= freeMintCount; i++) {
+            if(freeMints[i] == msg.sender && !freeMintIsClaimed[i]) {
+                freeMintIsClaimed[i] = true;
+            }
         }
     }
 
-    function totalSupply() public view returns (uint) {
-        return tokenIds.current();
+    function isWhitelisted(address _user) public view returns (bool) {
+        for (uint i = 0; i < whitelistedAddresses.length; i++) {
+            if (whitelistedAddresses[i] == _user) {
+                return true;
+            }
+        }
+        return false;
     }
 
-    function _baseURI() internal view override returns (string memory) {
-        return baseUri;
+    function tokenURI(uint256 tokenId) public view virtual override returns (string memory) {
+        require(
+            _exists(tokenId),
+            "ERC721Metadata: URI query for nonexistent token"
+        );
+
+        if(revealed == false) {
+            return notRevealedUri;
+        }
+
+        string memory currentBaseURI = _baseURI();
+        return bytes(currentBaseURI).length > 0
+        ? string(abi.encodePacked(currentBaseURI, tokenId.toString()))
+        : "";
     }
 
-    function setBaseUri(string memory _baseUri) public onlyOwner {
-        baseUri = _baseUri;
+    function reveal() public onlyOwner {
+        revealed = true;
     }
 
-    function setProvenanceHash(string memory _provenanceHash) external onlyOwner {
-        PROVENANCE_HASH = _provenanceHash;
+    function setCost(uint256 _newCost) public onlyOwner {
+        cost = _newCost;
     }
 
-    function flipSaleState() public onlyOwner {
-        saleIsActive = !saleIsActive;
+    function setBaseURI(string memory _newBaseURI) public onlyOwner {
+        baseURI = _newBaseURI;
     }
 
-    function getMintPrice() public view returns (uint) {
-        return mintPrice;
-    }
-    
-    function setMintPrice(uint _mintPrice) public onlyOwner {
-        mintPrice = _mintPrice;
+    function setNotRevealedURI(string memory _notRevealedURI) public onlyOwner {
+        notRevealedUri = _notRevealedURI;
     }
 
-    function stakeMint(address nftStakingAddress, uint stakingItemId) public {
-        INFTStaking nftStaking = INFTStaking(nftStakingAddress);
-
-        address stakingItemNftContractAddress = nftStaking.getStakingItemNftContractAddress(stakingItemId);
-        address stakingItemAccount = nftStaking.getStakingItemAccount(stakingItemId);
-        uint stakingItemAmount = nftStaking.getStakingItemAmount(stakingItemId);
-        uint stakingItemStartTime = nftStaking.getStakingItemStartTime(stakingItemId);
-        bool stakingItemIsWithdrawnWithoutMinting = nftStaking.getStakingItemIsWithdrawnWithoutMinting(stakingItemId);
-        bool stakingItemIsClaimed = nftStaking.getStakingItemIsClaimed(stakingItemId);
-
-        require(stakingItemNftContractAddress == address(this), "Staking item is not valid for this collection.");
-        require(stakingItemAccount == msg.sender, "Your account is not valid for this staking item.");
-        require(stakingItemAmount >= stakeRequired, "Staking amount is invalid.");
-        require(block.timestamp - stakingItemStartTime >= stakeDuration, "Staking duration is not finish yet.");
-        require(!stakingItemIsWithdrawnWithoutMinting, "Staking item is withdrawn before claiming the NFT.");
-        require(!stakingItemIsClaimed, "Staking item is already claimed.");
-
-        nftStaking.setStakingItemAsClaimed(stakingItemId);
-
-        mintNFT(msg.sender);
+    function pause(bool _state) public onlyOwner {
+        paused = _state;
     }
 
-    function purchaseMint() public virtual payable {
-        require(saleIsActive, "Sale must be active to mint your Mustachio.");
-        require(tokenIds.current() + 1 <= max_mustachios, "Purchase would exceed max supply of Mustachios.");
-
-        IERC20 paymentTokenContract = IERC20(paymentTokenAddress);
-        uint allowance = paymentTokenContract.allowance(msg.sender, address(this));
-
-        require(allowance >= mintPrice, "Please approve the NFT contract with the right payment amount.");
-
-        paymentTokenContract.transferFrom(msg.sender, address(this), mintPrice);
-
-        mintNFT(msg.sender);
+    function setOnlyWhitelisted(bool _state) public onlyOwner {
+        onlyWhitelisted = _state;
     }
 
-    function mintNFT(address _address) internal {
-        tokenIds.increment();
-        uint tokenId = tokenIds.current();
-        _mint(_address, tokenId);
+    function whitelistUsers(address[] calldata _users) public onlyOwner {
+        delete whitelistedAddresses;
+        whitelistedAddresses = _users;
     }
 
-    function withdraw() public onlyOwner {
-        admin.transfer(address(this).balance);
+    function setFreeMints(address[] calldata _freeMints, bool overwrite) public onlyOwner {
+        freeMintCount = _freeMints.length;
+
+        for(uint256 i = 1; i <= freeMintCount; i++) {
+            if(overwrite) {
+                freeMints[i] = _freeMints[i];
+            } else {
+                if(freeMints[i] == address(0)) {
+                    freeMints[i] = _freeMints[i];
+                }
+            }
+        }
     }
 
-    function withdrawPaymentToken() public onlyOwner {
-        IERC20 paymentTokenContract = IERC20(paymentTokenAddress);
-        uint allowance = paymentTokenContract.allowance(msg.sender, address(this));
+    function withdraw() public payable onlyOwner {
+        (bool os, ) = payable(owner()).call{value: address(this).balance}("");
+        require(os);
+    }
 
-        require(allowance >= mintPrice, "Please approve the NFT contract with the right payment amount.");
+    function setValidator(address _validator) public onlyOwner virtual {
+        validator = _validator;
+    }
 
-        paymentTokenContract.transferFrom(msg.sender, address(this), mintPrice);
-        admin.transfer(address(this).balance);
+    function verify(address account, bytes memory signature) public view virtual returns (bool) {
+        bytes32 messageHash = getMessageHash(account);
+        bytes32 ethSignedMessageHash = getEthSignedMessageHash(messageHash);
+
+        return recoverSigner(ethSignedMessageHash, signature) == validator;
+    }
+
+    function getMessageHash(address account) public pure returns (bytes32) {
+        return keccak256(abi.encodePacked(account));
+    }
+
+    function getEthSignedMessageHash(bytes32 _messageHash) public pure virtual returns (bytes32) {
+        /*
+        Signature is produced by signing a keccak256 hash with the following format:
+        "\x19Ethereum Signed Message\n" + len(msg) + msg
+        */
+        return
+        keccak256(
+            abi.encodePacked("\x19Ethereum Signed Message:\n32", _messageHash)
+        );
+    }
+
+    function recoverSigner(bytes32 _ethSignedMessageHash, bytes memory _signature) public pure virtual returns (address) {
+        (bytes32 r, bytes32 s, uint8 v) = splitSignature(_signature);
+
+        return ecrecover(_ethSignedMessageHash, v, r, s);
+    }
+
+    function splitSignature(bytes memory sig) public pure virtual returns (bytes32 r, bytes32 s, uint8 v) {
+        require(sig.length == 65, "invalid signature length");
+
+        assembly {
+        /*
+        First 32 bytes stores the length of the signature
+
+        add(sig, 32) = pointer of sig + 32
+        effectively, skips first 32 bytes of signature
+
+        mload(p) loads next 32 bytes starting at the memory address p into memory
+        */
+
+        // first 32 bytes, after the length prefix
+            r := mload(add(sig, 32))
+        // second 32 bytes
+            s := mload(add(sig, 64))
+        // final byte (first byte of the next 32 bytes)
+            v := byte(0, mload(add(sig, 96)))
+        }
+
+        // implicitly return (r, s, v)
     }
 }
