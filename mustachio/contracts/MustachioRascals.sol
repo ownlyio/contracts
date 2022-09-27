@@ -10,16 +10,22 @@ contract MustachioRascals is ERC721A, Ownable {
 
     string public baseURI;
     string public notRevealedUri;
-    uint256 public cost = 0.01 ether;
+    uint256 public cost1 = 0.025 ether;
+    uint256 public cost2 = 0.018 ether;
+    uint256 public cost3 = 0.012 ether;
+    uint256 public cost4 = 0.009 ether;
+    uint256 public whitelistedPricePercentage = 90;
     uint256 public maxSupply = 10000;
     uint256 freeMintCount;
+    uint256 whitelistedAddressesCount;
     bool public paused = false;
     bool public revealed = false;
     bool public onlyWhitelisted = true;
     address validator;
-    address[] public whitelistedAddresses;
 
     mapping(uint => address) freeMints;
+    mapping(uint => address) whitelistedAddresses;
+
     mapping(uint => bool) freeMintIsClaimed;
 
     constructor(
@@ -45,9 +51,24 @@ contract MustachioRascals is ERC721A, Ownable {
         require(supply + _mintAmount <= maxSupply, "max NFT limit exceeded");
 
         if(msg.sender != owner()) {
+            bool _isWhitelisted = isWhitelisted(msg.sender);
+
             if(onlyWhitelisted == true) {
                 require(isWhitelisted(msg.sender), "user is not whitelisted");
             }
+
+            uint256 cost = 0;
+
+            if(_mintAmount <= 2) {
+                cost = (_isWhitelisted) ? (cost1 * whitelistedPricePercentage) / 100 : cost1;
+            } else if(_mintAmount <= 4) {
+                cost = (_isWhitelisted) ? (cost2 * whitelistedPricePercentage) / 100 : cost2;
+            } else if(_mintAmount <= 9) {
+                cost = (_isWhitelisted) ? (cost3 * whitelistedPricePercentage) / 100 : cost3;
+            } else {
+                cost = (_isWhitelisted) ? (cost4 * whitelistedPricePercentage) / 100 : cost4;
+            }
+
             require(msg.value >= cost * _mintAmount, "insufficient funds");
         }
 
@@ -79,12 +100,16 @@ contract MustachioRascals is ERC721A, Ownable {
     }
 
     function isWhitelisted(address _user) public view returns (bool) {
-        for (uint i = 0; i < whitelistedAddresses.length; i++) {
-            if (whitelistedAddresses[i] == _user) {
-                return true;
+        bool _isWhitelisted = false;
+
+        for(uint256 i = 1; i <= whitelistedAddressesCount; i++) {
+            if(whitelistedAddresses[i] == _user) {
+                _isWhitelisted = true;
+                break;
             }
         }
-        return false;
+
+        return _isWhitelisted;
     }
 
     function tokenURI(uint256 tokenId) public view virtual override returns (string memory) {
@@ -107,8 +132,15 @@ contract MustachioRascals is ERC721A, Ownable {
         revealed = true;
     }
 
-    function setCost(uint256 _newCost) public onlyOwner {
-        cost = _newCost;
+    function setCosts(uint256 _cost1, uint256 _cost2, uint256 _cost3, uint256 _cost4) public onlyOwner {
+        cost1 = _cost1;
+        cost2 = _cost2;
+        cost3 = _cost3;
+        cost4 = _cost4;
+    }
+
+    function setWhitelistedPricePercentage(uint256 _whitelistedPricePercentage) public onlyOwner {
+        whitelistedPricePercentage = _whitelistedPricePercentage;
     }
 
     function setBaseURI(string memory _newBaseURI) public onlyOwner {
@@ -127,11 +159,6 @@ contract MustachioRascals is ERC721A, Ownable {
         onlyWhitelisted = _state;
     }
 
-    function whitelistUsers(address[] calldata _users) public onlyOwner {
-        delete whitelistedAddresses;
-        whitelistedAddresses = _users;
-    }
-
     function setFreeMints(address[] calldata _freeMints, bool overwrite) public onlyOwner {
         freeMintCount = _freeMints.length;
 
@@ -141,6 +168,20 @@ contract MustachioRascals is ERC721A, Ownable {
             } else {
                 if(freeMints[i] == address(0)) {
                     freeMints[i] = _freeMints[i];
+                }
+            }
+        }
+    }
+
+    function setWhitelistedAddresses(address[] calldata _whitelistedAddresses, bool overwrite) public onlyOwner {
+        whitelistedAddressesCount = _whitelistedAddresses.length;
+
+        for(uint256 i = 1; i <= whitelistedAddressesCount; i++) {
+            if(overwrite) {
+                whitelistedAddresses[i] = _whitelistedAddresses[i];
+            } else {
+                if(whitelistedAddresses[i] == address(0)) {
+                    whitelistedAddresses[i] = _whitelistedAddresses[i];
                 }
             }
         }

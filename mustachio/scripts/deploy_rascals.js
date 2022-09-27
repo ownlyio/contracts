@@ -9,7 +9,7 @@ async function main() {
 
     // Start: Deployments
     const MustachioRascals = await hre.ethers.getContractFactory("MustachioRascals");
-    const mustachioRascals = await MustachioRascals.deploy("MustachioRascals", "RASCALS", "https://ownly.market/mustachio-rascals", "https://ownly.market/mustachio-rascals-unrevealed", "0xAa313c46175BbD4ED6cf91c710a6f48E4738a9F1");
+    const mustachioRascals = await MustachioRascals.deploy("MustachioRascals", "RASCALS", "https://ownly.market/api/rascals/", "https://ownly.market/api/rascals-prereveal/", "0x8db5262A0EbEfB4C725F5B57e750F152f16C8c3A");
     console.log("\nMustachioRascals deployed to:", mustachioRascals.address);
     // End: Deployments
 
