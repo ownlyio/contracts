@@ -78,14 +78,8 @@ contract MustachioRascals is ERC721A, Ownable {
     function freeMint() public {
         require(!paused, "the contract is paused");
 
+        uint256 quantity = freeMintQuantity(msg.sender);
         uint256 supply = totalSupply();
-        uint256 quantity = 0;
-
-        for(uint256 i = 1; i <= freeMintCount; i++) {
-            if(freeMints[i] == msg.sender && !freeMintIsClaimed[i]) {
-                quantity++;
-            }
-        }
 
         require(supply + quantity <= maxSupply, "max NFT limit exceeded");
         require(quantity > 0, "No free mints available for this account.");
@@ -97,6 +91,18 @@ contract MustachioRascals is ERC721A, Ownable {
                 freeMintIsClaimed[i] = true;
             }
         }
+    }
+
+    function freeMintQuantity(address _address) public view returns (uint256) {
+        uint256 quantity = 0;
+
+        for(uint256 i = 1; i <= freeMintCount; i++) {
+            if(freeMints[i] == _address && !freeMintIsClaimed[i]) {
+                quantity++;
+            }
+        }
+
+        return quantity;
     }
 
     function isWhitelisted(address _user) public view returns (bool) {
@@ -119,7 +125,7 @@ contract MustachioRascals is ERC721A, Ownable {
         );
 
         if(revealed == false) {
-            return notRevealedUri;
+            return string(abi.encodePacked(notRevealedUri, tokenId.toString()));
         }
 
         string memory currentBaseURI = _baseURI();
