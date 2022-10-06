@@ -12,9 +12,9 @@ contract MustachioRascals is ERC721A, Ownable {
     string public notRevealedUri;
     uint256 public cost1 = 0.025 ether;
     uint256 public cost2 = 0.018 ether;
-    uint256 public cost3 = 0.012 ether;
+    uint256 public cost3 = 0.014 ether;
     uint256 public cost4 = 0.009 ether;
-    uint256 public whitelistedPricePercentage = 90;
+    uint256 public whitelistedPricePercentage = 75;
     uint256 public maxSupply = 10000;
     uint256 freeMintCount;
     uint256 whitelistedAddressesCount;
