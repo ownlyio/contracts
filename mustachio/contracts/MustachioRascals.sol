@@ -16,28 +16,21 @@ contract MustachioRascals is ERC721A, Ownable {
     uint256 public cost4 = 0.009 ether;
     uint256 public whitelistedPricePercentage = 75;
     uint256 public maxSupply = 10000;
-    uint256 freeMintCount;
-    uint256 whitelistedAddressesCount;
     bool public paused = false;
     bool public revealed = false;
     bool public onlyWhitelisted = true;
-    address validator;
 
-    mapping(uint => address) freeMints;
-    mapping(uint => address) whitelistedAddresses;
-
-    mapping(uint => bool) freeMintIsClaimed;
+    mapping(address => uint) freeMints;
+    mapping(address => bool) whitelistedAddresses;
 
     constructor(
         string memory _name,
         string memory _symbol,
         string memory _initBaseURI,
-        string memory _initNotRevealedUri,
-        address _validator
+        string memory _initNotRevealedUri
     ) ERC721A(_name, _symbol) {
         setBaseURI(_initBaseURI);
         setNotRevealedURI(_initNotRevealedUri);
-        setValidator(_validator);
     }
 
     function _baseURI() internal view virtual override returns (string memory) {
@@ -85,37 +78,15 @@ contract MustachioRascals is ERC721A, Ownable {
         require(quantity > 0, "No free mints available for this account.");
 
         _mint(msg.sender, quantity);
-
-        for(uint256 i = 1; i <= freeMintCount; i++) {
-            if(freeMints[i] == msg.sender && !freeMintIsClaimed[i]) {
-                freeMintIsClaimed[i] = true;
-            }
-        }
+        freeMints[msg.sender] = 0;
     }
 
     function freeMintQuantity(address _address) public view returns (uint256) {
-        uint256 quantity = 0;
-
-        for(uint256 i = 1; i <= freeMintCount; i++) {
-            if(freeMints[i] == _address && !freeMintIsClaimed[i]) {
-                quantity++;
-            }
-        }
-
-        return quantity;
+        return freeMints[_address];
     }
 
     function isWhitelisted(address _user) public view returns (bool) {
-        bool _isWhitelisted = false;
-
-        for(uint256 i = 1; i <= whitelistedAddressesCount; i++) {
-            if(whitelistedAddresses[i] == _user) {
-                _isWhitelisted = true;
-                break;
-            }
-        }
-
-        return _isWhitelisted;
+        return whitelistedAddresses[_user];
     }
 
     function tokenURI(uint256 tokenId) public view virtual override returns (string memory) {
@@ -132,6 +103,13 @@ contract MustachioRascals is ERC721A, Ownable {
         return bytes(currentBaseURI).length > 0
         ? string(abi.encodePacked(currentBaseURI, tokenId.toString()))
         : "";
+    }
+
+    function airdrop(address _address, uint256 quantity) public onlyOwner {
+        uint256 supply = totalSupply();
+        require(supply + quantity <= maxSupply, "max NFT limit exceeded");
+
+        _mint(_address, quantity);
     }
 
     function reveal() public onlyOwner {
@@ -165,92 +143,20 @@ contract MustachioRascals is ERC721A, Ownable {
         onlyWhitelisted = _state;
     }
 
-    function setFreeMints(address[] calldata _freeMints, bool overwrite) public onlyOwner {
-        freeMintCount = _freeMints.length;
-
-        for(uint256 i = 1; i <= freeMintCount; i++) {
-            if(overwrite) {
-                freeMints[i] = _freeMints[i];
-            } else {
-                if(freeMints[i] == address(0)) {
-                    freeMints[i] = _freeMints[i];
-                }
-            }
+    function setFreeMints(address[] calldata _freeMints, uint[] calldata _quantity) public onlyOwner {
+        for(uint256 i = 0; i < _freeMints.length; i++) {
+            freeMints[_freeMints[i]] = _quantity[i];
         }
     }
 
-    function setWhitelistedAddresses(address[] calldata _whitelistedAddresses, bool overwrite) public onlyOwner {
-        whitelistedAddressesCount = _whitelistedAddresses.length;
-
-        for(uint256 i = 1; i <= whitelistedAddressesCount; i++) {
-            if(overwrite) {
-                whitelistedAddresses[i] = _whitelistedAddresses[i];
-            } else {
-                if(whitelistedAddresses[i] == address(0)) {
-                    whitelistedAddresses[i] = _whitelistedAddresses[i];
-                }
-            }
+    function setWhitelistedAddresses(address[] calldata _whitelistedAddresses, bool _isWhitelisted) public onlyOwner {
+        for(uint256 i = 0; i < _whitelistedAddresses.length; i++) {
+            whitelistedAddresses[_whitelistedAddresses[i]] = _isWhitelisted;
         }
     }
 
-    function withdraw() public payable onlyOwner {
+    function withdraw() public onlyOwner {
         (bool os, ) = payable(owner()).call{value: address(this).balance}("");
         require(os);
-    }
-
-    function setValidator(address _validator) public onlyOwner virtual {
-        validator = _validator;
-    }
-
-    function verify(address account, bytes memory signature) public view virtual returns (bool) {
-        bytes32 messageHash = getMessageHash(account);
-        bytes32 ethSignedMessageHash = getEthSignedMessageHash(messageHash);
-
-        return recoverSigner(ethSignedMessageHash, signature) == validator;
-    }
-
-    function getMessageHash(address account) public pure returns (bytes32) {
-        return keccak256(abi.encodePacked(account));
-    }
-
-    function getEthSignedMessageHash(bytes32 _messageHash) public pure virtual returns (bytes32) {
-        /*
-        Signature is produced by signing a keccak256 hash with the following format:
-        "\x19Ethereum Signed Message\n" + len(msg) + msg
-        */
-        return
-        keccak256(
-            abi.encodePacked("\x19Ethereum Signed Message:\n32", _messageHash)
-        );
-    }
-
-    function recoverSigner(bytes32 _ethSignedMessageHash, bytes memory _signature) public pure virtual returns (address) {
-        (bytes32 r, bytes32 s, uint8 v) = splitSignature(_signature);
-
-        return ecrecover(_ethSignedMessageHash, v, r, s);
-    }
-
-    function splitSignature(bytes memory sig) public pure virtual returns (bytes32 r, bytes32 s, uint8 v) {
-        require(sig.length == 65, "invalid signature length");
-
-        assembly {
-        /*
-        First 32 bytes stores the length of the signature
-
-        add(sig, 32) = pointer of sig + 32
-        effectively, skips first 32 bytes of signature
-
-        mload(p) loads next 32 bytes starting at the memory address p into memory
-        */
-
-        // first 32 bytes, after the length prefix
-            r := mload(add(sig, 32))
-        // second 32 bytes
-            s := mload(add(sig, 64))
-        // final byte (first byte of the next 32 bytes)
-            v := byte(0, mload(add(sig, 96)))
-        }
-
-        // implicitly return (r, s, v)
     }
 }
