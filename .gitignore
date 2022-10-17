@@ -2,6 +2,10 @@
 /dreaded_shrooms/hardhat.config.js
 /dreaded_shrooms/artifacts
 /dreaded_shrooms/cache
+/AMAC2022/node_modules/
+/AMAC2022/hardhat.config.js
+/AMAC2022/artifacts
+/AMAC2022/cache
 /badge/node_modules/
 /badge/hardhat.config.js
 /badge/artifacts
